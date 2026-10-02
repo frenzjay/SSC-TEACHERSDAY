@@ -7,7 +7,6 @@ class GameAudioEngine {
         this.fadeInterval = null;
         this.stopTimeout = null;
         this.masterGain = null;
-        this.reverbGain = null;
         this.audioSource = null;
         this.defaultStartTime = 0;
         this.trackUrl = '';
@@ -26,33 +25,14 @@ class GameAudioEngine {
             const AudioContextClass = window.AudioContext || window.webkitAudioContext;
             this.ctx = new AudioContextClass();
             this.masterGain = this.ctx.createGain();
-            this.reverbGain = this.ctx.createGain();
             this.masterGain.connect(this.ctx.destination);
-            this.reverbGain.connect(this.ctx.destination);
             this.audioSource = this.ctx.createMediaElementSource(this.player);
             this.audioSource.connect(this.masterGain);
-            this.audioSource.connect(this.createReverb());
             this.masterGain.gain.value = this.masterVolume;
-            this.reverbGain.gain.value = 0;
         }
         if (this.ctx.state === 'suspended') {
             this.ctx.resume();
         }
-    }
-
-    createReverb() {
-        const convolver = this.ctx.createConvolver();
-        const length = Math.floor(this.ctx.sampleRate * 0.7);
-        const impulse = this.ctx.createBuffer(2, length, this.ctx.sampleRate);
-        for (let channel = 0; channel < impulse.numberOfChannels; channel++) {
-            const data = impulse.getChannelData(channel);
-            for (let i = 0; i < length; i++) {
-                data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, 3);
-            }
-        }
-        convolver.buffer = impulse;
-        convolver.connect(this.reverbGain);
-        return convolver;
     }
 
     setupAudioListeners() {
@@ -335,11 +315,14 @@ class GameAudioEngine {
             this.player.volume = 1;
             if (this.masterGain) {
                 this.masterGain.gain.cancelScheduledValues(this.ctx.currentTime);
-                this.masterGain.gain.setValueAtTime(this.masterVolume || 1.0, this.ctx.currentTime);
-            }
-            if (this.reverbGain) {
-                this.reverbGain.gain.cancelScheduledValues(this.ctx.currentTime);
-                this.reverbGain.gain.setValueAtTime(0, this.ctx.currentTime);
+                const now = this.ctx.currentTime;
+                const targetVolume = this.masterVolume || 1.0;
+                if (fadeIn) {
+                    this.masterGain.gain.setValueAtTime(0, now);
+                    this.masterGain.gain.linearRampToValueAtTime(targetVolume, now + 0.18);
+                } else {
+                    this.masterGain.gain.setValueAtTime(targetVolume, now);
+                }
             }
         }
 
@@ -404,29 +387,13 @@ class GameAudioEngine {
             return;
         }
 
-        const now = this.ctx ? this.ctx.currentTime : 0;
-        const cutDuration = Math.min(Math.max(fadeDuration, 220), 420) / 1000;
-        const reverbTailDuration = 0.72;
-        if (this.masterGain && this.reverbGain && this.ctx) {
-            this.masterGain.gain.cancelScheduledValues(now);
-            this.masterGain.gain.setValueAtTime(this.masterGain.gain.value, now);
-            this.masterGain.gain.exponentialRampToValueAtTime(0.001, now + cutDuration);
-            this.reverbGain.gain.cancelScheduledValues(now);
-            this.reverbGain.gain.setValueAtTime(0.24, now);
-            this.reverbGain.gain.exponentialRampToValueAtTime(0.001, now + reverbTailDuration);
-            this.stopTimeout = window.setTimeout(() => {
-                this.stopTimeout = null;
-                this.player.pause();
-                this.player.volume = 1;
-                this.masterGain.gain.cancelScheduledValues(this.ctx.currentTime);
-                this.masterGain.gain.setValueAtTime(this.isMuted ? 0 : this.masterVolume, this.ctx.currentTime);
-                this.reverbGain.gain.setValueAtTime(0, this.ctx.currentTime);
-                if (this.onPlayStateChange) this.onPlayStateChange(false);
-                if (onComplete) onComplete();
-            }, Math.ceil(Math.max(cutDuration, reverbTailDuration) * 1000));
-            return;
+        if (this.masterGain && this.ctx) {
+            this.masterGain.gain.cancelScheduledValues(this.ctx.currentTime);
+            this.masterGain.gain.setValueAtTime(0, this.ctx.currentTime);
         }
         this.player.pause();
+        this.player.volume = 1;
+        if (this.onPlayStateChange) this.onPlayStateChange(false);
         if (onComplete) onComplete();
     }
     emergencyCut(onComplete = null) {

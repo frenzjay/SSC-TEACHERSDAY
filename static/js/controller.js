@@ -1177,7 +1177,7 @@ document.addEventListener('DOMContentLoaded', () => {
         btnPlayAudio.style.background = 'var(--accent-yellow)';
         btnPlayAudio.style.color = '#000';
 
-        window.gameAudio.playTrack(startSec, true);
+        window.gameAudio.playTrack(startSec, currentSong.mode !== 'everybody_sing');
         window.gameBus.send('PLAY_AUDIO', { fromTime: startSec });
     }
 
@@ -1212,7 +1212,7 @@ document.addEventListener('DOMContentLoaded', () => {
         btnPlayAudio.innerHTML = '<i class="fa-solid fa-pause"></i> PAUSE';
         btnPlayAudio.style.background = 'var(--accent-yellow)';
         btnPlayAudio.style.color = '#000';
-        window.gameAudio.playTrack(startSec, true);
+        window.gameAudio.playTrack(startSec, song.mode !== 'everybody_sing');
         window.gameBus.send('PLAY_AUDIO', { fromTime: startSec });
     }
 
@@ -1246,7 +1246,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 playFrom = null;
             }
 
-            window.gameAudio.playTrack(playFrom, true);
+            window.gameAudio.playTrack(playFrom, currentSong.mode !== 'everybody_sing');
             window.gameBus.send('PLAY_AUDIO', { fromTime: playFrom });
         } else {
             btnPlayAudio.innerHTML = '<i class="fa-solid fa-play"></i> PLAY AUDIO';
@@ -1349,7 +1349,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             } else {
                 let blankSec = (inputBlankTime ? parseTime(inputBlankTime.value) : 0) || Number(currentSong?.blank_time) || 0;
-                if (checkAutoPauseBlank && checkAutoPauseBlank.checked && blankSec > 0 && isPlaying && !hasCutForBlank && !isAnswered && !isRevealed) {
+                if (checkAutoPauseBlank && checkAutoPauseBlank.checked && blankSec >= 5 && isPlaying && !hasCutForBlank && !isAnswered && !isRevealed) {
                     if (curr >= blankSec && !isPausedAtBlank) {
                         hasCutForBlank = true;
                         isPausedAtBlank = true;
@@ -1449,8 +1449,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (window.gameAudio.player.currentTime >= hulaReplayUntil) {
                         window.gameAudio.player.removeEventListener('timeupdate', stopReplay);
                         isPlaying = false;
-                        window.gameAudio.smoothStop(90);
-                        window.gameBus.send('STOP_AUDIO');
+                        window.gameAudio.smoothStop(3000);
                         btnPlayAudio.innerHTML = '<i class="fa-solid fa-play"></i> PLAY NEXT HULA';
                         btnPlayAudio.style.background = 'var(--brand-blue)';
                         btnPlayAudio.style.color = '#FFF';
@@ -1468,6 +1467,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const blanks = currentSong.blanks || [];
             const curBlank = blanks[activeBlankIndex] || {};
             curBlank.answered = true;
+            const configuredBlankCut = (inputBlankTime ? parseTime(inputBlankTime.value) : 0)
+                || Number(curBlank.pause_time)
+                || 0;
+            const resumeFrom = configuredBlankCut > 0
+                ? Math.max(0, configuredBlankCut - 0.5)
+                : null;
 
             resetTimer(timerDuration);
 
@@ -1505,8 +1510,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     btnPlayAudio.style.background = 'var(--accent-yellow)';
                     btnPlayAudio.style.color = '#000';
                     setTimeout(() => {
-                        window.gameAudio.playTrack(null, true);
-                        window.gameBus.send('PLAY_AUDIO', { fromTime: null, isResume: true });
+                        window.gameAudio.playTrack(resumeFrom, false);
+                        window.gameBus.send('PLAY_AUDIO', { fromTime: resumeFrom, isResume: true });
                     }, 400);
                 }
             } else {
@@ -1517,8 +1522,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     btnPlayAudio.style.background = 'var(--accent-yellow)';
                     btnPlayAudio.style.color = '#000';
                     setTimeout(() => {
-                        window.gameAudio.playTrack(null, true);
-                        window.gameBus.send('PLAY_AUDIO', { fromTime: null, isResume: true });
+                        window.gameAudio.playTrack(resumeFrom, false);
+                        window.gameBus.send('PLAY_AUDIO', { fromTime: resumeFrom, isResume: true });
                     }, 400);
                 }
             }
@@ -1552,8 +1557,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (window.gameAudio.player.currentTime >= hulaReplayUntil) {
                         window.gameAudio.player.removeEventListener('timeupdate', stopReplay);
                         isPlaying = false;
-                        window.gameAudio.smoothStop(90);
-                        window.gameBus.send('STOP_AUDIO');
+                        window.gameAudio.smoothStop(3000);
                         btnPlayAudio.innerHTML = '<i class="fa-solid fa-play"></i> PLAY NEXT HULA';
                         btnPlayAudio.style.background = 'var(--brand-blue)';
                         btnPlayAudio.style.color = '#FFF';
@@ -1564,7 +1568,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (currentSong && currentSong.audio_url) {
             isPlaying = true;
             setTimeout(() => {
-                window.gameAudio.playTrack(null, true);
+                window.gameAudio.playTrack(null, currentSong.mode !== 'everybody_sing');
                 window.gameBus.send('PLAY_AUDIO', { fromTime: null, isResume: true });
             }, 350);
         }

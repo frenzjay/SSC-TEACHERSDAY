@@ -254,6 +254,38 @@ body.stage-body > .stage-top-bar {
     width: 22px;
 }
 
+.inline-blank-line {
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.inline-blank {
+    display: inline-block;
+    color: var(--brand-black);
+    font-weight: 900;
+    letter-spacing: 5px;
+    border-bottom: 5px solid var(--accent-yellow);
+    padding: 0 14px 4px;
+    white-space: nowrap;
+}
+
+.inline-blank .blank-word {
+    text-shadow: none;
+}
+
+.inline-blank-revealed {
+    color: var(--accent-green);
+    border-bottom-color: var(--accent-green);
+    letter-spacing: 2px;
+}
+
+.inline-following-lyrics {
+    margin-top: 16px;
+    color: var(--accent-green);
+    font-size: 1.55rem;
+    line-height: 1.35;
+}
+
 .stage-multiblank-bar {
     display: flex;
     align-items: center;
