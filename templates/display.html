@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STAGE LED</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/display.css') }}">
+</head>
+<body class="stage-body">
+    <canvas id="bg-canvas"></canvas>
+    <canvas id="confetti-canvas"></canvas>
+
+    <div id="flash-verdict-overlay">
+        <div class="verdict-content">
+            <i id="verdict-icon" class="verdict-icon fa-solid"></i>
+            <div id="verdict-text" class="verdict-text">TAMA!</div>
+        </div>
+    </div>
+
+    <header class="stage-top-bar" style="justify-content: center; background: transparent; border-bottom: none; min-height: 65px;">
+        <div class="stage-brand-logos" aria-label="Siquijor State College Student Government">
+            <img src="{{ url_for('static', filename='logo/ssc.png', v='transparent') }}" alt="Siquijor State College logo">
+            <img src="{{ url_for('static', filename='logo/sg.png') }}" alt="Student Government logo">
+        </div>
+        <div id="stage-timer-box" class="stage-timer-box hidden">
+            <span class="stage-timer-label"><i class="fa-regular"></i> TIME</span>
+            <span id="stage-timer-digits" class="stage-timer-digits">00:10</span>
+        </div>
+    </header>
+
+    <main class="stage-center-arena">
+        <div class="stage-card">
+            <div id="stage-card-ribbon" class="stage-card-ribbon" style="display: none;"></div>
+            <div id="stage-multiblank-bar" class="stage-multiblank-bar" style="display: none;"></div>
+            <div id="stage-prompt-text" class="stage-prompt-text">
+                ♫ READY FOR THE NEXT SONG ♫
+            </div>
+            <div id="stage-blank-box" class="stage-blank-box" style="display: none;">
+                [ _____ ? _____ ]
+            </div>
+
+            <div id="stage-guess-reveal" class="stage-guess-reveal" style="display: none;">
+                <div id="stage-guess-title" style="font-size: 2.2rem; font-weight: bold; margin-bottom: 8px;">???</div>
+                <div id="stage-guess-artist" style="font-size: 1.4rem; color: #333;">???</div>
+            </div>
+
+            <div id="stage-visualizer" class="stage-visualizer-wrap">
+                <div class="visualizer-bar"></div>
+                <div class="visualizer-bar"></div>
+                <div class="visualizer-bar"></div>
+                <div class="visualizer-bar"></div>
+                <div class="visualizer-bar"></div>
+                <div class="visualizer-bar"></div>
+                <div class="visualizer-bar"></div>
+                <div class="visualizer-bar"></div>
+                <div class="visualizer-bar"></div>
+                <div class="visualizer-bar"></div>
+                <div class="visualizer-bar"></div>
+                <div class="visualizer-bar"></div>
+                <div class="visualizer-bar"></div>
+                <div class="visualizer-bar"></div>
+                <div class="visualizer-bar"></div>
+                <div class="visualizer-bar"></div>
+            </div>
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/bg-canvas.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/confetti.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bus.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/audio.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/display.js') }}"></script>
+</body>
+</html>

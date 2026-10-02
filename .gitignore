@@ -1,0 +1,4 @@
+static/audio/
+__pycache__/
+*.py[cod]
+data/song.json

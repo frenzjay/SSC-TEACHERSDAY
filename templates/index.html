@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSC TEACHERS' DAY</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <style>
+        .portal-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 10px;
+        }
+        @media (max-width: 768px) {
+            .portal-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .portal-card {
+            background: var(--surface-subtle);
+            border: 3px solid var(--brand-black);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 16px;
+            box-shadow: 4px 4px 0px rgba(0,0,0,0.2);
+        }
+        .portal-card h3 {
+            font-size: 0.9rem;
+            color: var(--accent-green);
+            border-bottom: 2px solid var(--border-muted);
+            padding-bottom: 6px;
+        }
+        .portal-desc {
+            font-size: 0.65rem;
+            line-height: 1.6;
+            color: #333;
+        }
+        .setup-steps-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            font-size: 0.65rem;
+            line-height: 1.6;
+        }
+        .setup-steps-list li {
+            padding-left: 24px;
+            position: relative;
+        }
+        .setup-steps-list li::before {
+            content: "▶";
+            position: absolute;
+            left: 0;
+            color: var(--accent-green);
+        }
+        .hotkey-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.6rem;
+            margin-top: 10px;
+        }
+        .hotkey-table th, .hotkey-table td {
+            border: 2px solid var(--brand-black);
+            padding: 8px 10px;
+            text-align: left;
+        }
+        .hotkey-table th {
+            background: var(--brand-black);
+            color: var(--brand-white);
+        }
+        .hotkey-table td {
+            background: var(--surface-input);
+        }
+    </style>
+</head>
+<body>
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="container">
+        <header class="brand-header">
+            <div style="font-size: 2.2rem; color: var(--accent-green);">
+                <i class="fa-solid fa-microphone-lines"></i>
+            </div>
+            <h1>EVERYBODY, SING!</h1>
+            <p style="font-size: 0.75rem; color: var(--accent-green); font-weight: 700;">TEACHERS' DAY GAME</p>
+            <span class="status-badge">READY</span>
+        </header>
+
+        <section class="section">
+            <h2><i class="fa-solid"></i>CONTROLS</h2>
+            <p class="body-text">
+                live stage game.
+            </p>
+
+            <div class="portal-grid">
+                <div class="portal-card">
+                    <div>
+                        <h3><i class="fa-solid"></i> OPERATOR DASHBOARD</h3>
+                        <p class="portal-desc">
+                            Control
+                        </p>
+                    </div>
+                    <a href="/controller" target="_blank" class="btn btn-primary btn-lg btn-full">
+                        <i class="fa-solid"></i> OPEN CONTROLLER
+                    </a>
+                </div>
+
+                <div class="portal-card">
+                    <div>
+                        <h3><i class="fa-solid"></i>DISPLAY</h3>
+                        <p class="portal-desc">
+                            View display
+                        </p>
+                    </div>
+                    <button id="btn-open-display" class="btn btn-action btn-lg btn-full">
+                        <i class="fa-solid"></i> LAUNCH SCREEN
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2><i class="fa-solid"></i>GUIDE</h2>
+            <ul class="setup-steps-list">
+                <li>
+                    <strong>Step 1: Connect Venue Display</strong> - Press <span class="badge badge-yellow">Win + P</span> on your keyboard and select <strong>"Extend"</strong> to output to the venue's LED wall or projector.
+                </li>
+                <li>
+                    <strong>Step 2: Launch LED Wall Display</strong> - Click "LAUNCH STAGE SCREEN". Drag the popup window over to the extended LED wall screen, and click the <strong>FULLSCREEN</strong> toggle (or press <span class="badge">F11</span>).
+                </li>
+                <li>
+                    <strong>Step 3: Open Operator Dashboard</strong> - Keep the Controller open on your laptop screen. Everything you trigger will synchronize sub-millisecond with the LED wall via the offline <code>game_show_bus</code> channel.
+                </li>
+                <li>
+                    <strong>Step 4: Sound Check</strong> - By default, stage sound effects (chimes, buzzer, drumrolls) synthesize procedurally in your browser without requiring external audio files. Hit <strong>"1" (Correct)</strong> or <strong>"2" (Wrong)</strong> to test venue speakers.
+                </li>
+            </ul>
+        </section>
+
+        <section class="section">
+            <h2><i class="fa-solid"></i>SHEET</h2>
+            
+            <table class="hotkey-table">
+                <thead>
+                    <tr>
+                        <th style="width: 25%;">HOTKEY</th>
+                        <th style="width: 35%;">ACTION</th>
+                        <th>STAGE BEHAVIOR</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="badge badge-yellow">SPACE</span></td>
+                        <td>Play / Emergency Cut</td>
+                        <td>Starts audio + visualizer. When singing cuts abruptly, hits emergency stop!</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-yellow">ENTER</span></td>
+                        <td>Reveal Answer</td>
+                        <td>Unmasks the missing lyric block <code>[ _____ ? _____ ]</code> or song title with golden neon pop.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-green">1</span></td>
+                        <td>TAMA (Correct)</td>
+                        <td>Emerald green fullscreen flash, pixel confetti shower, and arpeggio chime.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-red">2</span></td>
+                        <td>MALI (Wrong)</td>
+                        <td>Crimson red fullscreen flash, buzzer X graphic, and harsh retro buzzer sound.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-yellow">T</span></td>
+                        <td>Toggle Master Timer</td>
+                        <td>Starts or pauses the digital countdown clock on both screens.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <!-- Background Canvas Engine -->
+    <script src="{{ url_for('static', filename='js/bg-canvas.js') }}"></script>
+    <script>
+        document.getElementById('btn-open-display').addEventListener('click', () => {
+            const displayWindow = window.open(
+                '/display', 
+                'StageDisplayWindow', 
+                'width=1280,height=720,menubar=no,toolbar=no,location=no,status=no'
+            );
+            if (!displayWindow) {
+                window.location.href = '/display';
+            }
+        });
+    </script>
+</body>
+</html>
