@@ -273,6 +273,12 @@ body.stage-body > .stage-top-bar {
     text-shadow: none;
 }
 
+.inline-blank-wrong {
+    color: var(--accent-red, #ff4444);
+    border-bottom-color: var(--accent-red, #ff4444);
+    letter-spacing: 2px;
+}
+
 .inline-blank-revealed {
     color: var(--accent-green);
     border-bottom-color: var(--accent-green);
@@ -318,6 +324,10 @@ body.stage-body > .stage-top-bar {
     animation: activePillPulse 1.2s infinite alternate ease-in-out;
 }
 
+.multiblank-pill.completed.wrong-pill {
+    background: var(--accent-red, #ff4444) !important;
+}
+
 .multiblank-pill.completed {
     background: var(--accent-green);
     border-color: #000000;
@@ -334,6 +344,10 @@ body.stage-body > .stage-top-bar {
 @keyframes activePillPulse {
     0% { transform: scale(1.04); }
     100% { transform: scale(1.1); box-shadow: 0 0 22px rgba(255, 230, 0, 1), 4px 4px 0px #000000; }
+}
+
+.stage-blank-box.revealed.inline-blank-wrong {
+    background: var(--accent-red, #ff4444) !important;
 }
 
 .stage-blank-box.revealed {
@@ -361,6 +375,11 @@ body.stage-body > .stage-top-bar {
     box-shadow: 6px 6px 0px rgba(0,0,0,0.3);
     display: none;
     animation: revealPop 0.5s ease-out;
+}
+
+.stage-guess-reveal.active.wrong-guess {
+    background: var(--accent-red, #ff4444) !important;
+    color: white !important;
 }
 
 .stage-guess-reveal.active {

@@ -366,9 +366,34 @@
                     <div style="font-size: 0.72rem; font-weight: bold; color: #000;">
                         <i class="fa-solid fa-list-check"></i> BLANKS IN THIS SONG (<span id="editor-total-blanks-count">0</span>):
                     </div>
-                    <button type="button" id="btn-editor-add-blank" class="btn btn-sm btn-action" style="font-size: 0.55rem; padding: 4px 10px; background: var(--accent-yellow); color: #000; font-weight: bold;">
-                        <i class="fa-solid"></i> ADD ANOTHER BLANK
+                    <div style="display: flex; gap: 5px; flex-wrap: wrap; justify-content: flex-end;">
+                        <button type="button" id="btn-editor-play-song" class="btn btn-sm" style="font-size: 0.5rem; padding: 4px 8px;">
+                            PLAY SONG
+                        </button>
+                        <button type="button" id="btn-editor-capture-lyrics" class="btn btn-sm" style="font-size: 0.5rem; padding: 4px 8px;" title="Shortcut: L">
+                            CAPTURE LYRICS [L]
+                        </button>
+                        <button type="button" id="btn-editor-capture-cut" class="btn btn-sm btn-yellow" style="font-size: 0.5rem; padding: 4px 8px;" title="Shortcut: C">
+                            CAPTURE CUT [C]
+                        </button>
+                        <button type="button" id="btn-editor-capture-next" class="btn btn-sm btn-action" style="font-size: 0.5rem; padding: 4px 8px;" title="Shortcut: N">
+                            CUT + NEXT [N]
+                        </button>
+                        <button type="button" id="btn-editor-add-blank" class="btn btn-sm" style="font-size: 0.5rem; padding: 4px 8px;">
+                            ADD BLANK
+                        </button>
+                    </div>
+                </div>
+                <div style="font-size: 0.55rem; color: #666; margin: -2px 0 8px;">
+                    Play the song, press <strong>L</strong> when the lyric starts, then <strong>C</strong> at the cut. Press <strong>N</strong> to capture the cut and create the next blank automatically.
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px; padding: 8px; background: var(--surface-subtle); border: 1px solid var(--border-muted);">
+                    <button type="button" id="btn-editor-ai-transcribe" class="btn btn-sm btn-primary">
+                        SEND SONG FOR AI TRANSCRIPTION
                     </button>
+                    <span id="editor-ai-status" style="font-size: 0.55rem; color: #555;">
+                        Sends this song to free external Whisper, then creates editable timestamped lyric rows. Smart Auto-Play is not involved.
+                    </span>
                 </div>
 
                 <div id="editor-blanks-list" style="display: flex; flex-direction: column; gap: 10px;">

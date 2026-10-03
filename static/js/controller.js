@@ -45,6 +45,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnCancelBlankEditor = document.getElementById('btn-cancel-blank-editor');
     const btnSaveBlankEditor = document.getElementById('btn-save-blank-editor');
     const btnEditorAddBlank = document.getElementById('btn-editor-add-blank');
+    const btnEditorPlaySong = document.getElementById('btn-editor-play-song');
+    const btnEditorCaptureLyrics = document.getElementById('btn-editor-capture-lyrics');
+    const btnEditorCaptureCut = document.getElementById('btn-editor-capture-cut');
+    const btnEditorCaptureNext = document.getElementById('btn-editor-capture-next');
+    const btnEditorAiTranscribe = document.getElementById('btn-editor-ai-transcribe');
+    const editorAiStatus = document.getElementById('editor-ai-status');
     const editorBlanksList = document.getElementById('editor-blanks-list');
     const editorTotalBlanksCount = document.getElementById('editor-total-blanks-count');
     const editorSongStartTime = document.getElementById('editor-song-start-time');
@@ -54,6 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnOpenBlankEditor = document.getElementById('btn-open-blank-editor');
     let editingSong = null;
     let editingBlanks = [];
+    let editorCaptureIndex = 0;
 
     const activeTitle = document.getElementById('prompter-song-title');
     const activeArtist = document.getElementById('prompter-song-artist');
@@ -110,6 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateAudioOutputMode(mode) {
         audioOutputMode = mode;
+        localStorage.setItem('ssc_audio_output_mode', mode);
         if (mode === 'controller') {
             window.gameAudio.setMuted(false);
             if (window.gameAudio.player) {
@@ -157,7 +165,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    updateAudioOutputMode('controller');
+    const savedAudioMode = localStorage.getItem('ssc_audio_output_mode') || 'controller';
+    updateAudioOutputMode(savedAudioMode);
 
     fetchSongs();
     renderTeams();
@@ -687,15 +696,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         lyricsPrecedingEl.innerHTML = formatLyrics(currentBlank.prompt_lyrics || 'No prompt lyrics');
-        maskedSegmentEl.style.display = 'inline-block';
-        if (currentBlank.answered) {
-            maskedSegmentEl.className = 'prompter-masked-segment revealed';
-            maskedSegmentEl.innerHTML = `★ ${escapeHtml(currentBlank.blank_lyrics || currentBlank.answer || '')} ★`;
+        
+        if (currentBlank.is_lyrics_only) {
+            maskedSegmentEl.style.display = 'none';
+            answerKeyEl.innerHTML = `<i class="fa-solid fa-info-circle"></i> LYRICS ONLY (No answer required) (Blank ${activeBlankIndex + 1}/${blanks.length})`;
         } else {
-            maskedSegmentEl.className = 'prompter-masked-segment';
-            maskedSegmentEl.innerHTML = `[ ${formatWordBlanksHtml(currentBlank.blank_lyrics || '_____')} ]`;
+            maskedSegmentEl.style.display = 'inline-block';
+            if (currentBlank.answered) {
+                maskedSegmentEl.className = 'prompter-masked-segment revealed';
+                maskedSegmentEl.innerHTML = `★ ${escapeHtml(currentBlank.blank_lyrics || currentBlank.answer || '')} ★`;
+            } else {
+                maskedSegmentEl.className = 'prompter-masked-segment';
+                maskedSegmentEl.innerHTML = `[ ${formatWordBlanksHtml(currentBlank.blank_lyrics || '_____')} ]`;
+            }
+            answerKeyEl.innerHTML = `<i class="fa-solid fa-key"></i> ANSWER: <strong>${escapeHtml(currentBlank.blank_lyrics || currentBlank.answer || '')}</strong> (Blank ${activeBlankIndex + 1}/${blanks.length})`;
         }
-        answerKeyEl.innerHTML = `<i class="fa-solid fa-key"></i> ANSWER: <strong>${escapeHtml(currentBlank.blank_lyrics || currentBlank.answer || '')}</strong> (Blank ${activeBlankIndex + 1}/${blanks.length})`;
         triviaEl.textContent = currentBlank.following_lyrics ? `NEXT LINE: ${currentBlank.following_lyrics}` : (currentSong.trivia ? `NOTE: ${currentSong.trivia}` : '');
 
         if (inputBlankTime) {
@@ -919,6 +934,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         renderEditorBlanks();
+        editorCaptureIndex = 0;
         if (blankEditorModal) blankEditorModal.classList.remove('hidden');
     }
 
@@ -976,8 +992,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
                         <div>
-                            <label style="font-size: 0.52rem; font-weight: bold; display: block; margin-bottom: 2px;">MISSING WORD(S) / BLANK ANSWER *:</label>
-                            <input type="text" class="card-blank-answer" data-idx="${idx}" value="${escapeHtml(b.blank_lyrics || b.answer || '')}" style="width: 100%; font-size: 0.6rem; font-weight: bold; padding: 4px; border: 1px solid #000;" placeholder="e.g. LANSANGAN">
+                            <label style="font-size: 0.52rem; font-weight: bold; display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+                                <span>MISSING WORD(S) / BLANK ANSWER:</span>
+                                <label style="display:flex; align-items:center; gap:4px; font-weight:normal; cursor:pointer;" title="If checked, this will just display the prompt lyrics on screen without a blank to guess.">
+                                    <input type="checkbox" class="card-lyrics-only-check" data-idx="${idx}" ${b.is_lyrics_only ? 'checked' : ''}>
+                                    <span style="font-size:0.45rem;">Lyrics Only</span>
+                                </label>
+                            </label>
+                            <input type="text" class="card-blank-answer" data-idx="${idx}" value="${escapeHtml(b.blank_lyrics || b.answer || '')}" style="width: 100%; font-size: 0.6rem; font-weight: bold; padding: 4px; border: 1px solid #000; ${b.is_lyrics_only ? 'opacity:0.4;' : ''}" placeholder="e.g. LANSANGAN" ${b.is_lyrics_only ? 'disabled' : ''}>
                         </div>
                         <div>
                             <label style="font-size: 0.52rem; font-weight: bold; display: block; margin-bottom: 2px;">FOLLOWING LYRICS (Optional):</label>
@@ -999,6 +1021,20 @@ document.addEventListener('DOMContentLoaded', () => {
                     btnPlayAudio.innerHTML = '<i class="fa-solid fa-pause"></i> PAUSE';
                     btnPlayAudio.style.background = 'var(--accent-yellow)';
                     btnPlayAudio.style.color = '#000';
+                });
+            }
+
+            const lyricsOnlyCheck = card.querySelector('.card-lyrics-only-check');
+            const blankAnswerInput = card.querySelector('.card-blank-answer');
+            if (lyricsOnlyCheck && blankAnswerInput) {
+                lyricsOnlyCheck.addEventListener('change', (e) => {
+                    if (e.target.checked) {
+                        blankAnswerInput.disabled = true;
+                        blankAnswerInput.style.opacity = '0.4';
+                    } else {
+                        blankAnswerInput.disabled = false;
+                        blankAnswerInput.style.opacity = '1';
+                    }
                 });
             }
 
@@ -1041,11 +1077,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const prInput = card.querySelector('.card-prompt-lyrics');
             const aInput = card.querySelector('.card-blank-answer');
             const fInput = card.querySelector('.card-following-lyrics');
+            const lyricsOnlyCheck = card.querySelector('.card-lyrics-only-check');
 
             editingBlanks[idx].index = idx + 1;
             if (lInput) editingBlanks[idx].lyrics_time = parseTime(lInput.value);
             if (pInput) editingBlanks[idx].pause_time = parseTime(pInput.value);
             if (prInput) editingBlanks[idx].prompt_lyrics = prInput.value.trim();
+            if (lyricsOnlyCheck) {
+                editingBlanks[idx].is_lyrics_only = lyricsOnlyCheck.checked;
+            }
             if (aInput) {
                 editingBlanks[idx].blank_lyrics = aInput.value.trim();
                 editingBlanks[idx].answer = aInput.value.trim();
@@ -1061,32 +1101,116 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    if (btnEditorAddBlank) {
-        btnEditorAddBlank.addEventListener('click', () => {
-            syncEditorInputsToState();
-            const lastBlank = editingBlanks[editingBlanks.length - 1];
-            const lastPause = lastBlank ? (Number(lastBlank.pause_time) || 0) : 0;
-            editingBlanks.push({
-                index: editingBlanks.length + 1,
-                lyrics_time: lastPause > 0 ? Math.round((lastPause + 8.0) * 100) / 100 : 0.0,
-                pause_time: lastPause > 0 ? Math.round((lastPause + 16.0) * 100) / 100 : 10.0,
-                prompt_lyrics: '',
-                blank_lyrics: '',
-                following_lyrics: '',
-                answer: ''
-            });
-            renderEditorBlanks();
-            if (editorBlanksList.lastElementChild) {
-                editorBlanksList.lastElementChild.scrollIntoView({ behavior: 'smooth' });
-            }
-        });
-    }
-
     if (btnCloseBlankEditor) {
         btnCloseBlankEditor.addEventListener('click', () => {
             if (blankEditorModal) blankEditorModal.classList.add('hidden');
         });
     }
+
+    function editorCurrentTime() {
+        return Number(window.gameAudio.player.currentTime) || 0;
+    }
+
+    function captureEditorTime(field) {
+        if (!editingBlanks.length) return;
+        syncEditorInputsToState();
+        const blank = editingBlanks[editorCaptureIndex] || editingBlanks[editingBlanks.length - 1];
+        if (!blank) return;
+        blank[field] = Math.round(editorCurrentTime() * 1000) / 1000;
+        renderEditorBlanks();
+        const input = editorBlanksList.querySelector(`.card-${field === 'lyrics_time' ? 'lyrics' : 'pause'}-time[data-idx="${editorCaptureIndex}"]`);
+        if (input) input.focus();
+    }
+
+    function addEditorBlank() {
+        syncEditorInputsToState();
+        editingBlanks.push({
+            index: editingBlanks.length + 1,
+            lyrics_time: 0,
+            pause_time: 0,
+            prompt_lyrics: '',
+            blank_lyrics: '',
+            following_lyrics: '',
+            answer: ''
+        });
+        editorCaptureIndex = editingBlanks.length - 1;
+        renderEditorBlanks();
+        const newCard = editorBlanksList.lastElementChild;
+        if (newCard) {
+            newCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            const answerInput = newCard.querySelector('.card-blank-answer');
+            if (answerInput) answerInput.focus();
+        }
+    }
+
+    if (btnEditorPlaySong) {
+        btnEditorPlaySong.addEventListener('click', () => {
+            const start = editorSongStartTime ? parseTime(editorSongStartTime.value) : 0;
+            window.gameAudio.playTrack(start, false);
+            isPlaying = true;
+            btnPlayAudio.innerHTML = '<i class="fa-solid fa-pause"></i> PAUSE';
+        });
+    }
+    if (btnEditorCaptureLyrics) {
+        btnEditorCaptureLyrics.addEventListener('click', () => captureEditorTime('lyrics_time'));
+    }
+    if (btnEditorCaptureCut) {
+        btnEditorCaptureCut.addEventListener('click', () => captureEditorTime('pause_time'));
+    }
+    if (btnEditorCaptureNext) {
+        btnEditorCaptureNext.addEventListener('click', () => {
+            captureEditorTime('pause_time');
+            if (editorCaptureIndex >= editingBlanks.length - 1) {
+                addEditorBlank();
+            } else {
+                editorCaptureIndex += 1;
+                renderEditorBlanks();
+            }
+        });
+    }
+    if (btnEditorAddBlank) {
+        btnEditorAddBlank.addEventListener('click', addEditorBlank);
+    }
+
+    if (btnEditorAiTranscribe) {
+        btnEditorAiTranscribe.addEventListener('click', async () => {
+            if (!editingSong || !editingSong.audio_url) return;
+            btnEditorAiTranscribe.disabled = true;
+            if (editorAiStatus) editorAiStatus.textContent = 'SENDING AUDIO TO FREE WHISPER TRANSCRIPTION...';
+            try {
+                const response = await fetch(`/api/songs/${encodeURIComponent(editingSong.id)}/transcribe`, { method: 'POST' });
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.error || 'Transcription failed');
+                editingBlanks = data.blanks || [];
+                editorCaptureIndex = 0;
+                renderEditorBlanks();
+                if (editorAiStatus) {
+                    editorAiStatus.textContent = `${editingBlanks.length} TIMED PROMPT LINES CREATED. ADD THE MISSING WORD(S) MANUALLY, THEN REVIEW BEFORE SAVING.`;
+                }
+            } catch (error) {
+                console.error('[Controller] AI transcription failed', error);
+                if (editorAiStatus) editorAiStatus.textContent = error.message;
+            } finally {
+                btnEditorAiTranscribe.disabled = false;
+            }
+        });
+    }
+
+    document.addEventListener('keydown', (event) => {
+        if (!blankEditorModal || blankEditorModal.classList.contains('hidden')) return;
+        if (event.target.matches('input, textarea, select')) return;
+        const key = event.key.toLowerCase();
+        if (key === 'l') {
+            event.preventDefault();
+            captureEditorTime('lyrics_time');
+        } else if (key === 'c') {
+            event.preventDefault();
+            captureEditorTime('pause_time');
+        } else if (key === 'n') {
+            event.preventDefault();
+            btnEditorCaptureNext?.click();
+        }
+    });
 
     if (btnCancelBlankEditor) {
         btnCancelBlankEditor.addEventListener('click', () => {
@@ -1299,6 +1423,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         curBlank._lyricsShown = true;
                         window.gameBus.send('SHOW_BLANK_LYRICS', { activeBlankIndex });
                     }
+                    
+                    if (curBlank && curBlank.is_lyrics_only) {
+                        waitingForNextBlank = true;
+                    }
                 }
 
                 let pauseSec = (inputBlankTime ? parseTime(inputBlankTime.value) : 0) || (curBlank ? Number(curBlank.pause_time) : 0);
@@ -1461,7 +1589,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function triggerCorrect() {
-        if (!currentSong) return;
+        if (!currentSong) return; if (isAnswered) return;
 
         if (currentSong.mode === 'everybody_sing') {
             const blanks = currentSong.blanks || [];
@@ -1575,8 +1703,118 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function triggerWrong() {
-        window.gameBus.send('TRIGGER_WRONG');
+        if (!currentSong) return; if (isAnswered) return;
+
+        if (currentSong.mode === 'everybody_sing') {
+            const blanks = currentSong.blanks || [];
+            const curBlank = blanks[activeBlankIndex] || {};
+            curBlank.answered = true;
+            curBlank.wrong = true;
+            const configuredBlankCut = (inputBlankTime ? parseTime(inputBlankTime.value) : 0)
+                || Number(curBlank.pause_time)
+                || 0;
+            const resumeFrom = configuredBlankCut > 0
+                ? Math.max(0, configuredBlankCut - 0.5)
+                : null;
+
+            resetTimer(timerDuration);
+
+            isAnswered = true;
+            isRevealed = true;
+            updatePrompterForMultiBlank();
+            renderTimelineBlankMarkers();
+
+            const isLastBlank = (activeBlankIndex >= blanks.length - 1);
+
+            window.gameBus.send('TRIGGER_WRONG', {
+                mode: 'everybody_sing',
+                activeBlankIndex,
+                blank: curBlank,
+                isLastBlank
+            });
+            window.gameAudio.playWrongBuzzer();
+
+            if (isLastBlank) {
+                hasCutForBlank = true;
+                isSmartAutoPlayRunning = false;
+                waitingForNextBlank = false;
+                if (btnSmartAutoplay) {
+                    btnSmartAutoplay.classList.remove('running');
+                    btnSmartAutoplay.innerHTML = '<i class="fa-solid fa-trophy"></i> ALL BLANKS CLEARED!';
+                }
+                setTimeout(() => {
+                    window.gameBus.send('STAGE_GRAND_VICTORY');
+                    window.gameAudio.playWrongBuzzer();
+                }, 1200);
+
+                if (currentSong.audio_url) {
+                    isPlaying = true;
+                    btnPlayAudio.innerHTML = '<i class="fa-solid fa-pause"></i> PAUSE';
+                    btnPlayAudio.style.background = 'var(--accent-yellow)';
+                    btnPlayAudio.style.color = '#000';
+                    setTimeout(() => {
+                        window.gameAudio.playTrack(resumeFrom, false);
+                        window.gameBus.send('PLAY_AUDIO', { fromTime: resumeFrom, isResume: true });
+                    }, 400);
+                }
+            } else {
+                waitingForNextBlank = true;
+                if (currentSong.audio_url) {
+                    isPlaying = true;
+                    btnPlayAudio.innerHTML = '<i class="fa-solid fa-pause"></i> PAUSE';
+                    btnPlayAudio.style.background = 'var(--accent-yellow)';
+                    btnPlayAudio.style.color = '#000';
+                    setTimeout(() => {
+                        window.gameAudio.playTrack(resumeFrom, false);
+                        window.gameBus.send('PLAY_AUDIO', { fromTime: resumeFrom, isResume: true });
+                    }, 400);
+                }
+            }
+            return;
+        }
+
+        isAnswered = true;
+        isRevealed = true;
+        hasCutForBlank = true;
+        resetTimer(timerDuration);
+
+        const hulaReplayFrom = Number(currentSong.hula_replay_time ?? currentSong.start_time) || 0;
+        const configuredCut = Number(currentSong.blank_time) || 0;
+        const hulaReplayUntil = configuredCut > hulaReplayFrom
+            ? configuredCut
+            : hulaReplayFrom + 4;
+        window.gameBus.send('TRIGGER_WRONG', currentSong.mode === 'guess' ? {
+            mode: 'guess',
+            replayFrom: hulaReplayFrom,
+            replayUntil: hulaReplayUntil
+        } : {});
         window.gameAudio.playWrongBuzzer();
+
+        if (currentSong && currentSong.audio_url && currentSong.mode === 'guess') {
+            isPlaying = true;
+            isPausedAtBlank = false;
+            setTimeout(() => {
+                window.gameAudio.playTrack(hulaReplayFrom, true);
+                window.gameBus.send('PLAY_AUDIO', { fromTime: hulaReplayFrom, isResume: true });
+                const stopReplay = () => {
+                    if (window.gameAudio.player.currentTime >= hulaReplayUntil) {
+                        window.gameAudio.player.removeEventListener('timeupdate', stopReplay);
+                        isPlaying = false;
+                        window.gameAudio.smoothStop(3000);
+                        btnPlayAudio.innerHTML = '<i class="fa-solid fa-play"></i> PLAY NEXT HULA';
+                        btnPlayAudio.style.background = 'var(--brand-blue)';
+                        btnPlayAudio.style.color = '#FFF';
+                    }
+                };
+                window.gameAudio.player.addEventListener('timeupdate', stopReplay);
+            }, 350);
+        } else if (currentSong && currentSong.audio_url) {
+            isPlaying = true;
+            setTimeout(() => {
+                window.gameAudio.playTrack(null, currentSong.mode !== 'everybody_sing');
+                window.gameBus.send('PLAY_AUDIO', { fromTime: null, isResume: true });
+            }, 350);
+        }
     }
 
     function triggerTimeout() {

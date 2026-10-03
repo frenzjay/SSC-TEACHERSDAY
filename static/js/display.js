@@ -1,4 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
+    function getRibbonText(currentBlank, blanks, activeIndex, isRevealed, isTama, isMali) {
+        if (currentBlank && currentBlank.is_lyrics_only) return '★ EVERYBODY, SING! ★';
+        let realIdx = blanks.slice(0, activeIndex + 1).filter(x => !x.is_lyrics_only).length;
+        let totalReal = blanks.filter(x => !x.is_lyrics_only).length;
+        if (isTama) return `★ BLANK ${realIdx} TAMA! ★`;
+        if (isMali) return `★ BLANK ${realIdx} MALI! ★`;
+        if (isRevealed) return `★ BLANK ${realIdx} REVEALED ★`;
+        return `★ BLANK ${realIdx} OF ${totalReal} ★`;
+    }
     const stageRibbon = document.getElementById('stage-card-ribbon');
     const stageMultiBlankBar = document.getElementById('stage-multiblank-bar');
     const promptTextEl = document.getElementById('stage-prompt-text');
@@ -51,8 +60,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderInlineBlank(currentBlank, revealed = false) {
+        if (currentBlank.is_lyrics_only) {
+            const following = currentBlank.following_lyrics
+                ? `<div class="inline-following-lyrics">${escapeHtml(currentBlank.following_lyrics)}</div>`
+                : '';
+            const lines = String(currentBlank.prompt_lyrics || '')
+                .split(' / ')
+                .map(line => escapeHtml(line));
+            promptTextEl.innerHTML = `${lines.map(line => `<div>${line}</div>`).join('')}${following}`;
+            blankBox.style.display = 'none';
+            return;
+        }
+
+        const isWrong = currentBlank.wrong === true;
+        const colorClass = isWrong ? 'inline-blank-wrong' : 'inline-blank-revealed';
         const blank = revealed
-            ? `<span class="inline-blank inline-blank-revealed">★ ${escapeHtml(currentBlank.blank_lyrics || currentBlank.answer || '')} ★</span>`
+            ? `<span class="inline-blank ${colorClass}">★ ${escapeHtml(currentBlank.blank_lyrics || currentBlank.answer || '')} ★</span>`
             : `<span class="inline-blank">${formatWordBlanksHtml(currentBlank.blank_lyrics || currentBlank.answer || '_____')}</span>`;
         const following = currentBlank.following_lyrics
             ? `<div class="inline-following-lyrics">${escapeHtml(currentBlank.following_lyrics)}</div>`
@@ -77,15 +100,23 @@ document.addEventListener('DOMContentLoaded', () => {
         stageMultiBlankBar.innerHTML = '';
         currentSong.blanks.forEach((b, idx) => {
             const pill = document.createElement('div');
+            if (b.is_lyrics_only) return;
             const isCurrent = (idx === activeBlankIndex);
             const isPast = (idx < activeBlankIndex);
-            pill.className = `multiblank-pill ${isCurrent ? 'active' : ''} ${isPast ? 'completed' : ''}`;
+            const isCompleted = isPast || b.answered;
             
-            let label = `BLANK ${idx + 1}`;
-            if (isPast) {
-                label = `✓ ${escapeHtml(b.blank_lyrics || b.answer)}`;
+            let className = `multiblank-pill ${isCurrent ? 'active' : ''} ${isCompleted ? 'completed' : ''}`;
+            if (b.wrong) className += ' wrong-pill';
+            pill.className = className;
+            
+            let realIdx = currentSong.blanks.slice(0, idx + 1).filter(x => !x.is_lyrics_only).length;
+            let label = `BLANK ${realIdx}`;
+            
+            if (b.answered) {
+                const icon = b.wrong ? '✕' : '✓';
+                label = `${icon} ${escapeHtml(b.blank_lyrics || b.answer)}`;
             } else if (isCurrent) {
-                label = `★ BLANK ${idx + 1}`;
+                label = `★ BLANK ${realIdx}`;
             }
             pill.innerHTML = `<span>${label}</span>`;
             stageMultiBlankBar.appendChild(pill);
@@ -115,6 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (stageRibbon) stageRibbon.textContent = '★ SING IN THE BLANK! ★';
             promptTextEl.innerHTML = formatLyrics(currentSong.prompt_lyrics || 'Complete the missing lyric:');
             blankBox.style.display = 'inline-block';
+            blankBox.classList.remove('inline-blank-wrong');
             blankBox.classList.remove('revealed');
             blankBox.innerHTML = `[ ${formatWordBlanksHtml(currentSong.blank_lyrics || currentSong.answer || '_____')} ]`;
             if (stageMultiBlankBar) stageMultiBlankBar.style.display = 'none';
@@ -125,7 +157,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     ♫ WHAT IS THE SONG TITLE & ARTIST? ♫
                 </div>
             `;
-            guessRevealBox.style.display = 'none';
+            guessRevealBox.classList.remove('wrong-guess');
+        guessRevealBox.style.display = 'none';
             if (stageMultiBlankBar) stageMultiBlankBar.style.display = 'none';
         }
     }
@@ -137,9 +170,11 @@ document.addEventListener('DOMContentLoaded', () => {
         hasCutForBlank = false;
         activeBlankIndex = 0;
 
-        blankBox.classList.remove('revealed');
+        blankBox.classList.remove('inline-blank-wrong');
+            blankBox.classList.remove('revealed');
         blankBox.style.display = 'none';
         guessRevealBox.classList.remove('active');
+        guessRevealBox.classList.remove('wrong-guess');
         guessRevealBox.style.display = 'none';
         visualizer.classList.remove('playing', 'blank-paused');
 
@@ -204,6 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         blankBox.style.display = 'none';
+        guessRevealBox.classList.remove('wrong-guess');
         guessRevealBox.style.display = 'none';
         if (stageRibbon) stageRibbon.textContent = '★ NOW PLAYING ★';
         promptTextEl.innerHTML = `
@@ -255,7 +291,8 @@ document.addEventListener('DOMContentLoaded', () => {
             guessTitleEl.textContent = currentSong.title || '???';
             guessArtistEl.textContent = currentSong.artist || '???';
             guessRevealBox.style.display = 'block';
-            guessRevealBox.classList.add('active');
+            guessRevealBox.classList.remove('wrong-guess');
+                guessRevealBox.classList.add('active');
         }
 
         if (currentSong.mode === 'guess' && currentSong.audio_url) {
@@ -319,6 +356,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 guessTitleEl.textContent = currentSong.title || '???';
                 guessArtistEl.textContent = currentSong.artist || '???';
                 guessRevealBox.style.display = 'block';
+                guessRevealBox.classList.remove('wrong-guess');
                 guessRevealBox.classList.add('active');
             }
         }
@@ -378,6 +416,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (stageRibbon) stageRibbon.textContent = `★ BLANK ${activeBlankIndex + 1} OF ${blanks.length} ★`;
         renderInlineBlank(currentBlank);
+        guessRevealBox.classList.remove('wrong-guess');
         guessRevealBox.style.display = 'none';
 
         visualizer.classList.add('playing');
@@ -408,17 +447,83 @@ document.addEventListener('DOMContentLoaded', () => {
 
         stageRibbon.textContent = `★ EVERYBODY, SING! ★ (BLANK ${activeBlankIndex + 1} OF ${blanks.length})`;
         renderInlineBlank(currentBlank);
+        guessRevealBox.classList.remove('wrong-guess');
         guessRevealBox.style.display = 'none';
 
         visualizer.classList.add('playing');
         visualizer.classList.remove('blank-paused');
     });
 
-    window.gameBus.on('TRIGGER_WRONG', () => {
-        showVerdict('wrong', 'fa-solid fa-xmark', 'MALI!');
-        window.gameAudio.playWrongBuzzer();
-    });
+    window.gameBus.on('TRIGGER_WRONG', (data) => {
+        isAnswered = true;
+        isRevealed = true;
+        hasCutForBlank = true;
 
+        hideTimer();
+        resetTimerDisplay();
+
+        showVerdict('wrong', 'fa-solid fa-xmark', 'MALI!');
+        window.pixelConfetti.burst(0);
+        window.gameAudio.playWrongBuzzer();
+
+        if (currentSong) {
+            if (currentSong.mode === 'everybody_sing') {
+                const blanks = currentSong.blanks || [];
+                const currentBlank = blanks[activeBlankIndex] || {};
+                currentBlank.answered = true;
+                currentBlank.wrong = true;
+                renderStageMultiBlankPills();
+
+                renderInlineBlank(currentBlank, true);
+
+                if (stageRibbon) {
+                    if (data && data.isLastBlank) {
+                        stageRibbon.textContent = '? EVERYBODY, SING! ?';
+                    } else {
+                        stageRibbon.textContent = getRibbonText(currentBlank, blanks, activeBlankIndex, false, false, true);
+                    }
+                }
+
+                visualizer.classList.add('playing');
+                visualizer.classList.remove('blank-paused');
+                return;
+            }
+
+            if (currentSong.mode === 'complete') {
+                if (stageRibbon) stageRibbon.textContent = '? MALI! ?';
+                promptTextEl.innerHTML = formatLyrics(currentSong.prompt_lyrics || '');
+                blankBox.style.display = 'inline-block';
+                blankBox.classList.add('revealed');
+                blankBox.classList.add('inline-blank-wrong');
+                blankBox.textContent = `? ${currentSong.blank_lyrics || currentSong.answer} ?`;
+            } else {
+                if (stageRibbon) stageRibbon.textContent = '? MALI! ?';
+                promptTextEl.innerHTML = '<div style="font-size:1.4rem; color:var(--brand-blue);">? ANSWER:</div>';
+                guessTitleEl.textContent = currentSong.title || '???';
+                guessArtistEl.textContent = currentSong.artist || '???';
+                guessRevealBox.style.display = 'block';
+                guessRevealBox.classList.remove('wrong-guess');
+                guessRevealBox.classList.add('active');
+                guessRevealBox.classList.add('wrong-guess');
+            }
+        }
+
+        if (currentSong && currentSong.audio_url && currentSong.mode === 'guess') {
+            const replayFrom = Number(data && data.replayFrom);
+            hulaReplayStopAt = Number(data && data.replayUntil) || ((replayFrom || 0) + 4);
+            setTimeout(() => {
+                visualizer.classList.add('playing');
+                visualizer.classList.remove('blank-paused');
+                window.gameAudio.playTrack(Number.isFinite(replayFrom) ? replayFrom : (Number(currentSong.start_time) || 0), true);
+            }, 350);
+        } else if (currentSong && currentSong.audio_url) {
+            setTimeout(() => {
+                visualizer.classList.add('playing');
+                visualizer.classList.remove('blank-paused');
+                window.gameAudio.playTrack(null, false);
+            }, 350);
+        }
+    });
     window.gameBus.on('TRIGGER_TIMEOUT', () => {
         showVerdict('timeout', 'fa-solid fa-hourglass-end', "TIME'S UP!");
         if (stageRibbon) {
@@ -505,7 +610,8 @@ document.addEventListener('DOMContentLoaded', () => {
             window.gameAudio.smoothStop(3000);
             if (stageRibbon) stageRibbon.textContent = '★ READY FOR NEXT HULA ★';
             promptTextEl.innerHTML = '<div style="font-size:1.8rem; color:var(--brand-blue); font-weight:bold;">♫ READY FOR THE NEXT HULA ♫</div>';
-            guessRevealBox.style.display = 'none';
+            guessRevealBox.classList.remove('wrong-guess');
+        guessRevealBox.style.display = 'none';
             return;
         }
 

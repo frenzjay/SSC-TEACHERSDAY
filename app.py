@@ -1,6 +1,10 @@
 import os
 import json
+import base64
 import uuid
+import urllib.error
+import urllib.request
+from pathlib import Path
 from flask import Flask, render_template, request, jsonify, send_from_directory
 from werkzeug.utils import secure_filename
 
@@ -78,6 +82,99 @@ def get_songs():
     songs = load_songs()
     return jsonify(songs)
 
+@app.route("/api/songs/<song_id>/transcribe", methods=["POST"])
+def transcribe_song(song_id):
+    songs = load_songs()
+    song = next((item for item in songs if item.get("id") == song_id), None)
+    if song is None:
+        return jsonify({"error": "Song not found"}), 404
+
+    audio_url = str(song.get("audio_url") or "")
+    prefix = "/static/audio/"
+    if not audio_url.startswith(prefix):
+        return jsonify({"error": "This song does not have a local audio file"}), 400
+    audio_path = (Path(UPLOAD_FOLDER) / Path(audio_url[len(prefix):]).name).resolve()
+    upload_root = Path(UPLOAD_FOLDER).resolve()
+    if upload_root not in audio_path.parents or not audio_path.is_file():
+        return jsonify({"error": "Audio file is missing or invalid"}), 400
+
+    try:
+        model = os.environ.get(
+            "HF_WHISPER_MODEL",
+            "openai/whisper-large-v3"
+        )
+        endpoint = f"https://router.huggingface.co/hf-inference/models/{model}"
+        headers = {"Content-Type": "application/json"}
+        hf_token = os.environ.get("HF_TOKEN")
+        if not hf_token:
+            return jsonify({"error": "HF_TOKEN is required. Create a free Hugging Face token with Inference permissions and restart the app."}), 503
+        headers["Authorization"] = f"Bearer {hf_token.strip()}"
+        payload = {
+            "inputs": base64.b64encode(audio_path.read_bytes()).decode("ascii"),
+            "parameters": {"return_timestamps": True}
+        }
+        request = urllib.request.Request(
+            endpoint,
+            data=json.dumps(payload).encode("utf-8"),
+            headers=headers,
+            method="POST"
+        )
+        with urllib.request.urlopen(request, timeout=600) as response:
+            transcript = json.loads(response.read().decode("utf-8"))
+        if not isinstance(transcript, dict) or transcript.get("error"):
+            message = transcript.get("error", "The transcription service returned no transcript.")
+            return jsonify({"error": str(message)}), 502
+        blanks = []
+        chunks = transcript.get("chunks", [])
+        if not chunks and transcript.get("segments"):
+            chunks = transcript["segments"]
+        for chunk in chunks:
+            timestamp = chunk.get("timestamp") or [
+                chunk.get("start", 0),
+                chunk.get("end", chunk.get("start", 0))
+            ]
+            text = " ".join(str(chunk.get("text", "")).strip().split())
+            if not text:
+                continue
+            start_time = float(timestamp[0] or 0) if timestamp else 0
+            end_time = (
+                float(timestamp[1] or start_time)
+                if len(timestamp) > 1 else start_time
+            )
+            blanks.append({
+                "index": len(blanks) + 1,
+                "lyrics_time": round(start_time, 3),
+                "pause_time": round(end_time, 3),
+                "prompt_lyrics": text,
+                "blank_lyrics": "",
+                "following_lyrics": "",
+                "answer": ""
+            })
+        if not blanks:
+            return jsonify({
+                "error": "The transcription service returned text without timed segments. Try again with a timestamp-capable Whisper model."
+            }), 502
+        return jsonify({
+            "success": True,
+            "model": model,
+            "blanks": blanks
+        })
+    except urllib.error.HTTPError as error:
+        print(f"Hugging Face transcription failed for {song_id}: {error}")
+        if error.code == 401:
+            return jsonify({
+                "error": "Hugging Face rejected HF_TOKEN. Check that it is valid, has Inference permissions, and restart the app."
+            }), 502
+        return jsonify({"error": "Free transcription service rejected the audio or is loading the model. Try again shortly."}), 502
+    except urllib.error.URLError as error:
+        print(f"Hugging Face connection failed for {song_id}: {error}")
+        return jsonify({
+            "error": "The server cannot reach Hugging Face. Check internet/DNS access, then try again."
+        }), 502
+    except Exception as error:
+        print(f"Transcription failed for {song_id}: {error}")
+        return jsonify({"error": "Free external transcription failed. Check your network and try again."}), 502
+
 @app.route("/api/songs", methods=["POST"])
 def add_or_update_song():
     data = request.get_json(silent=True)
@@ -108,7 +205,8 @@ def add_or_update_song():
                     "prompt_lyrics": str(b.get("prompt_lyrics", "")).strip(),
                     "blank_lyrics": str(b.get("blank_lyrics", "")).strip(),
                     "following_lyrics": str(b.get("following_lyrics", "")).strip(),
-                    "answer": str(b.get("answer") or b.get("blank_lyrics", "")).strip()
+                    "answer": str(b.get("answer") or b.get("blank_lyrics", "")).strip(),
+                    "is_lyrics_only": bool(b.get("is_lyrics_only", False))
                 })
         data["blanks"] = cleaned_blanks
 

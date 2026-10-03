@@ -32,11 +32,12 @@
       {
         "index": 1,
         "lyrics_time": 8.0,
-        "pause_time": 12.5,
+        "pause_time": 12.559,
         "prompt_lyrics": "Walang iba pang sasarap sa",
         "blank_lyrics": "pagtitinginan natin",
         "following_lyrics": "",
-        "answer": "pagtitinginan natin"
+        "answer": "pagtitinginan natin",
+        "is_lyrics_only": false
       },
       {
         "index": 2,
@@ -45,43 +46,48 @@
         "prompt_lyrics": "Sana ay 'di na magwakas, / itong awit ng",
         "blank_lyrics": "pag-ibig",
         "following_lyrics": "",
-        "answer": "pag-ibig"
+        "answer": "pag-ibig",
+        "is_lyrics_only": false
       },
       {
         "index": 3,
         "lyrics_time": 22.0,
-        "pause_time": 26.6,
+        "pause_time": 26.651,
         "prompt_lyrics": "Awit natin ay 'wag na 'wag mong",
         "blank_lyrics": "kalimutan",
         "following_lyrics": "",
-        "answer": "kalimutan"
+        "answer": "kalimutan",
+        "is_lyrics_only": false
       },
       {
         "index": 4,
         "lyrics_time": 30.0,
-        "pause_time": 33.8,
+        "pause_time": 33.948,
         "prompt_lyrics": "Pangako ko naman / na lagi kang",
         "blank_lyrics": "pakikinggan",
         "following_lyrics": "Magpakailanman",
-        "answer": "pakikinggan"
+        "answer": "pakikinggan",
+        "is_lyrics_only": false
       },
       {
         "index": 5,
         "lyrics_time": 46.0,
-        "pause_time": 51.3,
+        "pause_time": 51.149,
         "prompt_lyrics": "Ang isang pag-ibig ay parang",
         "blank_lyrics": "lansangan",
         "following_lyrics": "na pandalawahan",
-        "answer": "lansangan"
+        "answer": "lansangan",
+        "is_lyrics_only": false
       },
       {
         "index": 6,
         "lyrics_time": 57.0,
-        "pause_time": 61.0,
+        "pause_time": 61.189,
         "prompt_lyrics": "Kaya't sa ating awit, tayo ay",
         "blank_lyrics": "magbigayan",
         "following_lyrics": "",
-        "answer": "magbigayan"
+        "answer": "magbigayan",
+        "is_lyrics_only": false
       }
     ]
   },
@@ -305,7 +311,8 @@
         "prompt_lyrics": "Kung tayo ay matanda na / Sana'y di tayo",
         "blank_lyrics": "magbago",
         "following_lyrics": "",
-        "answer": "magbago"
+        "answer": "magbago",
+        "is_lyrics_only": false
       },
       {
         "index": 2,
@@ -314,7 +321,8 @@
         "prompt_lyrics": "Kailan man / Nasaan ma'y ito ang",
         "blank_lyrics": "pangarap ko",
         "following_lyrics": "",
-        "answer": "pangarap ko"
+        "answer": "pangarap ko",
+        "is_lyrics_only": false
       },
       {
         "index": 3,
@@ -323,7 +331,8 @@
         "prompt_lyrics": "Makuha mo pa kayang / Ako'y",
         "blank_lyrics": "hagkan at yakapin",
         "following_lyrics": "oh",
-        "answer": "hagkan at yakapin"
+        "answer": "hagkan at yakapin",
+        "is_lyrics_only": false
       },
       {
         "index": 4,
@@ -332,7 +341,8 @@
         "prompt_lyrics": "Hanggang",
         "blank_lyrics": "pagtanda",
         "following_lyrics": "natin?",
-        "answer": "pagtanda"
+        "answer": "pagtanda",
+        "is_lyrics_only": false
       },
       {
         "index": 5,
@@ -341,7 +351,8 @@
         "prompt_lyrics": "Nagtatanong lang sa'yo / Ako pa kaya'y",
         "blank_lyrics": "ibigin mo",
         "following_lyrics": "",
-        "answer": "ibigin mo"
+        "answer": "ibigin mo",
+        "is_lyrics_only": false
       },
       {
         "index": 6,
@@ -350,7 +361,206 @@
         "prompt_lyrics": "Kung maputi na ang",
         "blank_lyrics": "buhok ko",
         "following_lyrics": "",
-        "answer": "buhok ko"
+        "answer": "buhok ko",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 7,
+        "lyrics_time": 77.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Pagdating ng araw,  / ang 'yong buhok ay puputi na rin",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 8,
+        "lyrics_time": 88.0,
+        "pause_time": 90.32,
+        "prompt_lyrics": "Sabay tayong",
+        "blank_lyrics": "mangangarap",
+        "following_lyrics": "ng nakaraan sa 'tin",
+        "answer": "mangangarap",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 9,
+        "lyrics_time": 97.0,
+        "pause_time": 100.86,
+        "prompt_lyrics": "Ang nakalipas ay",
+        "blank_lyrics": "ibabalik natin",
+        "following_lyrics": "",
+        "answer": "ibabalik natin",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 10,
+        "lyrics_time": 105.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Mmm, ipapaalala ko sa 'yo",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 11,
+        "lyrics_time": 116.0,
+        "pause_time": 121.439,
+        "prompt_lyrics": "Ang aking pangako na ang pag-ibig ko'y",
+        "blank_lyrics": "laging sa 'yo",
+        "following_lyrics": "",
+        "answer": "laging sa 'yo",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 12,
+        "lyrics_time": 126.0,
+        "pause_time": 126.098,
+        "prompt_lyrics": "Kahit",
+        "blank_lyrics": "maputi",
+        "following_lyrics": "na ang buhok ko",
+        "answer": "maputi",
+        "is_lyrics_only": false
+      }
+    ]
+  },
+  {
+    "id": "song-d55feb56",
+    "title": "Ale",
+    "artist": "The Bloomfields",
+    "era": "",
+    "mode": "everybody_sing",
+    "audio_url": "/static/audio/ce293c_Ale.mp3",
+    "prompt_lyrics": "",
+    "blank_lyrics": "",
+    "following_lyrics": "",
+    "answer": "Ale",
+    "trivia": "",
+    "start_time": 0.0,
+    "blank_time": 0.0,
+    "hula_replay_time": 0.0,
+    "blanks": [
+      {
+        "index": 1,
+        "lyrics_time": 15.0,
+        "pause_time": 18.5,
+        "prompt_lyrics": "Isang araw, nagmamaneho sa",
+        "blank_lyrics": "Cubao",
+        "following_lyrics": "",
+        "answer": "Cubao",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 2,
+        "lyrics_time": 21.3,
+        "pause_time": 24.8,
+        "prompt_lyrics": "Aking nakita, / babaeng",
+        "blank_lyrics": "saksakan ng ganda,",
+        "following_lyrics": "ah",
+        "answer": "saksakan ng ganda,",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 3,
+        "lyrics_time": 29.0,
+        "pause_time": 30.3,
+        "prompt_lyrics": "Sinundan ko ang",
+        "blank_lyrics": "kotseng",
+        "following_lyrics": "sinasakyan nya",
+        "answer": "kotseng",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 4,
+        "lyrics_time": 33.0,
+        "pause_time": 34.65,
+        "prompt_lyrics": "hindi ko nakitang may",
+        "blank_lyrics": "dumarating",
+        "following_lyrics": "pala",
+        "answer": "dumarating",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 5,
+        "lyrics_time": 36.0,
+        "pause_time": 39.2,
+        "prompt_lyrics": "Hindi ko naiwasan / kami biglang",
+        "blank_lyrics": "nagkabanggaan",
+        "following_lyrics": "",
+        "answer": "nagkabanggaan",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 6,
+        "lyrics_time": 43.0,
+        "pause_time": 45.65,
+        "prompt_lyrics": "Nung magkamalay ay nasa",
+        "blank_lyrics": "ospital na ako",
+        "following_lyrics": "",
+        "answer": "ospital na ako",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 7,
+        "lyrics_time": 50.0,
+        "pause_time": 53.41,
+        "prompt_lyrics": "inasikaso ng doktor na pili ng",
+        "blank_lyrics": "nanay ko",
+        "following_lyrics": "",
+        "answer": "nanay ko",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 8,
+        "lyrics_time": 57.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Biglang-bigla na lang ang nurse nandyan na",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 9,
+        "lyrics_time": 60.0,
+        "pause_time": 62.659,
+        "prompt_lyrics": "at para ‘kong nakita ng",
+        "blank_lyrics": "angel sa ganda",
+        "following_lyrics": "",
+        "answer": "angel sa ganda",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 10,
+        "lyrics_time": 64.0,
+        "pause_time": 64.773,
+        "prompt_lyrics": "Kahit",
+        "blank_lyrics": "nagdedeliryo",
+        "following_lyrics": "itong nasabi ko sa kanya",
+        "answer": "nagdedeliryo",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 11,
+        "lyrics_time": 71.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Ale nasa langit na ba ako",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 12,
+        "lyrics_time": 78.0,
+        "pause_time": 81.049,
+        "prompt_lyrics": "mama kayo po ba si",
+        "blank_lyrics": "San Pedro",
+        "following_lyrics": "",
+        "answer": "San Pedro",
+        "is_lyrics_only": false
       }
     ]
   }
