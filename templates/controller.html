@@ -384,16 +384,25 @@
 
                 <div id="editor-blanks-list" style="display: flex; flex-direction: column; gap: 10px;">
                 </div>
+
+                <div style="margin-top: 14px; margin-bottom: 10px;">
+                    <button type="button" id="btn-editor-add-blank-bottom" class="btn btn-action btn-full" style="padding: 10px 16px; font-weight: bold; font-size: 0.68rem; background: var(--brand-blue); color: #FFF; border: 2px dashed #000; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <i class="fa-solid fa-plus-circle"></i> + ADD BLANK BELOW
+                    </button>
+                </div>
             </div>
 
-            <div style="border-top: 2px solid #000; padding-top: 10px; margin-top: 12px; display: flex; justify-content: space-between; align-items: center;">
-                <span id="editor-save-status" style="font-size: 0.65rem; font-weight: bold; color: var(--accent-green); display: none;">
-                    SAVED SUCCESSFULLY!
-                </span>
-                <div style="display: flex; gap: 8px; margin-left: auto;">
+            <div style="border-top: 2px solid #000; padding-top: 10px; margin-top: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                <button type="button" id="btn-editor-add-blank-footer" class="btn btn-sm btn-primary" style="font-weight: bold; font-size: 0.62rem; padding: 6px 14px;">
+                    <i class="fa-solid fa-plus"></i> ADD BLANK
+                </button>
+                <div style="display: flex; gap: 8px; margin-left: auto; align-items: center;">
+                    <span id="editor-save-status" style="font-size: 0.65rem; font-weight: bold; color: var(--accent-green); display: none;">
+                        SAVED SUCCESSFULLY!
+                    </span>
                     <button type="button" id="btn-cancel-blank-editor" class="btn btn-sm" style="padding: 6px 14px;">CANCEL</button>
                     <button type="button" id="btn-save-blank-editor" class="btn btn-action" style="padding: 6px 18px; font-weight: bold; background: var(--accent-green); color: #FFF;">
-                        <i class="fa-solid"></i> SAVE BLANKS & TIMESTAMPS
+                        <i class="fa-solid fa-floppy-disk"></i> SAVE BLANKS & TIMESTAMPS
                     </button>
                 </div>
             </div>

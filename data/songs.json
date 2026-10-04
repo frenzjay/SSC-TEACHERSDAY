@@ -3279,5 +3279,361 @@
         "is_lyrics_only": true
       }
     ]
+  },
+  {
+    "id": "song-27457d28",
+    "title": "Someone Like You",
+    "artist": "Adele",
+    "era": "",
+    "mode": "everybody_sing",
+    "audio_url": "/static/audio/f94bdd_Someone_Like_You.mp3",
+    "prompt_lyrics": "",
+    "blank_lyrics": "",
+    "following_lyrics": "",
+    "answer": "Someone Like You",
+    "trivia": "",
+    "start_time": 0.0,
+    "blank_time": 0.0,
+    "hula_replay_time": 0.0,
+    "blanks": [
+      {
+        "index": 1,
+        "lyrics_time": 14.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "I heard that you're settled down",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 2,
+        "lyrics_time": 21.0,
+        "pause_time": 25.586,
+        "prompt_lyrics": "That you found a girl and you're",
+        "blank_lyrics": "married",
+        "following_lyrics": "now",
+        "answer": "married",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 3,
+        "lyrics_time": 29.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "I heard that your dreams came true",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 4,
+        "lyrics_time": 35.0,
+        "pause_time": 39.527,
+        "prompt_lyrics": "Guess she gave you things, I didn't",
+        "blank_lyrics": "give",
+        "following_lyrics": "to you",
+        "answer": "give",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 5,
+        "lyrics_time": 43.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Old friend, why are you so shy?",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 6,
+        "lyrics_time": 49.0,
+        "pause_time": 55.547,
+        "prompt_lyrics": "Ain't like you to hold back or hide from the",
+        "blank_lyrics": "light",
+        "following_lyrics": "",
+        "answer": "light",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 7,
+        "lyrics_time": 57.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "I hate to turn up out of the blue, uninvited",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 8,
+        "lyrics_time": 60.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "But I couldn't stay away, I couldn't fight it",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 9,
+        "lyrics_time": 64.0,
+        "pause_time": 65.379,
+        "prompt_lyrics": "I had hoped you'd see",
+        "blank_lyrics": "my face",
+        "following_lyrics": "",
+        "answer": "my face",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 10,
+        "lyrics_time": 66.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "And that you'd be reminded that for me, it isn't over",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 11,
+        "lyrics_time": 73.0,
+        "pause_time": 76.77,
+        "prompt_lyrics": "Never mind, I'll find someone",
+        "blank_lyrics": "like you",
+        "following_lyrics": "",
+        "answer": "like you",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 12,
+        "lyrics_time": 80.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "I wish nothing but the best for you, too",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 13,
+        "lyrics_time": 87.0,
+        "pause_time": 87.328,
+        "prompt_lyrics": "\"Don't",
+        "blank_lyrics": "forget",
+        "following_lyrics": "me,\" I beg",
+        "answer": "forget",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 14,
+        "lyrics_time": 90.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "I remember you said",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 15,
+        "lyrics_time": 94.0,
+        "pause_time": 96.64,
+        "prompt_lyrics": "\"Sometimes it lasts in love, but",
+        "blank_lyrics": "sometimes",
+        "following_lyrics": "it hurts instead\"",
+        "answer": "sometimes",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 16,
+        "lyrics_time": 101.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "\"Sometimes it lasts in love, but sometimes it hurts instead\"",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 17,
+        "lyrics_time": 111.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "You know how the time flies",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 18,
+        "lyrics_time": 117.0,
+        "pause_time": 118.562,
+        "prompt_lyrics": "Only",
+        "blank_lyrics": "yesterday",
+        "following_lyrics": "was the time of our lives",
+        "answer": "yesterday",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 19,
+        "lyrics_time": 124.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "We were born and raised in a summer haze",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 20,
+        "lyrics_time": 131.0,
+        "pause_time": 135.74,
+        "prompt_lyrics": "Bound by the surprise of our",
+        "blank_lyrics": "glory days",
+        "following_lyrics": "",
+        "answer": "glory days",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 21,
+        "lyrics_time": 139.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "I hate to turn up out of the blue, uninvited",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 22,
+        "lyrics_time": 142.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "But I couldn't stay away, I couldn't fight it",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 23,
+        "lyrics_time": 146.0,
+        "pause_time": 147.051,
+        "prompt_lyrics": "I had hoped you'd see",
+        "blank_lyrics": "my face",
+        "following_lyrics": "",
+        "answer": "my face",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 24,
+        "lyrics_time": 148.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "And that you'd be reminded that for me, it isn't over",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      }
+    ]
+  },
+  {
+    "id": "song-11d914b1",
+    "title": "Thinking out Loud",
+    "artist": "Ed Sheeran",
+    "era": "",
+    "mode": "everybody_sing",
+    "audio_url": "/static/audio/a37f4d_Thinking_out_Loud.mp3",
+    "prompt_lyrics": "",
+    "blank_lyrics": "",
+    "following_lyrics": "",
+    "answer": "Thinking out Loud",
+    "trivia": "",
+    "start_time": 0.0,
+    "blank_time": 0.0,
+    "hula_replay_time": 0.0,
+    "blanks": [
+      {
+        "index": 1,
+        "lyrics_time": 1.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "When your legs don't work like they used to before",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 2,
+        "lyrics_time": 7.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "And I can't sweep you off of your feet",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 3,
+        "lyrics_time": 13.0,
+        "pause_time": 15.717,
+        "prompt_lyrics": "Will your mouth still remember the taste of",
+        "blank_lyrics": "my love?",
+        "following_lyrics": "",
+        "answer": "my love?",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 4,
+        "lyrics_time": 19.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Will your eyes still smile from your cheeks?",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 5,
+        "lyrics_time": 23.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "And darling, I will",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 6,
+        "lyrics_time": 26.0,
+        "pause_time": 29.14,
+        "prompt_lyrics": "Be loving you 'til",
+        "blank_lyrics": "we're 70",
+        "following_lyrics": "",
+        "answer": "we're 70",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 7,
+        "lyrics_time": 35.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "And, baby, my heart",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 8,
+        "lyrics_time": 38.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Could still fall as hard at 23",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      }
+    ]
   }
 ]

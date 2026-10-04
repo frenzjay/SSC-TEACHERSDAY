@@ -35,12 +35,15 @@ document.addEventListener('DOMContentLoaded', () => {
     let targetUploadSongId = null;
     let isPausedAtBlank = false;
     let waitingForNextBlank = false;
+    let pendingBlankResumeTime = null;
 
     const blankEditorModal = document.getElementById('blank-editor-modal');
     const btnCloseBlankEditor = document.getElementById('btn-close-blank-editor');
     const btnCancelBlankEditor = document.getElementById('btn-cancel-blank-editor');
     const btnSaveBlankEditor = document.getElementById('btn-save-blank-editor');
     const btnEditorAddBlank = document.getElementById('btn-editor-add-blank');
+    const btnEditorAddBlankBottom = document.getElementById('btn-editor-add-blank-bottom');
+    const btnEditorAddBlankFooter = document.getElementById('btn-editor-add-blank-footer');
     const btnEditorPlaySong = document.getElementById('btn-editor-play-song');
     const btnEditorPauseSong = document.getElementById('btn-editor-pause-song');
     const btnEditorQuickPause = document.getElementById('btn-editor-quick-pause');
@@ -631,6 +634,8 @@ document.addEventListener('DOMContentLoaded', () => {
         isPausedAtBlank = false;
         hasCutForBlank = false;
         isPlaying = false;
+        waitingForNextBlank = false;
+        pendingBlankResumeTime = null;
 
         document.querySelectorAll('.song-card-item').forEach(el => el.classList.remove('selected'));
         renderSongList();
@@ -1346,6 +1351,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnEditorAddBlank) {
         btnEditorAddBlank.addEventListener('click', addEditorBlank);
     }
+    if (btnEditorAddBlankBottom) {
+        btnEditorAddBlankBottom.addEventListener('click', addEditorBlank);
+    }
+    if (btnEditorAddBlankFooter) {
+        btnEditorAddBlankFooter.addEventListener('click', addEditorBlank);
+    }
 
     if (btnEditorAiTranscribe) {
         btnEditorAiTranscribe.addEventListener('click', async () => {
@@ -1556,7 +1567,12 @@ document.addEventListener('DOMContentLoaded', () => {
             let playFrom = null;
             if (isPausedAtBlank) {
                 isPausedAtBlank = false;
-                playFrom = null;
+                if (pendingBlankResumeTime !== null) {
+                    playFrom = pendingBlankResumeTime;
+                    pendingBlankResumeTime = null;
+                } else {
+                    playFrom = null;
+                }
             } else if (checkAlwaysStartSection && checkAlwaysStartSection.checked && (curr < startSec - 0.5 || (blankSec > 0 && curr >= blankSec) || curr <= 0.5)) {
                 playFrom = startSec;
             } else if (curr < startSec - 0.5 || (blankSec > 0 && curr >= blankSec)) {
@@ -1565,8 +1581,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 playFrom = null;
             }
 
+            if (btnSmartAutoplay && isSmartAutoPlayRunning) {
+                btnSmartAutoplay.classList.add('running');
+                btnSmartAutoplay.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> SMART AUTO-PLAY RUNNING';
+            }
+
             window.gameAudio.playTrack(playFrom, currentSong.mode !== 'everybody_sing');
-            window.gameBus.send('PLAY_AUDIO', { fromTime: playFrom });
+            window.gameBus.send('PLAY_AUDIO', { fromTime: playFrom, isResume: true });
         } else {
             btnPlayAudio.innerHTML = '<i class="fa-solid fa-play"></i> PLAY AUDIO';
             btnPlayAudio.style.background = 'var(--brand-blue)';
@@ -1794,6 +1815,14 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             window.gameAudio.playCorrectDing();
 
+            // Prepare pause state and cue position so the operator can resume when ready
+            isPlaying = false;
+            isPausedAtBlank = true;
+            if (resumeFrom !== null) {
+                window.gameAudio.seek(resumeFrom);
+                pendingBlankResumeTime = resumeFrom;
+            }
+
             if (isLastBlank) {
                 hasCutForBlank = true;
                 isSmartAutoPlayRunning = false;
@@ -1807,27 +1836,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     window.gameAudio.playCorrectDing();
                 }, 1200);
 
-                if (currentSong.audio_url) {
-                    isPlaying = true;
-                    btnPlayAudio.innerHTML = '<i class="fa-solid fa-pause"></i> PAUSE';
-                    btnPlayAudio.style.background = 'var(--accent-yellow)';
-                    btnPlayAudio.style.color = '#000';
-                    setTimeout(() => {
-                        window.gameAudio.playTrack(resumeFrom, false);
-                        window.gameBus.send('PLAY_AUDIO', { fromTime: resumeFrom, isResume: true });
-                    }, 400);
+                if (btnPlayAudio) {
+                    btnPlayAudio.innerHTML = '<i class="fa-solid fa-play"></i> PLAY TO END [SPACE]';
+                    btnPlayAudio.style.background = 'var(--accent-green)';
+                    btnPlayAudio.style.color = '#FFF';
                 }
             } else {
                 waitingForNextBlank = true;
-                if (currentSong.audio_url) {
-                    isPlaying = true;
-                    btnPlayAudio.innerHTML = '<i class="fa-solid fa-pause"></i> PAUSE';
-                    btnPlayAudio.style.background = 'var(--accent-yellow)';
-                    btnPlayAudio.style.color = '#000';
-                    setTimeout(() => {
-                        window.gameAudio.playTrack(resumeFrom, false);
-                        window.gameBus.send('PLAY_AUDIO', { fromTime: resumeFrom, isResume: true });
-                    }, 400);
+                if (btnSmartAutoplay && isSmartAutoPlayRunning) {
+                    btnSmartAutoplay.classList.remove('running');
+                    btnSmartAutoplay.innerHTML = '<i class="fa-solid fa-play"></i> RESUME SMART AUTO-PLAY [SPACE]';
+                }
+                if (btnPlayAudio) {
+                    btnPlayAudio.innerHTML = '<i class="fa-solid fa-play"></i> CONTINUE TO NEXT BLANK [SPACE]';
+                    btnPlayAudio.style.background = 'var(--accent-green)';
+                    btnPlayAudio.style.color = '#FFF';
                 }
             }
             return;
@@ -1906,6 +1929,14 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             window.gameAudio.playWrongBuzzer();
 
+            // Prepare pause state and cue position so the operator can resume when ready
+            isPlaying = false;
+            isPausedAtBlank = true;
+            if (resumeFrom !== null) {
+                window.gameAudio.seek(resumeFrom);
+                pendingBlankResumeTime = resumeFrom;
+            }
+
             if (isLastBlank) {
                 hasCutForBlank = true;
                 isSmartAutoPlayRunning = false;
@@ -1919,27 +1950,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     window.gameAudio.playWrongBuzzer();
                 }, 1200);
 
-                if (currentSong.audio_url) {
-                    isPlaying = true;
-                    btnPlayAudio.innerHTML = '<i class="fa-solid fa-pause"></i> PAUSE';
-                    btnPlayAudio.style.background = 'var(--accent-yellow)';
-                    btnPlayAudio.style.color = '#000';
-                    setTimeout(() => {
-                        window.gameAudio.playTrack(resumeFrom, false);
-                        window.gameBus.send('PLAY_AUDIO', { fromTime: resumeFrom, isResume: true });
-                    }, 400);
+                if (btnPlayAudio) {
+                    btnPlayAudio.innerHTML = '<i class="fa-solid fa-play"></i> PLAY TO END [SPACE]';
+                    btnPlayAudio.style.background = 'var(--accent-green)';
+                    btnPlayAudio.style.color = '#FFF';
                 }
             } else {
                 waitingForNextBlank = true;
-                if (currentSong.audio_url) {
-                    isPlaying = true;
-                    btnPlayAudio.innerHTML = '<i class="fa-solid fa-pause"></i> PAUSE';
-                    btnPlayAudio.style.background = 'var(--accent-yellow)';
-                    btnPlayAudio.style.color = '#000';
-                    setTimeout(() => {
-                        window.gameAudio.playTrack(resumeFrom, false);
-                        window.gameBus.send('PLAY_AUDIO', { fromTime: resumeFrom, isResume: true });
-                    }, 400);
+                if (btnSmartAutoplay && isSmartAutoPlayRunning) {
+                    btnSmartAutoplay.classList.remove('running');
+                    btnSmartAutoplay.innerHTML = '<i class="fa-solid fa-play"></i> RESUME SMART AUTO-PLAY [SPACE]';
+                }
+                if (btnPlayAudio) {
+                    btnPlayAudio.innerHTML = '<i class="fa-solid fa-play"></i> CONTINUE TO NEXT BLANK [SPACE]';
+                    btnPlayAudio.style.background = 'var(--accent-green)';
+                    btnPlayAudio.style.color = '#FFF';
                 }
             }
             return;

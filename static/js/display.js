@@ -208,7 +208,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isRevealed || isAnswered || (data && data.isResume)) {
             const fromTime = (data && data.fromTime !== undefined && data.fromTime !== null) ? data.fromTime : null;
             if (fromTime !== null) {
-                window.gameAudio.playTrack(fromTime, currentSong.mode !== 'everybody_sing');
+                window.gameAudio.playTrack(fromTime, currentSong ? currentSong.mode !== 'everybody_sing' : true);
+            } else {
+                window.gameAudio.playTrack(null, currentSong ? currentSong.mode !== 'everybody_sing' : true);
             }
             return;
         }
@@ -221,6 +223,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const fromTime = (data && data.fromTime !== undefined && data.fromTime !== null) ? data.fromTime : null;
                 if (fromTime !== null) {
                     window.gameAudio.playTrack(fromTime, false);
+                } else {
+                    window.gameAudio.playTrack(null, false);
                 }
                 return;
             }
@@ -327,8 +331,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
 
-                visualizer.classList.add('playing');
-                visualizer.classList.remove('blank-paused');
+                visualizer.classList.remove('playing');
+                visualizer.classList.add('blank-paused');
                 return;
             }
 
@@ -478,8 +482,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
 
-                visualizer.classList.add('playing');
-                visualizer.classList.remove('blank-paused');
+                visualizer.classList.remove('playing');
+                visualizer.classList.add('blank-paused');
                 return;
             }
 
