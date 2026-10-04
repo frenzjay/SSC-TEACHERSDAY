@@ -209,7 +209,7 @@
                     <div style="display: flex; justify-content: space-between; align-items: center; gap: 6px; flex-wrap: wrap;">
                         <label style="font-size: 0.55rem; cursor: pointer; display: flex; align-items: center; gap: 6px; user-select: none;">
                             <input type="checkbox" id="check-auto-pause-blank" checked style="width: auto;">
-                            <span>AUTO-PAUSE AT CUT & START 10S TIMER</span>
+                            <span>AUTO-PAUSE AT CUT (WAIT FOR ANSWER)</span>
                         </label>
                         <button type="button" id="btn-save-timestamps" class="btn btn-sm btn-action">
                             <i class="fa-solid fa-floppy-disk"></i> SAVE TIMES
@@ -239,31 +239,6 @@
                 <button id="btn-trigger-tension" class="btn btn-yellow btn-full btn-sm">
                     <i class="fa-solid"></i> TENSION DRUMROLL
                 </button>
-            </div>
-            <div class="timer-control-card">
-                <div style="font-size: 0.75rem; font-weight: bold; margin-bottom: 8px;">
-                    <i class="fa-regular"></i>COUNTDOWN
-                </div>
-
-                <div id="controller-timer-digits" class="timer-digits-display">
-                    00:10
-                </div>
-
-                <div class="timer-preset-row">
-                    <button class="btn btn-sm btn-timer-preset active" data-seconds="10">10S</button>
-                    <button class="btn btn-sm btn-timer-preset" data-seconds="15">15S</button>
-                    <button class="btn btn-sm btn-timer-preset" data-seconds="20">20S</button>
-                    <button class="btn btn-sm btn-timer-preset" data-seconds="30">30S</button>
-                    <button id="btn-timer-reset" class="btn btn-sm btn-danger">RESET</button>
-                </div>
-
-                <div class="timer-actions-row">
-                    <button id="btn-timer-toggle" class="btn btn-action" style="flex: 2;">
-                        <i class="fa-solid"></i> START [T]
-                    </button>
-                    <button id="btn-timer-add5" class="btn btn-sm" style="flex: 1;">+5s</button>
-                    <button id="btn-timer-sub5" class="btn btn-sm" style="flex: 1;">-5s</button>
-                </div>
             </div>
         </aside>
     </main>
@@ -431,7 +406,6 @@
         <div><span class="hotkey-tag">1</span> TAMA (NEXT BLANK)</div>
         <div><span class="hotkey-tag">2</span> MALI (BUZZER)</div>
         <div><span class="hotkey-tag">M</span> MARK BLANK CUT</div>
-        <div><span class="hotkey-tag">T</span> TIMER TOGGLE</div>
     </div>
 
     <script src="{{ url_for('static', filename='js/bg-canvas.js') }}"></script>

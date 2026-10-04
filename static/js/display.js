@@ -16,8 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const guessTitleEl = document.getElementById('stage-guess-title');
     const guessArtistEl = document.getElementById('stage-guess-artist');
     const visualizer = document.getElementById('stage-visualizer');
-    const timerBox = document.getElementById('stage-timer-box');
-    const timerDigits = document.getElementById('stage-timer-digits');
     const flashOverlay = document.getElementById('flash-verdict-overlay');
     const verdictIcon = document.getElementById('verdict-icon');
     const verdictText = document.getElementById('verdict-text');
@@ -30,20 +28,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let activeBlankIndex = 0;
     let hulaReplayStopAt = null;
 
-    function showTimer() {
-        if (timerBox) timerBox.classList.remove('hidden');
-    }
-
-    function hideTimer() {
-        if (timerBox) timerBox.classList.add('hidden');
-    }
-
-    function resetTimerDisplay() {
-        if (timerDigits) {
-            timerDigits.textContent = '00:10';
-            timerDigits.classList.remove('warning', 'critical');
-        }
-    }
+    function showTimer() {}
+    function hideTimer() {}
+    function resetTimerDisplay() {}
 
     function formatWordBlanksHtml(text) {
         if (!text) return '<span class="blank-word">_____</span>';
@@ -544,30 +531,6 @@ document.addEventListener('DOMContentLoaded', () => {
         window.gameAudio.playTensionRoll(dur);
     });
 
-    window.gameBus.on('UPDATE_TIMER', (timerData) => {
-        if (!timerData) return;
-        const seconds = Math.max(0, timerData.remaining || 0);
-        const mins = Math.floor(seconds / 60);
-        const secs = seconds % 60;
-        timerDigits.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-
-        if (timerData.isRunning && seconds > 0 && !isAnswered && !isRevealed) {
-            showTimer();
-            showQuestionPrompter();
-        } else {
-            hideTimer();
-        }
-
-        timerDigits.classList.remove('warning', 'critical');
-        if (seconds <= 5 && seconds > 0 && timerData.isRunning && !isAnswered && !isRevealed) {
-            timerDigits.classList.add('critical');
-            if (timerData.tick) window.gameAudio.playWarningCountdown(seconds);
-        } else if (seconds <= 10 && seconds > 0 && timerData.isRunning && !isAnswered && !isRevealed) {
-            timerDigits.classList.add('warning');
-            if (timerData.tick) window.gameAudio.playTick(false);
-        }
-    });
-
     window.gameBus.on('SET_ACTIVE_BLANK', (data) => {
         if (data && typeof data.index === 'number') {
             activeBlankIndex = data.index;
@@ -601,9 +564,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (state.isRevealed) {
                 window.gameBus.handleMessage({ type: 'REVEAL_ANSWER' });
             }
-        }
-        if (state.timer) {
-            window.gameBus.handleMessage({ type: 'UPDATE_TIMER', payload: state.timer });
         }
     });
 

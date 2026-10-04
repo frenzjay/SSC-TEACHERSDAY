@@ -10,10 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let audioOutputMode = 'controller';
     let isStageConnected = false;
     let isSmartAutoPlayRunning = false;
-    let timerDuration = 10;
-    let timerRemaining = 10;
-    let timerInterval = null;
-    let isTimerRunning = false;
     let isAnswered = false;
     let hasCutForBlank = false;
 
@@ -106,12 +102,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnCorrect = document.getElementById('btn-trigger-correct');
     const btnWrong = document.getElementById('btn-trigger-wrong');
     const btnTension = document.getElementById('btn-trigger-tension');
-    const timerDisplay = document.getElementById('controller-timer-digits');
-    const btnTimerToggle = document.getElementById('btn-timer-toggle');
-    const btnTimerReset = document.getElementById('btn-timer-reset');
-    const btnTimerAdd5 = document.getElementById('btn-timer-add5');
-    const btnTimerSub5 = document.getElementById('btn-timer-sub5');
-    const timerPresetBtns = document.querySelectorAll('.btn-timer-preset');
     const teamsListContainer = document.getElementById('controller-teams-list');
     const newTeamNameInput = document.getElementById('new-team-name-input');
     const btnAddTeam = document.getElementById('btn-add-team');
@@ -172,7 +162,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     fetchSongs();
     renderTeams();
-    updateTimerDisplay();
 
     window.gameBus.on('SYNC_REQUEST', () => {
         broadcastSyncState();
@@ -216,11 +205,6 @@ document.addEventListener('DOMContentLoaded', () => {
             currentSong,
             isRevealed,
             activeBlankIndex,
-            timer: {
-                remaining: timerRemaining,
-                duration: timerDuration,
-                isRunning: isTimerRunning
-            },
             teams: facultyTeams
         });
     }
@@ -647,8 +631,6 @@ document.addEventListener('DOMContentLoaded', () => {
         isPausedAtBlank = false;
         hasCutForBlank = false;
         isPlaying = false;
-
-        resetTimer(timerDuration);
 
         document.querySelectorAll('.song-card-item').forEach(el => el.classList.remove('selected'));
         renderSongList();
@@ -1604,10 +1586,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         window.gameAudio.emergencyCut();
         window.gameBus.send('STOP_AUDIO');
-
-        if (!isTimerRunning) {
-            toggleTimer();
-        }
     }
 
     if (btnPlayAudio) btnPlayAudio.addEventListener('click', togglePlay);
@@ -1655,10 +1633,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         btnPlayAudio.innerHTML = '<i class="fa-solid fa-play"></i> CONTINUE SONG [SPACE]';
                         btnPlayAudio.style.background = 'var(--accent-green)';
                         btnPlayAudio.style.color = '#FFF';
-
-                        if (!isTimerRunning) {
-                            toggleTimer();
-                        }
                     }
                 }
 
@@ -1702,10 +1676,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         btnPlayAudio.innerHTML = '<i class="fa-solid fa-play"></i> CONTINUE SONG [SPACE]';
                         btnPlayAudio.style.background = 'var(--accent-green)';
                         btnPlayAudio.style.color = '#FFF';
-
-                        if (!isTimerRunning) {
-                            toggleTimer();
-                        }
                     }
                 }
             }
@@ -1740,9 +1710,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (currentSong.mode === 'everybody_sing') {
             const blanks = currentSong.blanks || [];
-            if (isTimerRunning) {
-                resetTimer(timerDuration);
-            }
             window.gameBus.send('REVEAL_ANSWER');
             if (activeBlankIndex < blanks.length - 1) {
                 activeBlankIndex++;
@@ -1766,9 +1733,6 @@ document.addEventListener('DOMContentLoaded', () => {
         isRevealed = true;
         isAnswered = true;
         hasCutForBlank = true;
-        if (isTimerRunning) {
-            resetTimer(timerDuration);
-        }
         const hulaReplayFrom = Number(currentSong.hula_replay_time ?? currentSong.start_time) || 0;
         const configuredCut = Number(currentSong.blank_time) || 0;
         const hulaReplayUntil = configuredCut > hulaReplayFrom
@@ -1814,8 +1778,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const resumeFrom = configuredBlankCut > 0
                 ? Math.max(0, configuredBlankCut - 0.5)
                 : null;
-
-            resetTimer(timerDuration);
 
             isAnswered = true;
             isRevealed = true;
@@ -1874,7 +1836,6 @@ document.addEventListener('DOMContentLoaded', () => {
         isAnswered = true;
         isRevealed = true;
         hasCutForBlank = true;
-        resetTimer(timerDuration);
 
         const hulaReplayFrom = Number(currentSong.hula_replay_time ?? currentSong.start_time) || 0;
         const configuredCut = Number(currentSong.blank_time) || 0;
@@ -1929,8 +1890,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const resumeFrom = configuredBlankCut > 0
                 ? Math.max(0, configuredBlankCut - 0.5)
                 : null;
-
-            resetTimer(timerDuration);
 
             isAnswered = true;
             isRevealed = true;
@@ -1989,7 +1948,6 @@ document.addEventListener('DOMContentLoaded', () => {
         isAnswered = true;
         isRevealed = true;
         hasCutForBlank = true;
-        resetTimer(timerDuration);
 
         const hulaReplayFrom = Number(currentSong.hula_replay_time ?? currentSong.start_time) || 0;
         const configuredCut = Number(currentSong.blank_time) || 0;
@@ -2030,11 +1988,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function triggerTimeout() {
-        window.gameBus.send('TRIGGER_TIMEOUT');
-        window.gameAudio.playTimeoutBuzzer();
-    }
-
     function triggerTension() {
         window.gameBus.send('TENSION_ROLL', { duration: 3.0 });
         window.gameAudio.playTensionRoll(3.0);
@@ -2044,97 +1997,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnCorrect) btnCorrect.addEventListener('click', triggerCorrect);
     if (btnWrong) btnWrong.addEventListener('click', triggerWrong);
     if (btnTension) btnTension.addEventListener('click', triggerTension);
-
-    function updateTimerDisplay(tick = false) {
-        const mins = Math.floor(timerRemaining / 60);
-        const secs = timerRemaining % 60;
-        const formatted = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-        timerDisplay.textContent = formatted;
-
-        window.gameBus.send('UPDATE_TIMER', {
-            remaining: timerRemaining,
-            duration: timerDuration,
-            isRunning: isTimerRunning,
-            tick
-        });
-    }
-
-    function toggleTimer() {
-        if (isTimerRunning) {
-            clearInterval(timerInterval);
-            timerInterval = null;
-            isTimerRunning = false;
-            btnTimerToggle.innerHTML = '<i class="fa-solid fa-play"></i> START [T]';
-            btnTimerToggle.style.background = 'var(--accent-green)';
-            btnTimerToggle.style.color = '#FFF';
-        } else {
-            if (timerRemaining <= 0) timerRemaining = timerDuration;
-            isTimerRunning = true;
-            btnTimerToggle.innerHTML = '<i class="fa-solid fa-pause"></i> PAUSE [T]';
-            btnTimerToggle.style.background = 'var(--accent-yellow)';
-            btnTimerToggle.style.color = '#000';
-
-            timerInterval = setInterval(() => {
-                if (timerRemaining > 0) {
-                    timerRemaining--;
-                    updateTimerDisplay(true);
-
-                    if (timerRemaining <= 5 && timerRemaining > 0) {
-                        window.gameAudio.playWarningCountdown(timerRemaining);
-                    }
-
-                    if (timerRemaining === 0) {
-                        clearInterval(timerInterval);
-                        timerInterval = null;
-                        isTimerRunning = false;
-                        btnTimerToggle.innerHTML = '<i class="fa-solid fa-play"></i> START [T]';
-                        btnTimerToggle.style.background = 'var(--accent-green)';
-                        btnTimerToggle.style.color = '#FFF';
-
-                        if (!isAnswered) {
-                            triggerTimeout();
-                        }
-                    }
-                }
-            }, 1000);
-        }
-        updateTimerDisplay(false);
-    }
-
-    function resetTimer(seconds = timerDuration) {
-        if (timerInterval) {
-            clearInterval(timerInterval);
-            timerInterval = null;
-        }
-        isTimerRunning = false;
-        timerRemaining = seconds;
-        timerDuration = seconds;
-        isAnswered = false;
-        btnTimerToggle.innerHTML = '<i class="fa-solid fa-play"></i> START [T]';
-        btnTimerToggle.style.background = 'var(--accent-green)';
-        btnTimerToggle.style.color = '#FFF';
-        updateTimerDisplay(false);
-    }
-
-    if (btnTimerToggle) btnTimerToggle.addEventListener('click', toggleTimer);
-    if (btnTimerReset) btnTimerReset.addEventListener('click', () => resetTimer(timerDuration));
-    if (btnTimerAdd5) btnTimerAdd5.addEventListener('click', () => {
-        timerRemaining += 5;
-        updateTimerDisplay(false);
-    });
-    if (btnTimerSub5) btnTimerSub5.addEventListener('click', () => {
-        timerRemaining = Math.max(0, timerRemaining - 5);
-        updateTimerDisplay(false);
-    });
-
-    timerPresetBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            timerPresetBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            const secs = parseInt(btn.dataset.seconds, 10);
-            resetTimer(secs);
-        });
-    });
 
     function renderTeams() {
         if (!teamsListContainer) return;
@@ -2234,9 +2096,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (e.key === 'p' || e.key === 'P') {
             e.preventDefault();
             btnPrevBlank?.click();
-        } else if (e.key === 't' || e.key === 'T') {
-            e.preventDefault();
-            toggleTimer();
         }
     });
 
