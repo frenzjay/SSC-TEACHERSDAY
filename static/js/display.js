@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (stageRibbon) stageRibbon.textContent = '★ HULA-SING! ★';
             promptTextEl.innerHTML = `
                 <div style="font-size:1.8rem; color:var(--brand-blue); font-weight:bold;">
-                    ♫ WHAT IS THE SONG TITLE & ARTIST? ♫
+                    ♫ WHAT IS THE SONG TITLE? ♫
                 </div>
             `;
             guessRevealBox.classList.remove('wrong-guess');
@@ -204,6 +204,10 @@ document.addEventListener('DOMContentLoaded', () => {
         visualizer.classList.remove('blank-paused');
         
         hideTimer();
+
+        if (data && data.replayUntil) {
+            hulaReplayStopAt = Number(data.replayUntil);
+        }
 
         if (isRevealed || isAnswered || (data && data.isResume)) {
             const fromTime = (data && data.fromTime !== undefined && data.fromTime !== null) ? data.fromTime : null;
@@ -506,20 +510,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        if (currentSong && currentSong.audio_url && currentSong.mode === 'guess') {
+        if (window.gameAudio) {
+            window.gameAudio.pauseTrack();
+        }
+        visualizer.classList.remove('playing');
+        visualizer.classList.add('blank-paused');
+
+        if (currentSong && currentSong.mode === 'guess') {
             const replayFrom = Number(data && data.replayFrom);
             hulaReplayStopAt = Number(data && data.replayUntil) || ((replayFrom || 0) + 4);
-            setTimeout(() => {
-                visualizer.classList.add('playing');
-                visualizer.classList.remove('blank-paused');
-                window.gameAudio.playTrack(Number.isFinite(replayFrom) ? replayFrom : (Number(currentSong.start_time) || 0), true);
-            }, 350);
-        } else if (currentSong && currentSong.audio_url) {
-            setTimeout(() => {
-                visualizer.classList.add('playing');
-                visualizer.classList.remove('blank-paused');
-                window.gameAudio.playTrack(null, false);
-            }, 350);
         }
     });
     window.gameBus.on('TRIGGER_TIMEOUT', () => {
