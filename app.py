@@ -77,6 +77,10 @@ def controller():
 def display():
     return render_template("display.html")
 
+@app.route("/roulette")
+def roulette():
+    return render_template("roulette.html")
+
 @app.route("/api/songs", methods=["GET"])
 def get_songs():
     songs = load_songs()
@@ -298,4 +302,5 @@ if __name__ == "__main__":
     print("SSC TEACHERS' DAY")
     print("Controller: /controller")
     print("Display:    /display")
+    print("Roulette:   /roulette")
     app.run(host="0.0.0.0", port=5000, debug=True)

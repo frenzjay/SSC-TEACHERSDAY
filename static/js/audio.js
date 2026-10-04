@@ -172,6 +172,52 @@ class GameAudioEngine {
         osc.start(now);
         osc.stop(now + 0.05);
     }
+    playWheelTick() {
+        this.initContext();
+        if (this.isMuted) return;
+
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(720, now);
+        osc.frequency.exponentialRampToValueAtTime(140, now + 0.035);
+
+        gain.gain.setValueAtTime(0.25 * this.sfxVolume, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.035);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.04);
+    }
+    playWheelWin() {
+        this.initContext();
+        if (this.isMuted) return;
+
+        const now = this.ctx.currentTime;
+        const notes = [523.25, 659.25, 783.99, 987.77, 1046.50, 1318.51];
+        notes.forEach((freq, idx) => {
+            const startTime = now + (idx * 0.07);
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, startTime);
+
+            gain.gain.setValueAtTime(0.001, startTime);
+            gain.gain.linearRampToValueAtTime(0.32 * this.sfxVolume, startTime + 0.02);
+            gain.gain.exponentialRampToValueAtTime(0.0001, startTime + 0.85);
+
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+
+            osc.start(startTime);
+            osc.stop(startTime + 0.9);
+        });
+    }
     playWarningCountdown(secondsLeft = 5) {
         this.initContext();
         if (this.isMuted) return;

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SONG ROULETTE | EVERYBODY, SING!</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/roulette.css') }}">
+</head>
+<body class="roulette-body">
+    <canvas id="bg-canvas"></canvas>
+    <canvas id="confetti-canvas"></canvas>
+
+    <header class="roulette-nav">
+        <div class="nav-left">
+            <a href="/" class="back-link" title="Return to Portal">&lt; PORTAL</a>
+            <div class="nav-brand">
+                <img src="{{ url_for('static', filename='logo/ssc.png', v='transparent') }}" alt="SSC" class="nav-logo">
+                <img src="{{ url_for('static', filename='logo/sg.png') }}" alt="SG" class="nav-logo">
+                <div class="nav-title-group">
+                    <span class="nav-title">SONG ROULETTE</span>
+                    <span class="nav-subtitle">EVERYBODY, SING! JACKPOT ROUND</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-right">
+            <button id="btn-toggle-sound" class="btn btn-sm" title="Toggle Sound Effects">
+                <i class="fa-solid fa-volume-high"></i> SOUND: ON
+            </button>
+            <button id="btn-toggle-fullscreen" class="btn btn-sm" title="Toggle Fullscreen for Stage Projection">
+                <i class="fa-solid fa-expand"></i> FULLSCREEN
+            </button>
+            <button id="btn-toggle-stage-wheel" class="btn btn-sm btn-action" title="Toggle Wheel display on Stage LED Screen">
+                <i class="fa-solid fa-tv"></i> SHOW ON STAGE
+            </button>
+            <a href="/controller" target="_blank" class="btn btn-sm btn-yellow" title="Open Game Controller">
+                <i class="fa-solid fa-gamepad"></i> CONTROLLER
+            </a>
+            <a href="/display" target="_blank" class="btn btn-sm btn-primary" title="Open Stage LED Display">
+                <i class="fa-solid fa-desktop"></i> STAGE LED
+            </a>
+        </div>
+    </header>
+
+    <main class="roulette-layout">
+        <!-- WHEEL ARENA -->
+        <section class="wheel-section">
+            <div class="wheel-stage-card">
+                <div class="wheel-header-ribbon">
+                    <i class="fa-solid fa-dharmachakra"></i>
+                    <span>EVERYBODY, SING! WHEEL OF TUNES</span>
+                    <span id="wheel-status-badge" class="badge badge-yellow">READY TO SPIN</span>
+                </div>
+
+                <div class="wheel-container">
+                    <!-- Pointer Indicator at 12 o'clock -->
+                    <div id="wheel-pointer" class="wheel-pointer" aria-hidden="true">
+                        <div class="pointer-arrow"></div>
+                    </div>
+
+                    <!-- Canvas Wheel -->
+                    <div class="wheel-canvas-wrap">
+                        <canvas id="roulette-canvas" width="600" height="600"></canvas>
+                        <!-- Center Hub Button -->
+                        <button id="btn-center-spin" class="center-spin-hub" title="Click to Spin the Wheel!">
+                            <div class="hub-inner">
+                                <i class="fa-solid fa-arrows-rotate spin-icon"></i>
+                                <span class="hub-text">SPIN!</span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="wheel-actions">
+                    <button id="btn-spin-main" class="btn btn-lg btn-yellow btn-spin-big">
+                        <i class="fa-solid fa-dharmachakra"></i> SPIN THE WHEEL! [SPACE]
+                    </button>
+                    <div class="spin-instruction">
+                        Press <strong>SPACEBAR</strong> or click <strong>SPIN</strong> to randomly select the next song!
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DASHBOARD & CONTROLS -->
+        <aside class="dashboard-section">
+            <!-- CURRENT / POINTED SONG CARD -->
+            <div class="section pointed-song-card" id="pointed-song-card">
+                <div class="ribbon-header">
+                    <span><i class="fa-solid fa-bullhorn"></i> UP NEXT TO PLAY</span>
+                    <span id="pointed-status-pill" class="badge badge-green">WAITING FOR SPIN</span>
+                </div>
+
+                <div class="pointed-song-body">
+                    <div class="pointed-header-info">
+                        <div id="pointed-song-title" class="pointed-title">Spin the wheel to choose a song!</div>
+                        <div id="pointed-song-artist" class="pointed-artist">-</div>
+                    </div>
+
+                    <div id="pointed-blanks-preview" class="pointed-blanks-preview" style="display: none;">
+                        <div class="preview-badge-row">
+                            <span id="pointed-blanks-count" class="badge badge-purple">0 BLANKS</span>
+                            <span id="pointed-start-time" class="badge">START: 00:00</span>
+                        </div>
+                        <div id="pointed-lyrics-snippet" class="pointed-lyrics-snippet"></div>
+                    </div>
+
+                    <!-- AUDIO PLAYER CONTROLS -->
+                    <div class="pointed-audio-controls" id="pointed-audio-controls" style="display: none;">
+                        <div class="audio-progress-wrap">
+                            <div class="audio-progress-bar" id="audio-progress-bar">
+                                <div class="audio-progress-fill" id="audio-progress-fill"></div>
+                            </div>
+                            <div class="audio-time-label" id="audio-time-display">00:00 / 00:00</div>
+                        </div>
+
+                        <div class="audio-btns-row">
+                            <button type="button" id="btn-play-pointed" class="btn btn-sm btn-primary">
+                                <i class="fa-solid fa-play"></i> PLAY AUDIO
+                            </button>
+                            <button type="button" id="btn-pause-pointed" class="btn btn-sm btn-yellow">
+                                <i class="fa-solid fa-pause"></i> PAUSE
+                            </button>
+                            <button type="button" id="btn-sync-stage" class="btn btn-sm btn-action" title="Send song to Controller and Stage Screen">
+                                <i class="fa-solid fa-paper-plane"></i> SEND TO STAGE
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="pointed-actions-row" id="pointed-actions-row" style="display: none;">
+                        <button type="button" id="btn-mark-played" class="btn btn-sm btn-danger">
+                            <i class="fa-solid fa-check"></i> MARK AS PLAYED (REMOVE)
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SONG POOL & SETTINGS CARD -->
+            <div class="section pool-settings-card">
+                <div class="ribbon-header">
+                    <span><i class="fa-solid fa-list-check"></i> SONGS IN WHEEL (<span id="pool-active-count">0</span>/<span id="pool-total-count">0</span>)</span>
+                    <button type="button" id="btn-reset-played" class="btn btn-sm" style="font-size: 0.5rem; padding: 3px 8px;">
+                        RESET ALL
+                    </button>
+                </div>
+
+                <div class="pool-options-bar">
+                    <label class="pool-toggle-label">
+                        <input type="checkbox" id="check-auto-play" checked>
+                        <span>Auto-play audio when pointed</span>
+                    </label>
+                    <label class="pool-toggle-label">
+                        <input type="checkbox" id="check-auto-remove" checked>
+                        <span>Auto-remove winning song from wheel</span>
+                    </label>
+                </div>
+
+                <div class="pool-search-bar">
+                    <input type="text" id="pool-search-input" placeholder="SEARCH SONGS IN POOL...">
+                </div>
+
+                <div class="pool-quick-buttons">
+                    <button type="button" id="btn-select-all" class="btn btn-sm">SELECT ALL</button>
+                    <button type="button" id="btn-unselect-all" class="btn btn-sm">UNSELECT ALL</button>
+                </div>
+
+                <div class="pool-list-scroll" id="pool-list-scroll">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <!-- WINNER CELEBRATION MODAL -->
+    <div id="winner-modal" class="modal-overlay hidden" role="dialog" aria-modal="true">
+        <div class="modal-content winner-modal-content">
+            <div class="winner-modal-banner">
+                <div class="banner-sparkle">★ ★ ★</div>
+                <h2 class="winner-title">NEXT SONG SELECTED!</h2>
+                <div class="banner-sparkle">★ ★ ★</div>
+            </div>
+
+            <div class="winner-details-box">
+                <div id="winner-song-title" class="winner-song-title">Song Title</div>
+                <div id="winner-song-artist" class="winner-song-artist">Artist Name</div>
+                
+                <div class="winner-tags-row">
+                    <span id="winner-blanks-count" class="badge badge-purple">6 BLANKS</span>
+                    <span class="badge badge-yellow">EVERYBODY, SING!</span>
+                </div>
+
+                <div id="winner-lyrics-quote" class="winner-lyrics-quote">
+                    "Walang iba pang sasarap sa..."
+                </div>
+            </div>
+
+            <div class="winner-modal-actions">
+                <button type="button" id="btn-winner-play-now" class="btn btn-lg btn-primary btn-pulse">
+                    <i class="fa-solid fa-play"></i> PLAY SONG NOW!
+                </button>
+                <button type="button" id="btn-winner-ready-stage" class="btn btn-lg btn-action">
+                    <i class="fa-solid fa-tv"></i> LOAD TO STAGE & PROMPTER
+                </button>
+                <div class="winner-secondary-actions">
+                    <button type="button" id="btn-winner-spin-again" class="btn btn-yellow">
+                        <i class="fa-solid fa-arrows-rotate"></i> SPIN AGAIN
+                    </button>
+                    <button type="button" id="btn-winner-close" class="btn">
+                        CLOSE
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/bg-canvas.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/confetti.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bus.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/audio.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/roulette.js') }}"></script>
+</body>
+</html>

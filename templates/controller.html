@@ -27,6 +27,9 @@
                 <span class="connection-dot"></span>
                 <span>BUS: ACTIVE</span>
             </div>
+            <a href="/roulette" target="_blank" class="btn btn-sm btn-yellow" title="Open Song Roulette for Everybody, Sing!">
+                <i class="fa-solid fa-dharmachakra"></i> SONG ROULETTE
+            </a>
             <a href="/display" target="_blank" class="btn btn-sm btn-action">
                 <i class="fa-solid"></i> OPEN STAGE SCREEN
             </a>
@@ -345,7 +348,12 @@
                         Configure lyrics timestamps, pause cuts, and blanks across the song.
                     </div>
                 </div>
-                <button type="button" id="btn-close-blank-editor" class="btn btn-sm btn-danger">✕</button>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <button type="button" id="btn-editor-quick-pause" class="btn btn-sm btn-yellow" style="font-size: 0.55rem; padding: 4px 10px; font-weight: bold;" title="Pause audio playback immediately">
+                        <i class="fa-solid fa-pause"></i> PAUSE SONG
+                    </button>
+                    <button type="button" id="btn-close-blank-editor" class="btn btn-sm btn-danger">✕</button>
+                </div>
             </div>
 
             <div style="overflow-y: auto; flex: 1; padding-right: 6px;">
@@ -367,8 +375,11 @@
                         <i class="fa-solid fa-list-check"></i> BLANKS IN THIS SONG (<span id="editor-total-blanks-count">0</span>):
                     </div>
                     <div style="display: flex; gap: 5px; flex-wrap: wrap; justify-content: flex-end;">
-                        <button type="button" id="btn-editor-play-song" class="btn btn-sm" style="font-size: 0.5rem; padding: 4px 8px;">
-                            PLAY SONG
+                        <button type="button" id="btn-editor-play-song" class="btn btn-sm btn-primary" style="font-size: 0.5rem; padding: 4px 8px; font-weight: bold;">
+                            <i class="fa-solid fa-play"></i> PLAY SONG
+                        </button>
+                        <button type="button" id="btn-editor-pause-song" class="btn btn-sm btn-danger" style="font-size: 0.5rem; padding: 4px 8px; font-weight: bold;">
+                            <i class="fa-solid fa-pause"></i> PAUSE [SPACE]
                         </button>
                         <button type="button" id="btn-editor-capture-lyrics" class="btn btn-sm" style="font-size: 0.5rem; padding: 4px 8px;" title="Shortcut: L">
                             CAPTURE LYRICS [L]
@@ -385,7 +396,7 @@
                     </div>
                 </div>
                 <div style="font-size: 0.55rem; color: #666; margin: -2px 0 8px;">
-                    Play the song, press <strong>L</strong> when the lyric starts, then <strong>C</strong> at the cut. Press <strong>N</strong> to capture the cut and create the next blank automatically.
+                    <strong>Fast workflow:</strong> Enter <strong>LYRICS START TIME</strong>, click <strong>Play</strong> (or press Enter in the box) to listen from the lyrics, then press <strong>M</strong> (or click <strong>Mark Cut</strong>) right when the cut arrives!
                 </div>
                 <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px; padding: 8px; background: var(--surface-subtle); border: 1px solid var(--border-muted);">
                     <button type="button" id="btn-editor-ai-transcribe" class="btn btn-sm btn-primary">

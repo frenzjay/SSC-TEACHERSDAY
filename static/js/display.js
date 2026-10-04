@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const isWrong = currentBlank.wrong === true;
         const colorClass = isWrong ? 'inline-blank-wrong' : 'inline-blank-revealed';
         const blank = revealed
-            ? `<span class="inline-blank ${colorClass}">★ ${escapeHtml(currentBlank.blank_lyrics || currentBlank.answer || '')} ★</span>`
+            ? `<span class="inline-blank ${colorClass}">${escapeHtml(currentBlank.blank_lyrics || currentBlank.answer || '')}</span>`
             : `<span class="inline-blank">${formatWordBlanksHtml(currentBlank.blank_lyrics || currentBlank.answer || '_____')}</span>`;
         const following = currentBlank.following_lyrics
             ? `<div class="inline-following-lyrics">${escapeHtml(currentBlank.following_lyrics)}</div>`
@@ -212,6 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     window.gameBus.on('PLAY_AUDIO', (data) => {
+        hideStageRoulette();
         visualizer.classList.add('playing');
         visualizer.classList.remove('blank-paused');
         
@@ -391,6 +392,12 @@ document.addEventListener('DOMContentLoaded', () => {
             renderInlineBlank(currentBlank);
         }
         renderStageMultiBlankPills();
+    });
+
+    window.gameBus.on('UPDATE_BLANKS', (blanks) => {
+        if (currentSong && Array.isArray(blanks)) {
+            currentSong.blanks = blanks;
+        }
     });
 
     window.gameBus.on('SHOW_NEXT_BLANK', (data) => {
@@ -687,6 +694,336 @@ document.addEventListener('DOMContentLoaded', () => {
             document.exitFullscreen().catch(() => {});
         }
     });
+
+    // =========================================================================
+    // STAGE ROULETTE / SPINNER WHEEL
+    // =========================================================================
+    const stageCard = document.querySelector('.stage-card');
+    const stageRouletteContainer = document.getElementById('stage-roulette-container');
+    const stageRouletteCanvas = document.getElementById('stage-roulette-canvas');
+    const stageWheelPointer = document.getElementById('stage-wheel-pointer');
+    const stageCenterHub = document.getElementById('stage-center-hub');
+    const stageRouletteStatusBadge = document.getElementById('stage-roulette-status-badge');
+    const stageRouletteWinnerBanner = document.getElementById('stage-roulette-winner-banner');
+    const stageWinnerTitle = document.getElementById('stage-winner-title');
+    const stageWinnerArtist = document.getElementById('stage-winner-artist');
+
+    let stageRouletteCtx = stageRouletteCanvas ? stageRouletteCanvas.getContext('2d') : null;
+    let stageActiveSongs = [];
+    let stageIsSpinning = false;
+    let stageCurrentRotation = 0;
+    let stageStartRotation = 0;
+    let stageEndRotation = 0;
+    let stageSpinStartTime = 0;
+    let stageSpinDuration = 5200;
+    let stageLastPegIndex = -1;
+    let stageAnimationFrameId = null;
+
+    const STAGE_LOGICAL_SIZE = 560;
+    const STAGE_DPR = window.devicePixelRatio || 1;
+    if (stageRouletteCanvas && stageRouletteCtx) {
+        stageRouletteCanvas.width = STAGE_LOGICAL_SIZE * STAGE_DPR;
+        stageRouletteCanvas.height = STAGE_LOGICAL_SIZE * STAGE_DPR;
+        stageRouletteCtx.scale(STAGE_DPR, STAGE_DPR);
+    }
+
+    const STAGE_CENTER_X = STAGE_LOGICAL_SIZE / 2;
+    const STAGE_CENTER_Y = STAGE_LOGICAL_SIZE / 2;
+    const STAGE_RADIUS = 246;
+    const STAGE_HUB_RADIUS = 48;
+
+    const STAGE_PALETTE = [
+        { bg: '#176b3a', text: '#ffffff' },
+        { bg: '#d9e84f', text: '#123824' },
+        { bg: '#1f7a8c', text: '#ffffff' },
+        { bg: '#c28a32', text: '#ffffff' },
+        { bg: '#6b2d5c', text: '#ffffff' },
+        { bg: '#9edb7b', text: '#123824' },
+        { bg: '#b83b3b', text: '#ffffff' },
+        { bg: '#2e4057', text: '#ffffff' }
+    ];
+
+    function cleanRouletteTitle(t) {
+        if (!t) return '';
+        return String(t)
+            .replace(/\s*\(Everybody,\s*Sing!\)/gi, '')
+            .replace(/\s*\(Jackpot\)/gi, '')
+            .trim();
+    }
+
+    function triggerStagePointerKick() {
+        if (!stageWheelPointer) return;
+        stageWheelPointer.classList.remove('hit');
+        void stageWheelPointer.offsetWidth;
+        stageWheelPointer.classList.add('hit');
+        setTimeout(() => {
+            stageWheelPointer.classList.remove('hit');
+        }, 80);
+    }
+
+    function drawStageWheel() {
+        if (!stageRouletteCtx) return;
+        stageRouletteCtx.clearRect(0, 0, STAGE_LOGICAL_SIZE, STAGE_LOGICAL_SIZE);
+
+        const numSlices = stageActiveSongs.length;
+        if (numSlices === 0) return;
+
+        const sliceAngle = (2 * Math.PI) / numSlices;
+
+        // Outer Rim
+        stageRouletteCtx.save();
+        stageRouletteCtx.beginPath();
+        stageRouletteCtx.arc(STAGE_CENTER_X, STAGE_CENTER_Y, STAGE_RADIUS + 14, 0, 2 * Math.PI);
+        stageRouletteCtx.fillStyle = '#123824';
+        stageRouletteCtx.fill();
+
+        stageRouletteCtx.beginPath();
+        stageRouletteCtx.arc(STAGE_CENTER_X, STAGE_CENTER_Y, STAGE_RADIUS + 8, 0, 2 * Math.PI);
+        stageRouletteCtx.fillStyle = '#c28a32';
+        stageRouletteCtx.fill();
+
+        stageRouletteCtx.beginPath();
+        stageRouletteCtx.arc(STAGE_CENTER_X, STAGE_CENTER_Y, STAGE_RADIUS + 2, 0, 2 * Math.PI);
+        stageRouletteCtx.fillStyle = '#f6e27a';
+        stageRouletteCtx.fill();
+        stageRouletteCtx.restore();
+
+        // Slices
+        for (let i = 0; i < numSlices; i++) {
+            const startAngle = stageCurrentRotation + (i * sliceAngle);
+            const endAngle = startAngle + sliceAngle;
+            const color = STAGE_PALETTE[i % STAGE_PALETTE.length];
+
+            stageRouletteCtx.save();
+            stageRouletteCtx.beginPath();
+            stageRouletteCtx.moveTo(STAGE_CENTER_X, STAGE_CENTER_Y);
+            stageRouletteCtx.arc(STAGE_CENTER_X, STAGE_CENTER_Y, STAGE_RADIUS, startAngle, endAngle);
+            stageRouletteCtx.closePath();
+            stageRouletteCtx.fillStyle = color.bg;
+            stageRouletteCtx.fill();
+
+            stageRouletteCtx.strokeStyle = '#123824';
+            stageRouletteCtx.lineWidth = 2.5;
+            stageRouletteCtx.stroke();
+            stageRouletteCtx.restore();
+
+            // Label
+            stageRouletteCtx.save();
+            stageRouletteCtx.translate(STAGE_CENTER_X, STAGE_CENTER_Y);
+            const midAngle = startAngle + (sliceAngle / 2);
+            stageRouletteCtx.rotate(midAngle);
+
+            const display = cleanRouletteTitle(stageActiveSongs[i].title);
+            stageRouletteCtx.textAlign = 'right';
+            stageRouletteCtx.textBaseline = 'middle';
+            stageRouletteCtx.fillStyle = color.text;
+
+            let fontSize = 13.5;
+            if (numSlices > 16) fontSize = 10.5;
+            else if (numSlices > 12) fontSize = 12;
+
+            stageRouletteCtx.font = `800 ${fontSize}px Montserrat, Arial, sans-serif`;
+
+            let text = display;
+            const maxChars = numSlices > 14 ? 18 : 24;
+            if (text.length > maxChars) {
+                text = text.substring(0, maxChars - 1) + '…';
+            }
+
+            stageRouletteCtx.shadowColor = 'rgba(0,0,0,0.4)';
+            stageRouletteCtx.shadowBlur = 3;
+            stageRouletteCtx.shadowOffsetX = 1;
+            stageRouletteCtx.shadowOffsetY = 1;
+
+            stageRouletteCtx.fillText(text, STAGE_RADIUS - 22, 0);
+            stageRouletteCtx.restore();
+        }
+
+        // Pegs
+        for (let i = 0; i < numSlices; i++) {
+            const pegAngle = stageCurrentRotation + (i * sliceAngle);
+            const pegX = STAGE_CENTER_X + Math.cos(pegAngle) * (STAGE_RADIUS + 7);
+            const pegY = STAGE_CENTER_Y + Math.sin(pegAngle) * (STAGE_RADIUS + 7);
+
+            stageRouletteCtx.save();
+            stageRouletteCtx.beginPath();
+            stageRouletteCtx.arc(pegX, pegY, 4.5, 0, 2 * Math.PI);
+            stageRouletteCtx.fillStyle = '#ffffff';
+            stageRouletteCtx.fill();
+            stageRouletteCtx.lineWidth = 1.5;
+            stageRouletteCtx.strokeStyle = '#123824';
+            stageRouletteCtx.stroke();
+            stageRouletteCtx.restore();
+        }
+
+        // Center Hole
+        stageRouletteCtx.save();
+        stageRouletteCtx.beginPath();
+        stageRouletteCtx.arc(STAGE_CENTER_X, STAGE_CENTER_Y, STAGE_HUB_RADIUS + 4, 0, 2 * Math.PI);
+        stageRouletteCtx.fillStyle = '#123824';
+        stageRouletteCtx.fill();
+        stageRouletteCtx.restore();
+    }
+
+    function showStageRoulette(songs = null) {
+        if (!stageRouletteContainer) return;
+        if (stageCard) stageCard.style.display = 'none';
+        stageRouletteContainer.style.display = 'flex';
+
+        if (stageRouletteWinnerBanner) {
+            stageRouletteWinnerBanner.style.display = 'none';
+        }
+
+        if (stageRouletteStatusBadge) {
+            stageRouletteStatusBadge.textContent = 'READY TO SPIN';
+            stageRouletteStatusBadge.className = 'badge badge-yellow';
+        }
+
+        if (songs && Array.isArray(songs) && songs.length > 0) {
+            stageActiveSongs = songs;
+            drawStageWheel();
+        } else if (stageActiveSongs.length === 0) {
+            fetch('/api/songs')
+                .then(r => r.json())
+                .then(data => {
+                    stageActiveSongs = data.filter(s => s.mode === 'everybody_sing');
+                    drawStageWheel();
+                })
+                .catch(() => {});
+        } else {
+            drawStageWheel();
+        }
+    }
+
+    function hideStageRoulette() {
+        if (!stageRouletteContainer) return;
+        if (stageIsSpinning) return;
+        stageRouletteContainer.style.display = 'none';
+        if (stageCard) stageCard.style.display = 'block';
+    }
+
+    function startStageSpin(data) {
+        if (!data) return;
+        showStageRoulette(data.songs);
+
+        stageIsSpinning = true;
+        if (stageCenterHub) stageCenterHub.classList.add('spinning');
+        if (stageRouletteStatusBadge) {
+            stageRouletteStatusBadge.textContent = 'SPINNING...';
+            stageRouletteStatusBadge.className = 'badge badge-red';
+        }
+        if (stageRouletteWinnerBanner) {
+            stageRouletteWinnerBanner.style.display = 'none';
+        }
+
+        stageStartRotation = data.startRotation !== undefined ? data.startRotation : stageCurrentRotation;
+        stageEndRotation = stageStartRotation + (data.totalDelta || (Math.PI * 12));
+        stageSpinStartTime = performance.now();
+        stageSpinDuration = data.duration || 5200;
+        stageLastPegIndex = -1;
+
+        if (stageAnimationFrameId) cancelAnimationFrame(stageAnimationFrameId);
+        stageAnimationFrameId = requestAnimationFrame((ts) => animateStageSpin(ts, data.winner));
+    }
+
+    function animateStageSpin(timestamp, winner) {
+        const elapsed = timestamp - stageSpinStartTime;
+        const progress = Math.min(1.0, elapsed / stageSpinDuration);
+        const ease = 1 - Math.pow(1 - progress, 5); // easeOutQuint
+
+        stageCurrentRotation = stageStartRotation + (stageEndRotation - stageStartRotation) * ease;
+
+        const numSlices = stageActiveSongs.length;
+        if (numSlices > 0) {
+            const sliceAngle = (2 * Math.PI) / numSlices;
+            const pointerAngle = (3 * Math.PI) / 2;
+            const wheelAngle = (pointerAngle - (stageCurrentRotation % (2 * Math.PI)) + 4 * Math.PI) % (2 * Math.PI);
+            const currentPeg = Math.floor(wheelAngle / sliceAngle);
+
+            if (currentPeg !== stageLastPegIndex) {
+                stageLastPegIndex = currentPeg;
+                if (window.gameAudio) {
+                    window.gameAudio.playWheelTick();
+                }
+                triggerStagePointerKick();
+            }
+        }
+
+        drawStageWheel();
+
+        if (progress < 1.0) {
+            stageAnimationFrameId = requestAnimationFrame((ts) => animateStageSpin(ts, winner));
+        } else {
+            finishStageSpin(winner);
+        }
+    }
+
+    function finishStageSpin(winner) {
+        stageIsSpinning = false;
+        if (stageCenterHub) stageCenterHub.classList.remove('spinning');
+        if (stageRouletteStatusBadge) {
+            stageRouletteStatusBadge.textContent = 'WINNER CHOSEN!';
+            stageRouletteStatusBadge.className = 'badge badge-yellow';
+        }
+
+        if (winner && stageRouletteWinnerBanner) {
+            stageWinnerTitle.textContent = cleanRouletteTitle(winner.title);
+            stageWinnerArtist.textContent = winner.artist || 'Unknown Artist';
+            stageRouletteWinnerBanner.style.display = 'block';
+        }
+
+        // Confetti explosion
+        if (window.pixelConfetti) {
+            window.pixelConfetti.burst(320);
+        }
+
+        // Victory Chime
+        if (window.gameAudio) {
+            window.gameAudio.playWheelWin();
+        }
+    }
+
+    // Bus Listeners for Roulette
+    window.gameBus.on('ROULETTE_SHOW', (data) => {
+        showStageRoulette(data ? data.songs : null);
+    });
+
+    window.gameBus.on('ROULETTE_HIDE', () => {
+        hideStageRoulette();
+    });
+
+    window.gameBus.on('ROULETTE_SPIN', (data) => {
+        startStageSpin(data);
+    });
+
+    window.gameBus.on('ROULETTE_WIN', (data) => {
+        if (!stageIsSpinning && data && data.winner) {
+            showStageRoulette();
+            finishStageSpin(data.winner);
+        }
+    });
+
+    // Keyboard shortcut 'R' to toggle stage roulette
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'r' || e.key === 'R') {
+            const activeTag = document.activeElement ? document.activeElement.tagName : '';
+            if (activeTag !== 'INPUT' && activeTag !== 'TEXTAREA') {
+                if (stageRouletteContainer && stageRouletteContainer.style.display === 'flex') {
+                    hideStageRoulette();
+                } else {
+                    showStageRoulette();
+                }
+            }
+        }
+    });
+
+    if (stageCenterHub) {
+        stageCenterHub.addEventListener('click', () => {
+            if (stageIsSpinning) return;
+            // Send trigger to roulette bus
+            window.gameBus.send('ROULETTE_TRIGGER_SPIN');
+        });
+    }
 
     window.gameBus.on('SET_AUDIO_OUTPUT_MODE', (data) => {
         if (!data) return;

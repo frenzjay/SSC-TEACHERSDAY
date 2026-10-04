@@ -9,11 +9,11 @@
     <style>
         .portal-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
             margin-top: 10px;
         }
-        @media (max-width: 768px) {
+        @media (max-width: 900px) {
             .portal-grid {
                 grid-template-columns: 1fr;
             }
@@ -111,14 +111,26 @@
 
                 <div class="portal-card">
                     <div>
-                        <h3><i class="fa-solid"></i>DISPLAY</h3>
+                        <h3><i class="fa-solid fa-desktop"></i> DISPLAY</h3>
                         <p class="portal-desc">
-                            View display
+                            View display on LED wall or projector
                         </p>
                     </div>
                     <button id="btn-open-display" class="btn btn-action btn-lg btn-full">
-                        <i class="fa-solid"></i> LAUNCH SCREEN
+                        <i class="fa-solid fa-tv"></i> LAUNCH SCREEN
                     </button>
+                </div>
+
+                <div class="portal-card">
+                    <div>
+                        <h3><i class="fa-solid fa-dharmachakra"></i> SONG ROULETTE</h3>
+                        <p class="portal-desc">
+                            Spinner wheel for "Everybody, Sing!". Randomly select the next song with live stage sync.
+                        </p>
+                    </div>
+                    <a href="/roulette" target="_blank" class="btn btn-yellow btn-lg btn-full">
+                        <i class="fa-solid fa-dharmachakra"></i> LAUNCH ROULETTE
+                    </a>
                 </div>
             </div>
         </section>

@@ -454,8 +454,8 @@
       },
       {
         "index": 2,
-        "lyrics_time": 21.3,
-        "pause_time": 24.8,
+        "lyrics_time": 21.348,
+        "pause_time": 24.848,
         "prompt_lyrics": "Aking nakita, / babaeng",
         "blank_lyrics": "saksakan ng ganda,",
         "following_lyrics": "ah",
@@ -464,8 +464,8 @@
       },
       {
         "index": 3,
-        "lyrics_time": 29.0,
-        "pause_time": 30.3,
+        "lyrics_time": 29.048,
+        "pause_time": 30.348,
         "prompt_lyrics": "Sinundan ko ang",
         "blank_lyrics": "kotseng",
         "following_lyrics": "sinasakyan nya",
@@ -474,8 +474,8 @@
       },
       {
         "index": 4,
-        "lyrics_time": 33.0,
-        "pause_time": 34.65,
+        "lyrics_time": 33.048,
+        "pause_time": 34.698,
         "prompt_lyrics": "hindi ko nakitang may",
         "blank_lyrics": "dumarating",
         "following_lyrics": "pala",
@@ -484,8 +484,8 @@
       },
       {
         "index": 5,
-        "lyrics_time": 36.0,
-        "pause_time": 39.2,
+        "lyrics_time": 36.048,
+        "pause_time": 39.248,
         "prompt_lyrics": "Hindi ko naiwasan / kami biglang",
         "blank_lyrics": "nagkabanggaan",
         "following_lyrics": "",
@@ -494,8 +494,8 @@
       },
       {
         "index": 6,
-        "lyrics_time": 43.0,
-        "pause_time": 45.65,
+        "lyrics_time": 43.048,
+        "pause_time": 45.698,
         "prompt_lyrics": "Nung magkamalay ay nasa",
         "blank_lyrics": "ospital na ako",
         "following_lyrics": "",
@@ -504,8 +504,8 @@
       },
       {
         "index": 7,
-        "lyrics_time": 50.0,
-        "pause_time": 53.41,
+        "lyrics_time": 50.048,
+        "pause_time": 53.458,
         "prompt_lyrics": "inasikaso ng doktor na pili ng",
         "blank_lyrics": "nanay ko",
         "following_lyrics": "",
@@ -514,7 +514,7 @@
       },
       {
         "index": 8,
-        "lyrics_time": 57.0,
+        "lyrics_time": 57.048,
         "pause_time": 0.0,
         "prompt_lyrics": "Biglang-bigla na lang ang nurse nandyan na",
         "blank_lyrics": "",
@@ -524,8 +524,8 @@
       },
       {
         "index": 9,
-        "lyrics_time": 60.0,
-        "pause_time": 62.659,
+        "lyrics_time": 60.048,
+        "pause_time": 62.707,
         "prompt_lyrics": "at para ‘kong nakita ng",
         "blank_lyrics": "angel sa ganda",
         "following_lyrics": "",
@@ -534,8 +534,8 @@
       },
       {
         "index": 10,
-        "lyrics_time": 64.0,
-        "pause_time": 64.773,
+        "lyrics_time": 64.048,
+        "pause_time": 64.821,
         "prompt_lyrics": "Kahit",
         "blank_lyrics": "nagdedeliryo",
         "following_lyrics": "itong nasabi ko sa kanya",
@@ -544,7 +544,7 @@
       },
       {
         "index": 11,
-        "lyrics_time": 71.0,
+        "lyrics_time": 71.048,
         "pause_time": 0.0,
         "prompt_lyrics": "Ale nasa langit na ba ako",
         "blank_lyrics": "",
@@ -554,13 +554,2729 @@
       },
       {
         "index": 12,
-        "lyrics_time": 78.0,
-        "pause_time": 81.049,
+        "lyrics_time": 78.106,
+        "pause_time": 81.155,
         "prompt_lyrics": "mama kayo po ba si",
         "blank_lyrics": "San Pedro",
         "following_lyrics": "",
         "answer": "San Pedro",
         "is_lyrics_only": false
+      }
+    ]
+  },
+  {
+    "id": "song-7491a14a",
+    "title": "Pusong Ligaw",
+    "artist": "Jericho Rosales",
+    "era": "",
+    "mode": "everybody_sing",
+    "audio_url": "/static/audio/f6b539_Pusong_Ligaw.mp3",
+    "prompt_lyrics": "",
+    "blank_lyrics": "",
+    "following_lyrics": "",
+    "answer": "Pusong Ligaw",
+    "trivia": "",
+    "start_time": 0.0,
+    "blank_time": 0.0,
+    "hula_replay_time": 0.0,
+    "blanks": [
+      {
+        "index": 1,
+        "lyrics_time": 14.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "'Di kita malimutan",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 2,
+        "lyrics_time": 21.0,
+        "pause_time": 23.719,
+        "prompt_lyrics": "Sa mga",
+        "blank_lyrics": "gabing nagdaan",
+        "following_lyrics": "",
+        "answer": "gabing nagdaan",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 3,
+        "lyrics_time": 29.0,
+        "pause_time": 33.802,
+        "prompt_lyrics": "Ikaw ang pangarap, / nais kong",
+        "blank_lyrics": "makamtan",
+        "following_lyrics": "",
+        "answer": "makamtan",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 4,
+        "lyrics_time": 36.0,
+        "pause_time": 40.151,
+        "prompt_lyrics": "Sa buhay ko ay ikaw ang",
+        "blank_lyrics": "kahulugan",
+        "following_lyrics": "",
+        "answer": "kahulugan",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 5,
+        "lyrics_time": 43.0,
+        "pause_time": 48.187,
+        "prompt_lyrics": "Pag-ibig ko'y walang",
+        "blank_lyrics": "kamatayan",
+        "following_lyrics": "",
+        "answer": "kamatayan",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 6,
+        "lyrics_time": 51.0,
+        "pause_time": 51.942,
+        "prompt_lyrics": "Ako'y",
+        "blank_lyrics": "umaasang",
+        "following_lyrics": "muli kang mahagkan",
+        "answer": "umaasang",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 7,
+        "lyrics_time": 60.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Happy World Teachers' Day!",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 8,
+        "lyrics_time": 73.0,
+        "pause_time": 78.839,
+        "prompt_lyrics": "Ikaw pa rin ang hanap ng",
+        "blank_lyrics": "pusong ligaw",
+        "following_lyrics": "",
+        "answer": "pusong ligaw",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 9,
+        "lyrics_time": 81.0,
+        "pause_time": 85.489,
+        "prompt_lyrics": "Ikaw ang patutunguhan at",
+        "blank_lyrics": "pupuntahan",
+        "following_lyrics": "",
+        "answer": "pupuntahan",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 10,
+        "lyrics_time": 88.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Pag-ibig mo ang hanap ng pusong ligaw",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 11,
+        "lyrics_time": 96.0,
+        "pause_time": 100.331,
+        "prompt_lyrics": "Mula noon, bukas, at",
+        "blank_lyrics": "kailanman",
+        "following_lyrics": "",
+        "answer": "kailanman",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 12,
+        "lyrics_time": 118.0,
+        "pause_time": 124.93,
+        "prompt_lyrics": "Ikaw at ako'y sinulat sa mga",
+        "blank_lyrics": "bituin",
+        "following_lyrics": "",
+        "answer": "bituin",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 13,
+        "lyrics_time": 126.0,
+        "pause_time": 130.101,
+        "prompt_lyrics": "At ang langit sa gabi ang",
+        "blank_lyrics": "sumasalamin",
+        "following_lyrics": "",
+        "answer": "sumasalamin",
+        "is_lyrics_only": false
+      }
+    ]
+  },
+  {
+    "id": "song-07999415",
+    "title": "Can't Help Falling In Love",
+    "artist": "Elvis Presley",
+    "era": "",
+    "mode": "everybody_sing",
+    "audio_url": "/static/audio/cf7226_Cant_Help_Falling_In_Love.mp3",
+    "prompt_lyrics": "",
+    "blank_lyrics": "",
+    "following_lyrics": "",
+    "answer": "Can't Help Falling In Love",
+    "trivia": "",
+    "start_time": 0.0,
+    "blank_time": 0.0,
+    "hula_replay_time": 0.0,
+    "blanks": [
+      {
+        "index": 1,
+        "lyrics_time": 7.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Wise men say / Only fools rush in",
+        "blank_lyrics": "Can't Help Falling In Love",
+        "following_lyrics": "",
+        "answer": "Can't Help Falling In Love",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 2,
+        "lyrics_time": 19.808,
+        "pause_time": 26.808,
+        "prompt_lyrics": "But I can't help",
+        "blank_lyrics": "Falling",
+        "following_lyrics": "in love with you",
+        "answer": "Falling",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 3,
+        "lyrics_time": 34.808,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Shall I stay",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 4,
+        "lyrics_time": 40.808,
+        "pause_time": 45.808,
+        "prompt_lyrics": "Would it be a",
+        "blank_lyrics": "sin?",
+        "following_lyrics": "",
+        "answer": "sin?",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 5,
+        "lyrics_time": 48.808,
+        "pause_time": 0.0,
+        "prompt_lyrics": "If I can't help / Falling in love with you?",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 6,
+        "lyrics_time": 62.867,
+        "pause_time": 69.296,
+        "prompt_lyrics": "Like a river flows / Surely to",
+        "blank_lyrics": "the sea",
+        "following_lyrics": "",
+        "answer": "the sea",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 7,
+        "lyrics_time": 69.867,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Darling, so it goes",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 8,
+        "lyrics_time": 73.897,
+        "pause_time": 78.225,
+        "prompt_lyrics": "Some things are meant",
+        "blank_lyrics": "to be",
+        "following_lyrics": "",
+        "answer": "to be",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 9,
+        "lyrics_time": 80.897,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Take my hand",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 10,
+        "lyrics_time": 86.635,
+        "pause_time": 89.076,
+        "prompt_lyrics": "Take my",
+        "blank_lyrics": "whole life",
+        "following_lyrics": "too",
+        "answer": "whole life",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 11,
+        "lyrics_time": 93.635,
+        "pause_time": 0.0,
+        "prompt_lyrics": "For I can't help",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 12,
+        "lyrics_time": 99.635,
+        "pause_time": 102.525,
+        "prompt_lyrics": "Falling",
+        "blank_lyrics": "in love",
+        "following_lyrics": "with you",
+        "answer": "in love",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 13,
+        "lyrics_time": 108.635,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Like a river flows / Surely to the sea",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 14,
+        "lyrics_time": 115.635,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Darling, so it goes",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 15,
+        "lyrics_time": 118.635,
+        "pause_time": 121.254,
+        "prompt_lyrics": "Some",
+        "blank_lyrics": "things",
+        "following_lyrics": "are meant to be",
+        "answer": "things",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 16,
+        "lyrics_time": 125.635,
+        "pause_time": 131.064,
+        "prompt_lyrics": "Take my",
+        "blank_lyrics": "hand",
+        "following_lyrics": "",
+        "answer": "hand",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 17,
+        "lyrics_time": 132.635,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Take my whole life too",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 18,
+        "lyrics_time": 139.635,
+        "pause_time": 143.344,
+        "prompt_lyrics": "For I",
+        "blank_lyrics": "can't help",
+        "following_lyrics": "",
+        "answer": "can't help",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 19,
+        "lyrics_time": 145.635,
+        "pause_time": 151.635,
+        "prompt_lyrics": "Falling in love with",
+        "blank_lyrics": "you",
+        "following_lyrics": "",
+        "answer": "you",
+        "is_lyrics_only": false
+      }
+    ]
+  },
+  {
+    "id": "song-259a5f40",
+    "title": "Top of the World",
+    "artist": "Carpenters",
+    "era": "",
+    "mode": "everybody_sing",
+    "audio_url": "/static/audio/3f291e_Top_Of_The_World.mp3",
+    "prompt_lyrics": "",
+    "blank_lyrics": "",
+    "following_lyrics": "",
+    "answer": "Top of the World",
+    "trivia": "",
+    "start_time": 0.0,
+    "blank_time": 0.0,
+    "hula_replay_time": 0.0,
+    "blanks": [
+      {
+        "index": 1,
+        "lyrics_time": 17.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Such a feelin's comin' over me",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 2,
+        "lyrics_time": 22.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "There is wonder in 'most every thing I see",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 3,
+        "lyrics_time": 27.0,
+        "pause_time": 28.881,
+        "prompt_lyrics": "Not a cloud in",
+        "blank_lyrics": "the sky,",
+        "following_lyrics": "got the sun in my eyes",
+        "answer": "the sky,",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 4,
+        "lyrics_time": 32.0,
+        "pause_time": 35.811,
+        "prompt_lyrics": "And I won't be surprised if it's a",
+        "blank_lyrics": "dream",
+        "following_lyrics": "",
+        "answer": "dream",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 5,
+        "lyrics_time": 38.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Everything I want the world to be",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 6,
+        "lyrics_time": 42.0,
+        "pause_time": 45.811,
+        "prompt_lyrics": "Is now comin' true especially",
+        "blank_lyrics": "for me",
+        "following_lyrics": "",
+        "answer": "for me",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 7,
+        "lyrics_time": 48.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "And the reason is clear, /  it's because you are here",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 8,
+        "lyrics_time": 53.0,
+        "pause_time": 55.299,
+        "prompt_lyrics": "You're the nearest thing to",
+        "blank_lyrics": "heaven",
+        "following_lyrics": "that I've seen",
+        "answer": "heaven",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 9,
+        "lyrics_time": 58.0,
+        "pause_time": 62.649,
+        "prompt_lyrics": "I'm on the top of the world lookin' down on",
+        "blank_lyrics": "creation",
+        "following_lyrics": "",
+        "answer": "creation",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 10,
+        "lyrics_time": 63.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "And the only explanation I can find",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 11,
+        "lyrics_time": 69.0,
+        "pause_time": 72.6,
+        "prompt_lyrics": "Is the love that I've found ever since you've",
+        "blank_lyrics": "been around",
+        "following_lyrics": "",
+        "answer": "been around",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 12,
+        "lyrics_time": 74.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Your love's put me at the top of the world",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 13,
+        "lyrics_time": 85.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Somethin' in the wind has learned my name",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 14,
+        "lyrics_time": 89.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "And it's tellin' me that things are not the same",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 15,
+        "lyrics_time": 94.0,
+        "pause_time": 96.441,
+        "prompt_lyrics": "In the leaves on",
+        "blank_lyrics": "the trees",
+        "following_lyrics": "and the touch of the breeze",
+        "answer": "the trees",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 16,
+        "lyrics_time": 100.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "There's a pleasin' sense of happiness for me",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 17,
+        "lyrics_time": 105.0,
+        "pause_time": 108.199,
+        "prompt_lyrics": "There is only one wish on",
+        "blank_lyrics": "my mind",
+        "following_lyrics": "",
+        "answer": "my mind",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 18,
+        "lyrics_time": 110.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "When this day is through I hope that I will find",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 19,
+        "lyrics_time": 115.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "That tomorrow will be just the same for you and me",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 20,
+        "lyrics_time": 121.0,
+        "pause_time": 123.725,
+        "prompt_lyrics": "All I need will be mine if you",
+        "blank_lyrics": "are here",
+        "following_lyrics": "",
+        "answer": "are here",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 21,
+        "lyrics_time": 125.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "I'm on the top of the world lookin'  / down on creation",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 22,
+        "lyrics_time": 131.0,
+        "pause_time": 133.958,
+        "prompt_lyrics": "And the only explanation I",
+        "blank_lyrics": "can find",
+        "following_lyrics": "",
+        "answer": "can find",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 23,
+        "lyrics_time": 136.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Is the love that I've found / ever since you've been around",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 24,
+        "lyrics_time": 141.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Your love's put me at the top of the world",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      }
+    ]
+  },
+  {
+    "id": "song-7bb68ec8",
+    "title": "Stand By Me",
+    "artist": "Ben E. King",
+    "era": "",
+    "mode": "everybody_sing",
+    "audio_url": "/static/audio/ac5715_Stand_By_Me.mp3",
+    "prompt_lyrics": "",
+    "blank_lyrics": "",
+    "following_lyrics": "",
+    "answer": "Stand By Me",
+    "trivia": "",
+    "start_time": 0.0,
+    "blank_time": 0.0,
+    "hula_replay_time": 0.0,
+    "blanks": [
+      {
+        "index": 1,
+        "lyrics_time": 16.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "When the night has come",
+        "blank_lyrics": "Stand By Me",
+        "following_lyrics": "",
+        "answer": "Stand By Me",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 2,
+        "lyrics_time": 21.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "And the land is dark",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 3,
+        "lyrics_time": 24.0,
+        "pause_time": 26.837,
+        "prompt_lyrics": "And the moon is the",
+        "blank_lyrics": "only light",
+        "following_lyrics": "we'll see",
+        "answer": "only light",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 4,
+        "lyrics_time": 32.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "No, I won't be afraid, / oh, I won't be afraid",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 5,
+        "lyrics_time": 40.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Just as long as you stand, stand by me",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 6,
+        "lyrics_time": 47.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "So darlin', darlin', stand by me, oh, stand by me",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 7,
+        "lyrics_time": 56.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Oh, stand, stand by me, stand by me",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 8,
+        "lyrics_time": 64.0,
+        "pause_time": 67.039,
+        "prompt_lyrics": "If the sky that we",
+        "blank_lyrics": "look upon",
+        "following_lyrics": "",
+        "answer": "look upon",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 9,
+        "lyrics_time": 70.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Should tumble and fall",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 10,
+        "lyrics_time": 72.0,
+        "pause_time": 73.268,
+        "prompt_lyrics": "Or the",
+        "blank_lyrics": "mountains",
+        "following_lyrics": "should crumble to the sea",
+        "answer": "mountains",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 11,
+        "lyrics_time": 80.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "I won't cry, I won't cry, no, I won't shed a tear",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 12,
+        "lyrics_time": 88.0,
+        "pause_time": 93.251,
+        "prompt_lyrics": "Just as long as you stand, stand",
+        "blank_lyrics": "by me",
+        "following_lyrics": "",
+        "answer": "by me",
+        "is_lyrics_only": false
+      }
+    ]
+  },
+  {
+    "id": "song-f14c9f8a",
+    "title": "Wonderful Tonight",
+    "artist": "Eric Clapton",
+    "era": "",
+    "mode": "everybody_sing",
+    "audio_url": "/static/audio/695b1e_Wonderful_Tonight.mp3",
+    "prompt_lyrics": "",
+    "blank_lyrics": "",
+    "following_lyrics": "",
+    "answer": "Wonderful Tonight",
+    "trivia": "",
+    "start_time": 0.0,
+    "blank_time": 0.0,
+    "hula_replay_time": 0.0,
+    "blanks": [
+      {
+        "index": 1,
+        "lyrics_time": 21.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "It's late in the evening, she's wondering what clothes to wear",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 2,
+        "lyrics_time": 31.0,
+        "pause_time": 32.681,
+        "prompt_lyrics": "She puts on",
+        "blank_lyrics": "her make-up",
+        "following_lyrics": "and brushes her long blonde hair",
+        "answer": "her make-up",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 3,
+        "lyrics_time": 41.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "And then she asks me, \"Do I look all right?\"",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 4,
+        "lyrics_time": 50.0,
+        "pause_time": 53.59,
+        "prompt_lyrics": "And I say, \"Yes, you look",
+        "blank_lyrics": "wonderful tonight\"",
+        "following_lyrics": "",
+        "answer": "wonderful tonight\"",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 5,
+        "lyrics_time": 67.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "We go to a party and everyone turns to see",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 6,
+        "lyrics_time": 77.0,
+        "pause_time": 77.641,
+        "prompt_lyrics": "This",
+        "blank_lyrics": "beautiful lady",
+        "following_lyrics": "that's walking around with me",
+        "answer": "beautiful lady",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 7,
+        "lyrics_time": 87.0,
+        "pause_time": 93.13,
+        "prompt_lyrics": "And then she asks me, / \"Do you feel",
+        "blank_lyrics": "all right?\"",
+        "following_lyrics": "",
+        "answer": "all right?\"",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 8,
+        "lyrics_time": 95.0,
+        "pause_time": 99.232,
+        "prompt_lyrics": "And I say, \"Yes, I feel",
+        "blank_lyrics": "wonderful tonight\"",
+        "following_lyrics": "",
+        "answer": "wonderful tonight\"",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 9,
+        "lyrics_time": 105.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "I feel wonderful because I see",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 10,
+        "lyrics_time": 111.0,
+        "pause_time": 113.49,
+        "prompt_lyrics": "The love light in",
+        "blank_lyrics": "your eyes",
+        "following_lyrics": "",
+        "answer": "your eyes",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 11,
+        "lyrics_time": 116.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "And the wonder of it all",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 12,
+        "lyrics_time": 121.0,
+        "pause_time": 126.819,
+        "prompt_lyrics": "Is that you just don't realize how much I",
+        "blank_lyrics": "love you",
+        "following_lyrics": "",
+        "answer": "love you",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 13,
+        "lyrics_time": 148.0,
+        "pause_time": 154.371,
+        "prompt_lyrics": "It's time to go home now / and I've got an",
+        "blank_lyrics": "aching head",
+        "following_lyrics": "",
+        "answer": "aching head",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 14,
+        "lyrics_time": 158.0,
+        "pause_time": 164.848,
+        "prompt_lyrics": "So I give her the car keys and she helps me",
+        "blank_lyrics": "to bed",
+        "following_lyrics": "",
+        "answer": "to bed",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 15,
+        "lyrics_time": 168.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "And then I tell her, as I turn out the light",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 16,
+        "lyrics_time": 177.0,
+        "pause_time": 180.55,
+        "prompt_lyrics": "I say, \"My darling, you were",
+        "blank_lyrics": "wonderful tonight",
+        "following_lyrics": "",
+        "answer": "wonderful tonight",
+        "is_lyrics_only": false
+      }
+    ]
+  },
+  {
+    "id": "song-9375b199",
+    "title": "Nothing's Gonna Change My Love for You",
+    "artist": "George Benson",
+    "era": "",
+    "mode": "everybody_sing",
+    "audio_url": "/static/audio/cbc6d6_Nothings_Gonna_Change_My_Love_for_You.mp3",
+    "prompt_lyrics": "",
+    "blank_lyrics": "",
+    "following_lyrics": "",
+    "answer": "Nothing's Gonna Change My Love for You",
+    "trivia": "",
+    "start_time": 0.0,
+    "blank_time": 0.0,
+    "hula_replay_time": 0.0,
+    "blanks": [
+      {
+        "index": 1,
+        "lyrics_time": 17.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "If I had to live my life without you near me",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 2,
+        "lyrics_time": 22.0,
+        "pause_time": 24.229,
+        "prompt_lyrics": "The days would all",
+        "blank_lyrics": "be empty",
+        "following_lyrics": "",
+        "answer": "be empty",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 3,
+        "lyrics_time": 27.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "The nights would seem so long",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 4,
+        "lyrics_time": 31.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "With you I see forever, oh, so clearly",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 5,
+        "lyrics_time": 36.0,
+        "pause_time": 39.127,
+        "prompt_lyrics": "I might have been in love",
+        "blank_lyrics": "before",
+        "following_lyrics": "",
+        "answer": "before",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 6,
+        "lyrics_time": 41.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "But it never felt this strong",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 7,
+        "lyrics_time": 45.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Our dreams are young and we both know",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 8,
+        "lyrics_time": 49.0,
+        "pause_time": 51.441,
+        "prompt_lyrics": "They'll take us where we want",
+        "blank_lyrics": "to go",
+        "following_lyrics": "",
+        "answer": "to go",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 9,
+        "lyrics_time": 52.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Hold me now, touch me now",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 10,
+        "lyrics_time": 56.0,
+        "pause_time": 58.366,
+        "prompt_lyrics": "I don't want to live",
+        "blank_lyrics": "without you",
+        "following_lyrics": "",
+        "answer": "without you",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 11,
+        "lyrics_time": 61.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Nothing's gonna change my love for you",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 12,
+        "lyrics_time": 64.0,
+        "pause_time": 67.17,
+        "prompt_lyrics": "You oughta know by now how much",
+        "blank_lyrics": "I love you",
+        "following_lyrics": "",
+        "answer": "I love you",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 13,
+        "lyrics_time": 68.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "One thing you can be sure of",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 14,
+        "lyrics_time": 72.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "I'll never ask for more than your love",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 15,
+        "lyrics_time": 75.0,
+        "pause_time": 77.57,
+        "prompt_lyrics": "Nothing's gonna change my love",
+        "blank_lyrics": "for you",
+        "following_lyrics": "",
+        "answer": "for you",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 16,
+        "lyrics_time": 78.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "You oughta know by now how much I love you",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 17,
+        "lyrics_time": 83.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "The world may change my whole life through",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 18,
+        "lyrics_time": 85.0,
+        "pause_time": 86.991,
+        "prompt_lyrics": "But nothing's",
+        "blank_lyrics": "gonna change",
+        "following_lyrics": "my love for you",
+        "answer": "gonna change",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 19,
+        "lyrics_time": 93.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "If the road ahead is not so easy / Our love will lead the way for us",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 20,
+        "lyrics_time": 103.0,
+        "pause_time": 104.399,
+        "prompt_lyrics": "Like a",
+        "blank_lyrics": "guiding star",
+        "following_lyrics": "",
+        "answer": "guiding star",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 21,
+        "lyrics_time": 106.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "I'll be there for you if you should need me",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 22,
+        "lyrics_time": 112.0,
+        "pause_time": 113.771,
+        "prompt_lyrics": "You don't have",
+        "blank_lyrics": "to change",
+        "following_lyrics": "a thing",
+        "answer": "to change",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 23,
+        "lyrics_time": 117.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "I love you just the way you are",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 24,
+        "lyrics_time": 121.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "So come with me and share the view",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 25,
+        "lyrics_time": 124.0,
+        "pause_time": 125.811,
+        "prompt_lyrics": "I'll help you see",
+        "blank_lyrics": "forever too",
+        "following_lyrics": "",
+        "answer": "forever too",
+        "is_lyrics_only": false
+      }
+    ]
+  },
+  {
+    "id": "song-25d8e49e",
+    "title": "Harana",
+    "artist": "Parokya ni Edgar",
+    "era": "",
+    "mode": "everybody_sing",
+    "audio_url": "/static/audio/ebd5b0_Harana.mp3",
+    "prompt_lyrics": "",
+    "blank_lyrics": "",
+    "following_lyrics": "",
+    "answer": "Harana",
+    "trivia": "",
+    "start_time": 0.0,
+    "blank_time": 0.0,
+    "hula_replay_time": 0.0,
+    "blanks": [
+      {
+        "index": 1,
+        "lyrics_time": 13.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Uso pa ba ang harana",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 2,
+        "lyrics_time": 19.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Marahil ikaw ay nagtataka",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 3,
+        "lyrics_time": 25.0,
+        "pause_time": 27.659,
+        "prompt_lyrics": "Sino ba 'tong",
+        "blank_lyrics": "mukhang gago",
+        "following_lyrics": "",
+        "answer": "mukhang gago",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 4,
+        "lyrics_time": 29.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Nagkandarapa sa pagkanta",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 5,
+        "lyrics_time": 32.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "At nasisintunado sa kaba",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 6,
+        "lyrics_time": 38.0,
+        "pause_time": 40.13,
+        "prompt_lyrics": "Mayron pang dalang",
+        "blank_lyrics": "mga rosas",
+        "following_lyrics": "",
+        "answer": "mga rosas",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 7,
+        "lyrics_time": 44.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Suot nama'y maong na kupas",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 8,
+        "lyrics_time": 51.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "At nariyan pa ang barkada",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 9,
+        "lyrics_time": 55.0,
+        "pause_time": 55.7,
+        "prompt_lyrics": "Naka-porma",
+        "blank_lyrics": "naka-barong",
+        "following_lyrics": "",
+        "answer": "naka-barong",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 10,
+        "lyrics_time": 57.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Sa awiting daig pa ang minus one at sing-along",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 11,
+        "lyrics_time": 64.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Puno ang langit ng bituin",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 12,
+        "lyrics_time": 67.0,
+        "pause_time": 68.733,
+        "prompt_lyrics": "At kay lamig pa ng",
+        "blank_lyrics": "hangin",
+        "following_lyrics": "",
+        "answer": "hangin",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 13,
+        "lyrics_time": 70.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Sa 'yong tingin ako'y nababaliw giliw",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 14,
+        "lyrics_time": 76.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "At sa awitin kong ito",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 15,
+        "lyrics_time": 79.0,
+        "pause_time": 80.309,
+        "prompt_lyrics": "Sana'y",
+        "blank_lyrics": "maibigan mo",
+        "following_lyrics": "",
+        "answer": "maibigan mo",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 16,
+        "lyrics_time": 83.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Ibubuhos ko ang buong puso ko",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 17,
+        "lyrics_time": 89.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Sa isang munting harana",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 18,
+        "lyrics_time": 94.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Para sa'yo",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 19,
+        "lyrics_time": 108.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Di ba parang isang sine",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 20,
+        "lyrics_time": 114.0,
+        "pause_time": 116.579,
+        "prompt_lyrics": "Isang pelikulang",
+        "blank_lyrics": "romantiko",
+        "following_lyrics": "",
+        "answer": "romantiko",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 21,
+        "lyrics_time": 120.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Di ba't ikaw ang bidang artista / At ako ang 'yong leading man",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 22,
+        "lyrics_time": 127.0,
+        "pause_time": 127.849,
+        "prompt_lyrics": "Sa istoryang",
+        "blank_lyrics": "nagwawakas",
+        "following_lyrics": "",
+        "answer": "nagwawakas",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 23,
+        "lyrics_time": 129.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Sa pag-ibig na wagas",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 24,
+        "lyrics_time": 133.0,
+        "pause_time": 135.548,
+        "prompt_lyrics": "Puno ang langit ng",
+        "blank_lyrics": "bituin",
+        "following_lyrics": "",
+        "answer": "bituin",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 25,
+        "lyrics_time": 137.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "At kay lamig pa ng hangin",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 26,
+        "lyrics_time": 140.0,
+        "pause_time": 142.499,
+        "prompt_lyrics": "Sa 'yong tingin ako'y",
+        "blank_lyrics": "nababaliw",
+        "following_lyrics": "giliw",
+        "answer": "nababaliw",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 27,
+        "lyrics_time": 146.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "At sa awitin kong ito",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 28,
+        "lyrics_time": 149.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Sana'y maibigan mo",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 29,
+        "lyrics_time": 152.0,
+        "pause_time": 155.199,
+        "prompt_lyrics": "Ibubuhos ko ang",
+        "blank_lyrics": "buong puso",
+        "following_lyrics": "ko",
+        "answer": "buong puso",
+        "is_lyrics_only": false
+      }
+    ]
+  },
+  {
+    "id": "song-0b6576e3",
+    "title": "Ang Huling El Bimbo",
+    "artist": "Eraserheads",
+    "era": "",
+    "mode": "everybody_sing",
+    "audio_url": "/static/audio/aff7ed_Ang_Huling_El_Bimbo.mp3",
+    "prompt_lyrics": "",
+    "blank_lyrics": "",
+    "following_lyrics": "",
+    "answer": "Ang Huling El Bimbo",
+    "trivia": "",
+    "start_time": 0.0,
+    "blank_time": 0.0,
+    "hula_replay_time": 0.0,
+    "blanks": [
+      {
+        "index": 1,
+        "lyrics_time": 20.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Kamukha mo si Paraluman",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 2,
+        "lyrics_time": 28.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Nung tayo ay bata pa",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 3,
+        "lyrics_time": 33.0,
+        "pause_time": 35.83,
+        "prompt_lyrics": "At ang galing galing mong",
+        "blank_lyrics": "sumayaw",
+        "following_lyrics": "",
+        "answer": "sumayaw",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 4,
+        "lyrics_time": 38.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Mapa boogie man o cha cha",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 5,
+        "lyrics_time": 43.0,
+        "pause_time": 50.471,
+        "prompt_lyrics": "Ngunit ang paborito / Ay ang pagsayaw mo ng",
+        "blank_lyrics": "El Bimbo",
+        "following_lyrics": "",
+        "answer": "El Bimbo",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 6,
+        "lyrics_time": 53.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Nakakaindak nakakaaliw",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 7,
+        "lyrics_time": 58.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Nakakatindig balahibo",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 8,
+        "lyrics_time": 65.0,
+        "pause_time": 67.368,
+        "prompt_lyrics": "Pagkaggaling sa",
+        "blank_lyrics": "eskwela",
+        "following_lyrics": "ay dideretso na sa inyo",
+        "answer": "eskwela",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 9,
+        "lyrics_time": 76.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "At buong maghapon ay tinuturuan mo ako",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 10,
+        "lyrics_time": 88.0,
+        "pause_time": 92.212,
+        "prompt_lyrics": "Magkahawak ang ating",
+        "blank_lyrics": "kamay",
+        "following_lyrics": "",
+        "answer": "kamay",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 11,
+        "lyrics_time": 93.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "At walang kamalay-malay / na tinuruan mo ang puso ko",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 12,
+        "lyrics_time": 105.0,
+        "pause_time": 107.408,
+        "prompt_lyrics": "Na umibig ng",
+        "blank_lyrics": "tunay",
+        "following_lyrics": "",
+        "answer": "tunay",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 13,
+        "lyrics_time": 111.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Naninigas ang aking katawan",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 14,
+        "lyrics_time": 117.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Pag umikot na ang plaka",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 15,
+        "lyrics_time": 123.0,
+        "pause_time": 125.641,
+        "prompt_lyrics": "Patay sa kembot ng",
+        "blank_lyrics": "beywang mo",
+        "following_lyrics": "",
+        "answer": "beywang mo",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 16,
+        "lyrics_time": 128.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "At pungay ng yong mga mata",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 17,
+        "lyrics_time": 132.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Lumiliwanag ang buhay",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 18,
+        "lyrics_time": 138.0,
+        "pause_time": 139.759,
+        "prompt_lyrics": "Habang tayo'y",
+        "blank_lyrics": "magkaakbay",
+        "following_lyrics": "",
+        "answer": "magkaakbay",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 19,
+        "lyrics_time": 143.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "At dahang dahang dumudulas",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 20,
+        "lyrics_time": 148.0,
+        "pause_time": 151.532,
+        "prompt_lyrics": "Ang kamay ko sa makinis",
+        "blank_lyrics": "mong braso",
+        "following_lyrics": "",
+        "answer": "mong braso",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 21,
+        "lyrics_time": 156.0,
+        "pause_time": 159.66,
+        "prompt_lyrics": "Sana noon pa man ay",
+        "blank_lyrics": "sinabi",
+        "following_lyrics": "na sa iyo",
+        "answer": "sinabi",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 22,
+        "lyrics_time": 166.0,
+        "pause_time": 172.031,
+        "prompt_lyrics": "Kahit hindi na uso ay ito lang ang",
+        "blank_lyrics": "alam ko",
+        "following_lyrics": "",
+        "answer": "alam ko",
+        "is_lyrics_only": false
+      }
+    ]
+  },
+  {
+    "id": "song-54996b67",
+    "title": "Panalangin",
+    "artist": "APO Hiking Society",
+    "era": "",
+    "mode": "everybody_sing",
+    "audio_url": "/static/audio/d9c416_Panalangin.mp3",
+    "prompt_lyrics": "",
+    "blank_lyrics": "",
+    "following_lyrics": "",
+    "answer": "Panalangin",
+    "trivia": "",
+    "start_time": 0.0,
+    "blank_time": 0.0,
+    "hula_replay_time": 0.0,
+    "blanks": [
+      {
+        "index": 1,
+        "lyrics_time": 19.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Panalangin ko sa habang-buhay",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 2,
+        "lyrics_time": 25.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Makapiling ka, makasama ka",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 3,
+        "lyrics_time": 28.0,
+        "pause_time": 29.026,
+        "prompt_lyrics": "'Yan ang",
+        "blank_lyrics": "panalangin ko",
+        "following_lyrics": "",
+        "answer": "panalangin ko",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 4,
+        "lyrics_time": 33.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "At hindi papayag ang pusong ito",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 5,
+        "lyrics_time": 39.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Mawala ka sa 'king piling",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 6,
+        "lyrics_time": 42.0,
+        "pause_time": 44.621,
+        "prompt_lyrics": "Mahal ko, iyong",
+        "blank_lyrics": "dinggin",
+        "following_lyrics": "",
+        "answer": "dinggin",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 7,
+        "lyrics_time": 49.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Wala nang iba pang mas mahalaga",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 8,
+        "lyrics_time": 55.0,
+        "pause_time": 59.879,
+        "prompt_lyrics": "Sa tamis na dulot ng pag-ibig",
+        "blank_lyrics": "nating dal'wa",
+        "following_lyrics": "",
+        "answer": "nating dal'wa",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 9,
+        "lyrics_time": 62.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "At sana naman, makikinig ka",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 10,
+        "lyrics_time": 68.0,
+        "pause_time": 71.801,
+        "prompt_lyrics": "Kapag aking sasabihing",
+        "blank_lyrics": "minamahal kita",
+        "following_lyrics": "",
+        "answer": "minamahal kita",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 11,
+        "lyrics_time": 78.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Panalangin ko sa habang-buhay",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 12,
+        "lyrics_time": 84.0,
+        "pause_time": 86.122,
+        "prompt_lyrics": "Makapiling ka,",
+        "blank_lyrics": "makasama ka",
+        "following_lyrics": "",
+        "answer": "makasama ka",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 13,
+        "lyrics_time": 87.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "'Yan ang panalangin ko",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 14,
+        "lyrics_time": 92.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "At hindi papayag ang pusong ito",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 15,
+        "lyrics_time": 98.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Mawala ka sa 'king piling",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 16,
+        "lyrics_time": 102.0,
+        "pause_time": 103.86,
+        "prompt_lyrics": "Mahal ko, iyong",
+        "blank_lyrics": "dinggin",
+        "following_lyrics": "",
+        "answer": "dinggin",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 17,
+        "lyrics_time": 108.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Wala nang iba pang mas mahalaga",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 18,
+        "lyrics_time": 114.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Sa tamis na dulot ng pag-ibig nating dal'wa",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 19,
+        "lyrics_time": 121.0,
+        "pause_time": 124.49,
+        "prompt_lyrics": "At sana naman,",
+        "blank_lyrics": "makikinig ka",
+        "following_lyrics": "",
+        "answer": "makikinig ka",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 20,
+        "lyrics_time": 127.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Kapag aking sasabihing minamahal kita",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 21,
+        "lyrics_time": 136.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Shoo-bi-doo-bi-doo-wah / Panalangin ko sa habang-buhay",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 22,
+        "lyrics_time": 143.0,
+        "pause_time": 143.261,
+        "prompt_lyrics": ".",
+        "blank_lyrics": "Makapiling ka,",
+        "following_lyrics": "makasama ka",
+        "answer": "Makapiling ka,",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 23,
+        "lyrics_time": 146.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "'Yan ang panalangin ko (ooh)",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 24,
+        "lyrics_time": 151.0,
+        "pause_time": 154.91,
+        "prompt_lyrics": "At hindi papayag ang",
+        "blank_lyrics": "pusong ito",
+        "following_lyrics": "",
+        "answer": "pusong ito",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 25,
+        "lyrics_time": 157.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Mawala ka sa 'king piling",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 26,
+        "lyrics_time": 160.0,
+        "pause_time": 161.527,
+        "prompt_lyrics": "Mahal ko,",
+        "blank_lyrics": "iyong dinggin",
+        "following_lyrics": "(ooh, wah)",
+        "answer": "iyong dinggin",
+        "is_lyrics_only": false
+      }
+    ]
+  },
+  {
+    "id": "song-5a1c38df",
+    "title": "Torete",
+    "artist": "Moonstar88",
+    "era": "",
+    "mode": "everybody_sing",
+    "audio_url": "/static/audio/d31103_Torete.mp3",
+    "prompt_lyrics": "",
+    "blank_lyrics": "",
+    "following_lyrics": "",
+    "answer": "Torete",
+    "trivia": "",
+    "start_time": 0.0,
+    "blank_time": 0.0,
+    "hula_replay_time": 0.0,
+    "blanks": [
+      {
+        "index": 1,
+        "lyrics_time": 26.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Sandali na lang / Maaari bang pagbigyan",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 2,
+        "lyrics_time": 38.0,
+        "pause_time": 47.271,
+        "prompt_lyrics": "Aalis na nga / Maaari bang",
+        "blank_lyrics": "hawakan",
+        "following_lyrics": "ang Iyong mga kamay",
+        "answer": "hawakan",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 3,
+        "lyrics_time": 57.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Sana ay maabot ang langit",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 4,
+        "lyrics_time": 63.0,
+        "pause_time": 71.321,
+        "prompt_lyrics": "Ang iyong mga ngiti / Sana ay",
+        "blank_lyrics": "masilip",
+        "following_lyrics": "",
+        "answer": "masilip",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 5,
+        "lyrics_time": 75.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "'Wag kang mag-alala / Di ko ipipilit sa'yo",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 6,
+        "lyrics_time": 87.0,
+        "pause_time": 90.059,
+        "prompt_lyrics": "At kahit na",
+        "blank_lyrics": "lilipad",
+        "following_lyrics": "Ang isip ko'y torete sa'yo",
+        "answer": "lilipad",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 7,
+        "lyrics_time": 100.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Ilang gabi pa nga lang",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 8,
+        "lyrics_time": 105.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Nang tayo'y pinagtagpo",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 9,
+        "lyrics_time": 112.0,
+        "pause_time": 113.927,
+        "prompt_lyrics": "Na parang may",
+        "blank_lyrics": "tumulak",
+        "following_lyrics": "",
+        "answer": "tumulak",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 10,
+        "lyrics_time": 116.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Nanlalamig nanginginig na ako",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 11,
+        "lyrics_time": 124.0,
+        "pause_time": 126.299,
+        "prompt_lyrics": "Akala ko nung",
+        "blank_lyrics": "una",
+        "following_lyrics": "",
+        "answer": "una",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 12,
+        "lyrics_time": 129.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "May bukas ang ganito",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 13,
+        "lyrics_time": 136.0,
+        "pause_time": 138.049,
+        "prompt_lyrics": "Mabuti pang",
+        "blank_lyrics": "umiwas",
+        "following_lyrics": "",
+        "answer": "umiwas",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 14,
+        "lyrics_time": 140.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Pero salamat na rin at nagtagpo",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 15,
+        "lyrics_time": 149.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Torete torete torete ako",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 16,
+        "lyrics_time": 162.0,
+        "pause_time": 170.301,
+        "prompt_lyrics": "Torete torete torete",
+        "blank_lyrics": "sa iyo",
+        "following_lyrics": "",
+        "answer": "sa iyo",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 17,
+        "lyrics_time": 174.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "'Wag kang mag-alala",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 18,
+        "lyrics_time": 180.0,
+        "pause_time": 182.416,
+        "prompt_lyrics": "Di ko",
+        "blank_lyrics": "ipipilit sa'yo",
+        "following_lyrics": "",
+        "answer": "ipipilit sa'yo",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 19,
+        "lyrics_time": 186.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "At kahit na lilipad",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 20,
+        "lyrics_time": 192.0,
+        "pause_time": 194.612,
+        "prompt_lyrics": "Ang isip ko'y",
+        "blank_lyrics": "torete sa'yo",
+        "following_lyrics": "",
+        "answer": "torete sa'yo",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 21,
+        "lyrics_time": 201.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Torete torete torete ako",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 22,
+        "lyrics_time": 213.0,
+        "pause_time": 221.229,
+        "prompt_lyrics": "Torete torete torete",
+        "blank_lyrics": "sa'yo",
+        "following_lyrics": "",
+        "answer": "sa'yo",
+        "is_lyrics_only": false
+      }
+    ]
+  },
+  {
+    "id": "song-f922e6a5",
+    "title": "Just the Way You Are",
+    "artist": "Bruno Mars",
+    "era": "",
+    "mode": "everybody_sing",
+    "audio_url": "/static/audio/3d31d7_Just_The_Way_You_Are_1.mp3",
+    "prompt_lyrics": "",
+    "blank_lyrics": "",
+    "following_lyrics": "",
+    "answer": "Just the Way You Are",
+    "trivia": "",
+    "start_time": 0.0,
+    "blank_time": 0.0,
+    "hula_replay_time": 0.0,
+    "blanks": [
+      {
+        "index": 1,
+        "lyrics_time": 17.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Oh, her eyes, her eyes / Make the stars look like they're not shinin'",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 2,
+        "lyrics_time": 22.0,
+        "pause_time": 25.982,
+        "prompt_lyrics": "Her hair, her hair / Falls perfectly without her",
+        "blank_lyrics": "tryin'",
+        "following_lyrics": "",
+        "answer": "tryin'",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 3,
+        "lyrics_time": 27.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "She's so beautiful and I tell her everyday",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 4,
+        "lyrics_time": 34.0,
+        "pause_time": 37.671,
+        "prompt_lyrics": "Yeah, I know, I know / When I",
+        "blank_lyrics": "compliment",
+        "following_lyrics": "her, she won't believe me",
+        "answer": "compliment",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 5,
+        "lyrics_time": 40.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "And it's so, it's so / Sad to think that she don't see what I see",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 6,
+        "lyrics_time": 44.0,
+        "pause_time": 47.132,
+        "prompt_lyrics": "But every time she asks me, \"Do I look",
+        "blank_lyrics": "okay?\"",
+        "following_lyrics": "I say",
+        "answer": "okay?\"",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 7,
+        "lyrics_time": 51.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "When I see your face",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 8,
+        "lyrics_time": 56.0,
+        "pause_time": 59.288,
+        "prompt_lyrics": "There's not a thing that I would",
+        "blank_lyrics": "change",
+        "following_lyrics": "",
+        "answer": "change",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 9,
+        "lyrics_time": 60.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "'Cause you're amazing / Just the way you are",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 10,
+        "lyrics_time": 69.0,
+        "pause_time": 70.368,
+        "prompt_lyrics": "And when you",
+        "blank_lyrics": "smile",
+        "following_lyrics": "",
+        "answer": "smile",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 11,
+        "lyrics_time": 73.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "The whole world stops and stares for a while",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 12,
+        "lyrics_time": 78.0,
+        "pause_time": 79.03,
+        "prompt_lyrics": "'Cause girl, you're",
+        "blank_lyrics": "amazing",
+        "following_lyrics": "",
+        "answer": "amazing",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 13,
+        "lyrics_time": 81.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Just the way you are / Yeah",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 14,
+        "lyrics_time": 88.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Her lips, her lips",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 15,
+        "lyrics_time": 90.0,
+        "pause_time": 90.589,
+        "prompt_lyrics": "I could",
+        "blank_lyrics": "kiss them",
+        "following_lyrics": "all day if she'd let me",
+        "answer": "kiss them",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 16,
+        "lyrics_time": 93.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Her laugh, her laugh / She hates, but I think it's so sexy",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 17,
+        "lyrics_time": 97.0,
+        "pause_time": 98.0,
+        "prompt_lyrics": "She's so",
+        "blank_lyrics": "beautiful",
+        "following_lyrics": "and I tell her everyday",
+        "answer": "beautiful",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 18,
+        "lyrics_time": 103.0,
+        "pause_time": 108.88,
+        "prompt_lyrics": "Oh, you know, you know / You know I'd never ask you to",
+        "blank_lyrics": "change",
+        "following_lyrics": "",
+        "answer": "change",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 19,
+        "lyrics_time": 110.0,
+        "pause_time": 113.109,
+        "prompt_lyrics": "If perfect's what you're searchin' for, then just stay",
+        "blank_lyrics": "the same",
+        "following_lyrics": "",
+        "answer": "the same",
+        "is_lyrics_only": false
+      }
+    ]
+  },
+  {
+    "id": "song-2a5775fd",
+    "title": "A Thousand Years",
+    "artist": "Christina Perri",
+    "era": "",
+    "mode": "everybody_sing",
+    "audio_url": "/static/audio/f95d5c_a_thousand_years.mp3",
+    "prompt_lyrics": "",
+    "blank_lyrics": "",
+    "following_lyrics": "",
+    "answer": "A Thousand Years",
+    "trivia": "",
+    "start_time": 0.0,
+    "blank_time": 0.0,
+    "hula_replay_time": 0.0,
+    "blanks": [
+      {
+        "index": 1,
+        "lyrics_time": 20.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Heart beats fast, colors and promises",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 2,
+        "lyrics_time": 30.0,
+        "pause_time": 30.911,
+        "prompt_lyrics": "How to be",
+        "blank_lyrics": "brave?",
+        "following_lyrics": "How can I love when I'm afraid to fall?",
+        "answer": "brave?",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 3,
+        "lyrics_time": 40.0,
+        "pause_time": 42.461,
+        "prompt_lyrics": "But watching you stand",
+        "blank_lyrics": "alone",
+        "following_lyrics": "",
+        "answer": "alone",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 4,
+        "lyrics_time": 45.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "All of my doubt suddenly goes away somehow",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 5,
+        "lyrics_time": 54.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "One step closer",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 6,
+        "lyrics_time": 62.0,
+        "pause_time": 64.409,
+        "prompt_lyrics": "I have died every day",
+        "blank_lyrics": "waiting",
+        "following_lyrics": "for you",
+        "answer": "waiting",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 7,
+        "lyrics_time": 67.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Darling, don't be afraid",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 8,
+        "lyrics_time": 70.0,
+        "pause_time": 72.467,
+        "prompt_lyrics": "I have loved you for a",
+        "blank_lyrics": "thousand years",
+        "following_lyrics": "",
+        "answer": "thousand years",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 9,
+        "lyrics_time": 76.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "I'll love you for a thousand more",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 10,
+        "lyrics_time": 83.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "LISTEN.....",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 11,
+        "lyrics_time": 88.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Time stands still, beauty in all she is",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 12,
+        "lyrics_time": 97.0,
+        "pause_time": 98.03,
+        "prompt_lyrics": "I will be",
+        "blank_lyrics": "brave",
+        "following_lyrics": "I will not let anything take away",
+        "answer": "brave",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 13,
+        "lyrics_time": 107.0,
+        "pause_time": 108.289,
+        "prompt_lyrics": "What's standing in",
+        "blank_lyrics": "front",
+        "following_lyrics": "of me",
+        "answer": "front",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 14,
+        "lyrics_time": 112.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Every breath, every hour has come to this",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 15,
+        "lyrics_time": 121.0,
+        "pause_time": 123.461,
+        "prompt_lyrics": "One step",
+        "blank_lyrics": "closer",
+        "following_lyrics": "",
+        "answer": "closer",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 16,
+        "lyrics_time": 129.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "I have died every day waiting for you",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 17,
+        "lyrics_time": 134.0,
+        "pause_time": 136.101,
+        "prompt_lyrics": "Darling, don't be",
+        "blank_lyrics": "afraid",
+        "following_lyrics": "",
+        "answer": "afraid",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 18,
+        "lyrics_time": 137.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "I have loved you for a thousand years",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 19,
+        "lyrics_time": 143.0,
+        "pause_time": 144.698,
+        "prompt_lyrics": "I'll love you for a",
+        "blank_lyrics": "thousand more",
+        "following_lyrics": "",
+        "answer": "thousand more",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 20,
+        "lyrics_time": 150.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "And all along, I believed I would find you",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 21,
+        "lyrics_time": 155.0,
+        "pause_time": 155.89,
+        "prompt_lyrics": "Time has",
+        "blank_lyrics": "brought",
+        "following_lyrics": "your heart to me",
+        "answer": "brought",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 22,
+        "lyrics_time": 158.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "I have loved you for a thousand years",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 23,
+        "lyrics_time": 164.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "I'll love you for a thousand more",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
       }
     ]
   }

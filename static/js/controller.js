@@ -46,6 +46,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnSaveBlankEditor = document.getElementById('btn-save-blank-editor');
     const btnEditorAddBlank = document.getElementById('btn-editor-add-blank');
     const btnEditorPlaySong = document.getElementById('btn-editor-play-song');
+    const btnEditorPauseSong = document.getElementById('btn-editor-pause-song');
+    const btnEditorQuickPause = document.getElementById('btn-editor-quick-pause');
     const btnEditorCaptureLyrics = document.getElementById('btn-editor-capture-lyrics');
     const btnEditorCaptureCut = document.getElementById('btn-editor-capture-cut');
     const btnEditorCaptureNext = document.getElementById('btn-editor-capture-next');
@@ -181,6 +183,30 @@ document.addEventListener('DOMContentLoaded', () => {
         isStageConnected = true;
         broadcastSyncState();
         window.gameBus.send('SET_AUDIO_OUTPUT_MODE', { mode: audioOutputMode });
+    });
+
+    window.gameBus.on('SELECT_SONG', (payload) => {
+        if (!payload) return;
+        const songId = typeof payload === 'string' ? payload : (payload.songId || (payload.song && payload.song.id));
+        if (!songId || !songs || songs.length === 0) return;
+        const target = songs.find(s => s.id === songId);
+        if (target) {
+            selectSong(target);
+            if (payload.playNow) {
+                setTimeout(() => {
+                    const startSec = (target.mode === 'everybody_sing')
+                        ? (target.blanks && target.blanks[0] ? target.blanks[0].lyrics_time || target.start_time || 0 : target.start_time || 0)
+                        : (target.start_time || 0);
+                    window.gameAudio.seek(startSec);
+                    window.gameAudio.playTrack(startSec, false);
+                    window.gameBus.send('PLAY_AUDIO', { fromTime: startSec });
+                    isPlaying = true;
+                    btnPlayAudio.innerHTML = '<i class="fa-solid fa-pause"></i> PAUSE';
+                    btnPlayAudio.style.background = 'var(--accent-yellow)';
+                    btnPlayAudio.style.color = '#000';
+                }, 120);
+            }
+        }
     });
 
     window.gameBus.send('PING_STAGE');
@@ -731,6 +757,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: bold;">${escapeHtml(b.blank_lyrics || b.answer)}</span>
                     </div>
                     <div style="display: flex; gap: 4px; align-items: center;">
+                        <button type="button" class="btn btn-sm btn-play-lyrics-blank" data-idx="${idx}" style="font-size: 0.45rem; padding: 2px 6px; background: var(--brand-blue); color: #FFF; font-weight: bold;" title="Play audio from lyrics start time (${formatTime(b.lyrics_time || 0, true)}) so you can press M to mark cut">
+                            <i class="fa-solid fa-play"></i> ♫ Play
+                        </button>
+                        <button type="button" class="btn btn-sm btn-pause-lyrics-blank" data-idx="${idx}" style="font-size: 0.45rem; padding: 2px 6px; background: var(--accent-red, #ff4444); color: #FFF; font-weight: bold;" title="Pause audio playback">
+                            <i class="fa-solid fa-pause"></i> Pause
+                        </button>
                         <button type="button" class="btn btn-sm btn-preview-blank" data-idx="${idx}" title="Preview 5 seconds leading right into this blank cut">
                              -5s
                         </button>
@@ -739,6 +771,39 @@ document.addEventListener('DOMContentLoaded', () => {
                         </button>
                     </div>
                 `;
+
+                const playLyricsRowBtn = row.querySelector('.btn-play-lyrics-blank');
+                if (playLyricsRowBtn) {
+                    playLyricsRowBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        activeBlankIndex = idx;
+                        isPausedAtBlank = false;
+                        hasCutForBlank = false;
+                        isRevealed = false;
+                        isAnswered = false;
+                        updatePrompterForMultiBlank();
+                        renderTimelineBlankMarkers();
+                        window.gameBus.send('SET_ACTIVE_BLANK', { index: activeBlankIndex });
+
+                        const lyricsSec = Number(b.lyrics_time) || 0;
+                        isPlaying = true;
+                        btnPlayAudio.innerHTML = '<i class="fa-solid fa-pause"></i> PAUSE';
+                        btnPlayAudio.style.background = 'var(--accent-yellow)';
+                        btnPlayAudio.style.color = '#000';
+
+                        window.gameAudio.seek(lyricsSec);
+                        window.gameAudio.playTrack(lyricsSec, false);
+                        window.gameBus.send('PLAY_AUDIO', { fromTime: lyricsSec });
+                    });
+                }
+
+                const pauseLyricsRowBtn = row.querySelector('.btn-pause-lyrics-blank');
+                if (pauseLyricsRowBtn) {
+                    pauseLyricsRowBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        pauseAudioPlayback();
+                    });
+                }
 
                 const previewBtn = row.querySelector('.btn-preview-blank');
                 if (previewBtn) {
@@ -864,7 +929,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const curr = window.gameAudio.player.currentTime || 0;
         const stamp = Math.round(curr * 1000) / 1000;
+        
+        // Only edit this specific blank - do not touch or influence any other blanks
         blanks[activeBlankIndex].pause_time = stamp;
+        
+        window.gameBus.send('UPDATE_BLANKS', currentSong.blanks);
 
         if (inputBlankTime) {
             inputBlankTime.value = formatTime(stamp, true);
@@ -889,13 +958,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         updatePrompterForMultiBlank();
         renderTimelineBlankMarkers();
-
-        if (activeBlankIndex < blanks.length - 1) {
-            activeBlankIndex++;
-            updatePrompterForMultiBlank();
-            renderTimelineBlankMarkers();
-            window.gameBus.send('SET_ACTIVE_BLANK', { index: activeBlankIndex });
-        }
     }
 
     if (btnMarkBlankCut) {
@@ -938,6 +1000,34 @@ document.addEventListener('DOMContentLoaded', () => {
         if (blankEditorModal) blankEditorModal.classList.remove('hidden');
     }
 
+    function pauseAudioPlayback() {
+        isPlaying = false;
+        if (window.gameAudio) {
+            window.gameAudio.pauseTrack();
+        }
+        window.gameBus.send('STOP_AUDIO');
+        if (btnPlayAudio) {
+            btnPlayAudio.innerHTML = '<i class="fa-solid fa-play"></i> PLAY AUDIO';
+            btnPlayAudio.style.background = 'var(--brand-blue)';
+            btnPlayAudio.style.color = '#FFF';
+        }
+    }
+
+    function highlightEditorCard(targetIdx) {
+        if (!editorBlanksList) return;
+        Array.from(editorBlanksList.children).forEach((el, i) => {
+            if (i === targetIdx) {
+                el.style.borderColor = 'var(--brand-blue)';
+                el.style.background = '#F0F7FF';
+                el.style.boxShadow = '0 0 10px rgba(0, 102, 204, 0.4)';
+            } else {
+                el.style.borderColor = '#000';
+                el.style.background = '#FFF';
+                el.style.boxShadow = '2px 2px 0px rgba(0,0,0,0.15)';
+            }
+        });
+    }
+
     function renderEditorBlanks() {
         if (!editorBlanksList) return;
         editorBlanksList.innerHTML = '';
@@ -948,7 +1038,8 @@ document.addEventListener('DOMContentLoaded', () => {
         editingBlanks.forEach((b, idx) => {
             const card = document.createElement('div');
             card.className = 'blank-editor-card';
-            card.style.cssText = 'background: #FFF; border: 2px solid #000; padding: 10px; box-shadow: 2px 2px 0px rgba(0,0,0,0.15);';
+            const isCur = (idx === editorCaptureIndex);
+            card.style.cssText = `background: ${isCur ? '#F0F7FF' : '#FFF'}; border: 2px solid ${isCur ? 'var(--brand-blue)' : '#000'}; padding: 10px; box-shadow: ${isCur ? '0 0 10px rgba(0,102,204,0.4)' : '2px 2px 0px rgba(0,0,0,0.15)'}; transition: all 0.2s ease;`;
             card.innerHTML = `
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; border-bottom: 1px solid #DDD; padding-bottom: 4px;">
                     <span style="font-size: 0.65rem; font-weight: bold; color: var(--brand-purple);">
@@ -968,18 +1059,31 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div>
                         <div style="font-size: 0.52rem; font-weight: bold; display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
                             <span>LYRICS START TIME (MM:SS.mmm):</span>
-                            <button type="button" class="btn btn-sm btn-grab-lyrics-time" data-idx="${idx}" style="font-size: 0.45rem; padding: 1px 4px; background: var(--surface-subtle);" title="Set to current audio playback time">
-                                <i class="fa-solid fa-stopwatch"></i> Grab
-                            </button>
+                            <div style="display: flex; gap: 3px;">
+                                <button type="button" class="btn btn-sm btn-card-play-lyrics" data-idx="${idx}" style="font-size: 0.45rem; padding: 1px 6px; background: var(--brand-blue); color: #FFF; font-weight: bold;" title="Play audio starting from this lyric start time so you can press M to mark cut">
+                                    <i class="fa-solid fa-play"></i> Play
+                                </button>
+                                <button type="button" class="btn btn-sm btn-card-pause-lyrics" data-idx="${idx}" style="font-size: 0.45rem; padding: 1px 6px; background: var(--accent-red, #ff4444); color: #FFF; font-weight: bold;" title="Pause audio playback immediately">
+                                    <i class="fa-solid fa-pause"></i> Pause
+                                </button>
+                                <button type="button" class="btn btn-sm btn-grab-lyrics-time" data-idx="${idx}" style="font-size: 0.45rem; padding: 1px 4px; background: var(--surface-subtle);" title="Set to current audio playback time">
+                                    <i class="fa-solid fa-stopwatch"></i> Grab
+                                </button>
+                            </div>
                         </div>
                         <input type="text" class="input-mono card-lyrics-time" data-idx="${idx}" value="${formatTime(b.lyrics_time || 0, true)}" placeholder="00:00.000" style="width: 100%; font-size: 0.62rem; padding: 4px; border: 1px solid #000;">
                     </div>
                     <div>
                         <div style="font-size: 0.52rem; font-weight: bold; display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
                             <span>BLANK CUT TIME (MM:SS.mmm):</span>
-                            <button type="button" class="btn btn-sm btn-grab-pause-time" data-idx="${idx}" style="font-size: 0.45rem; padding: 1px 4px; background: var(--accent-yellow); color: #000; font-weight: bold;" title="Set to current audio playback time">
-                                <i class="fa-solid fa-stopwatch"></i> Grab
-                            </button>
+                            <div style="display: flex; gap: 3px;">
+                                <button type="button" class="btn btn-sm btn-card-mark-cut" data-idx="${idx}" style="font-size: 0.45rem; padding: 1px 6px; background: var(--accent-yellow); color: #000; font-weight: bold;" title="Mark cut time right now [Hotkey: M]">
+                                    <i class="fa-solid fa-location-crosshairs"></i> Mark Cut [M]
+                                </button>
+                                <button type="button" class="btn btn-sm btn-grab-pause-time" data-idx="${idx}" style="font-size: 0.45rem; padding: 1px 4px; background: var(--surface-subtle);" title="Set to current audio playback time">
+                                    <i class="fa-solid fa-stopwatch"></i> Grab
+                                </button>
+                            </div>
                         </div>
                         <input type="text" class="input-mono card-pause-time" data-idx="${idx}" value="${formatTime(b.pause_time || 0, true)}" placeholder="00:00.000" style="width: 100%; font-size: 0.62rem; padding: 4px; border: 1px solid #000;">
                     </div>
@@ -1008,6 +1112,73 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </div>
             `;
+
+            const playLyricsBtn = card.querySelector('.btn-card-play-lyrics');
+            if (playLyricsBtn) {
+                playLyricsBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    editorCaptureIndex = idx;
+                    highlightEditorCard(idx);
+
+                    const lyricsInput = card.querySelector('.card-lyrics-time');
+                    const lyricsSec = lyricsInput ? parseTime(lyricsInput.value) : (Number(b.lyrics_time) || 0);
+
+                    document.activeElement?.blur();
+
+                    window.gameAudio.seek(lyricsSec);
+                    window.gameAudio.playTrack(lyricsSec, false);
+                    window.gameBus.send('PLAY_AUDIO', { fromTime: lyricsSec });
+                    isPlaying = true;
+                    btnPlayAudio.innerHTML = '<i class="fa-solid fa-pause"></i> PAUSE';
+                    btnPlayAudio.style.background = 'var(--accent-yellow)';
+                    btnPlayAudio.style.color = '#000';
+                });
+            }
+
+            const pauseLyricsBtn = card.querySelector('.btn-card-pause-lyrics');
+            if (pauseLyricsBtn) {
+                pauseLyricsBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    pauseAudioPlayback();
+                });
+            }
+
+            const markCutBtn = card.querySelector('.btn-card-mark-cut');
+            if (markCutBtn) {
+                markCutBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    editorCaptureIndex = idx;
+                    highlightEditorCard(idx);
+                    const curr = window.gameAudio.player.currentTime || 0;
+                    const stamp = Math.round(curr * 1000) / 1000;
+
+                    const pauseInput = card.querySelector('.card-pause-time');
+                    if (pauseInput) {
+                        pauseInput.value = formatTime(stamp, true);
+                        pauseInput.style.transition = 'background 0.3s ease';
+                        pauseInput.style.background = 'var(--accent-yellow)';
+                        setTimeout(() => { pauseInput.style.background = ''; }, 600);
+                    }
+                    if (editingBlanks[idx]) {
+                        editingBlanks[idx].pause_time = stamp;
+                    }
+                });
+            }
+
+            const cardLyricsInput = card.querySelector('.card-lyrics-time');
+            if (cardLyricsInput) {
+                cardLyricsInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        playLyricsBtn?.click();
+                    }
+                });
+            }
+
+            card.addEventListener('click', () => {
+                editorCaptureIndex = idx;
+                highlightEditorCard(idx);
+            });
 
             const auditionBtn = card.querySelector('.btn-card-audition');
             if (auditionBtn) {
@@ -1103,6 +1274,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (btnCloseBlankEditor) {
         btnCloseBlankEditor.addEventListener('click', () => {
+            pauseAudioPlayback();
             if (blankEditorModal) blankEditorModal.classList.add('hidden');
         });
     }
@@ -1145,12 +1317,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (btnEditorPlaySong) {
         btnEditorPlaySong.addEventListener('click', () => {
-            const start = editorSongStartTime ? parseTime(editorSongStartTime.value) : 0;
-            window.gameAudio.playTrack(start, false);
-            isPlaying = true;
-            btnPlayAudio.innerHTML = '<i class="fa-solid fa-pause"></i> PAUSE';
+            if (isPlaying && window.gameAudio.player && !window.gameAudio.player.paused) {
+                pauseAudioPlayback();
+            } else {
+                const start = editorSongStartTime ? parseTime(editorSongStartTime.value) : 0;
+                window.gameAudio.seek(start);
+                window.gameAudio.playTrack(start, false);
+                window.gameBus.send('PLAY_AUDIO', { fromTime: start });
+                isPlaying = true;
+                btnPlayAudio.innerHTML = '<i class="fa-solid fa-pause"></i> PAUSE';
+                btnPlayAudio.style.background = 'var(--accent-yellow)';
+                btnPlayAudio.style.color = '#000';
+            }
         });
     }
+
+    if (btnEditorPauseSong) {
+        btnEditorPauseSong.addEventListener('click', () => {
+            pauseAudioPlayback();
+        });
+    }
+
+    if (btnEditorQuickPause) {
+        btnEditorQuickPause.addEventListener('click', () => {
+            pauseAudioPlayback();
+        });
+    }
+
     if (btnEditorCaptureLyrics) {
         btnEditorCaptureLyrics.addEventListener('click', () => captureEditorTime('lyrics_time'));
     }
@@ -1203,17 +1396,37 @@ document.addEventListener('DOMContentLoaded', () => {
         if (key === 'l') {
             event.preventDefault();
             captureEditorTime('lyrics_time');
-        } else if (key === 'c') {
+        } else if (key === 'c' || key === 'm') {
             event.preventDefault();
+            const targetCard = editorBlanksList ? editorBlanksList.children[editorCaptureIndex] : null;
+            if (targetCard) {
+                const markCutBtn = targetCard.querySelector('.btn-card-mark-cut');
+                if (markCutBtn) {
+                    markCutBtn.click();
+                    return;
+                }
+            }
             captureEditorTime('pause_time');
         } else if (key === 'n') {
             event.preventDefault();
             btnEditorCaptureNext?.click();
+        } else if (event.code === 'Space') {
+            event.preventDefault();
+            if (isPlaying && window.gameAudio.player && !window.gameAudio.player.paused) {
+                pauseAudioPlayback();
+            } else if (window.gameAudio.player) {
+                window.gameAudio.player.play();
+                isPlaying = true;
+                btnPlayAudio.innerHTML = '<i class="fa-solid fa-pause"></i> PAUSE';
+                btnPlayAudio.style.background = 'var(--accent-yellow)';
+                btnPlayAudio.style.color = '#000';
+            }
         }
     });
 
     if (btnCancelBlankEditor) {
         btnCancelBlankEditor.addEventListener('click', () => {
+            pauseAudioPlayback();
             if (blankEditorModal) blankEditorModal.classList.add('hidden');
         });
     }
@@ -2015,6 +2228,12 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (e.key === 'm' || e.key === 'M') {
             e.preventDefault();
             markCurrentBlankCut();
+        } else if (e.key === 'n' || e.key === 'N') {
+            e.preventDefault();
+            btnNextBlank?.click();
+        } else if (e.key === 'p' || e.key === 'P') {
+            e.preventDefault();
+            btnPrevBlank?.click();
         } else if (e.key === 't' || e.key === 'T') {
             e.preventDefault();
             toggleTimer();
@@ -2056,6 +2275,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (blanks[activeBlankIndex]) {
                     blanks[activeBlankIndex].pause_time = blankSec;
                 }
+                window.gameBus.send('UPDATE_BLANKS', currentSong.blanks);
             } else {
                 currentSong.blank_time = blankSec;
             }
