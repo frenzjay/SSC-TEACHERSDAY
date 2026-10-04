@@ -16,82 +16,6 @@
     "hula_replay_time": 45.0
   },
   {
-    "id": "song-es-1",
-    "title": "Awitin Mo at Isasayaw Ko (Everybody, Sing!)",
-    "artist": "VST & Co.",
-    "era": "",
-    "mode": "everybody_sing",
-    "audio_url": "/static/audio/6a601c_Awitin_Mo_Isasayaw_ko_-_VST__Company_-_Topic_128k.mp3",
-    "start_time": 0.0,
-    "prompt_lyrics": "Ang isang pag-ibig / Ay parang",
-    "blank_lyrics": "LANSANGAN",
-    "following_lyrics": "Awitin mo at isasayaw ko...",
-    "answer": "LANSANGAN",
-    "trivia": "Vice Ganda's 'Everybody, Sing!' Jackpot Round format: add as many blanks as desired in one continuous song! Sing in sequence without missing a beat!",
-    "blanks": [
-      {
-        "index": 1,
-        "lyrics_time": 8.0,
-        "pause_time": 12.559,
-        "prompt_lyrics": "Walang iba pang sasarap sa",
-        "blank_lyrics": "pagtitinginan natin",
-        "following_lyrics": "",
-        "answer": "pagtitinginan natin",
-        "is_lyrics_only": false
-      },
-      {
-        "index": 2,
-        "lyrics_time": 16.0,
-        "pause_time": 21.5,
-        "prompt_lyrics": "Sana ay 'di na magwakas, / itong awit ng",
-        "blank_lyrics": "pag-ibig",
-        "following_lyrics": "",
-        "answer": "pag-ibig",
-        "is_lyrics_only": false
-      },
-      {
-        "index": 3,
-        "lyrics_time": 22.0,
-        "pause_time": 26.651,
-        "prompt_lyrics": "Awit natin ay 'wag na 'wag mong",
-        "blank_lyrics": "kalimutan",
-        "following_lyrics": "",
-        "answer": "kalimutan",
-        "is_lyrics_only": false
-      },
-      {
-        "index": 4,
-        "lyrics_time": 30.0,
-        "pause_time": 33.948,
-        "prompt_lyrics": "Pangako ko naman / na lagi kang",
-        "blank_lyrics": "pakikinggan",
-        "following_lyrics": "Magpakailanman",
-        "answer": "pakikinggan",
-        "is_lyrics_only": false
-      },
-      {
-        "index": 5,
-        "lyrics_time": 46.0,
-        "pause_time": 51.149,
-        "prompt_lyrics": "Ang isang pag-ibig ay parang",
-        "blank_lyrics": "lansangan",
-        "following_lyrics": "na pandalawahan",
-        "answer": "lansangan",
-        "is_lyrics_only": false
-      },
-      {
-        "index": 6,
-        "lyrics_time": 57.0,
-        "pause_time": 61.189,
-        "prompt_lyrics": "Kaya't sa ating awit, tayo ay",
-        "blank_lyrics": "magbigayan",
-        "following_lyrics": "",
-        "answer": "magbigayan",
-        "is_lyrics_only": false
-      }
-    ]
-  },
-  {
     "id": "song-556804a5",
     "title": "Pantropiko",
     "artist": "BINI",
@@ -227,13 +151,294 @@
     "hula_replay_time": 0.0,
     "blanks": [
       {
-        "index": 0,
-        "lyrics_time": 0.0,
+        "index": 1,
+        "lyrics_time": 15.0,
         "pause_time": 0.0,
-        "prompt_lyrics": "",
+        "prompt_lyrics": "Oh, whoa, whoa, oh",
         "blank_lyrics": "",
         "following_lyrics": "",
-        "answer": "Careless Whisper"
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 2,
+        "lyrics_time": 26.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "I feel so unsure",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 3,
+        "lyrics_time": 32.0,
+        "pause_time": 37.521,
+        "prompt_lyrics": "As I take your hand / and lead you to the",
+        "blank_lyrics": "dance floor",
+        "following_lyrics": "",
+        "answer": "dance floor",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 4,
+        "lyrics_time": 39.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "As the music dies",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 5,
+        "lyrics_time": 42.0,
+        "pause_time": 43.758,
+        "prompt_lyrics": "Something in your",
+        "blank_lyrics": "eyes",
+        "following_lyrics": "",
+        "answer": "eyes",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 6,
+        "lyrics_time": 45.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Calls to mind a silver screen",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 7,
+        "lyrics_time": 48.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "And all its sad goodbyes",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 8,
+        "lyrics_time": 52.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "I'm never gonna dance again",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 9,
+        "lyrics_time": 55.0,
+        "pause_time": 57.188,
+        "prompt_lyrics": "Guilty feet have got no",
+        "blank_lyrics": "rhythm",
+        "following_lyrics": "",
+        "answer": "rhythm",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 10,
+        "lyrics_time": 58.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Though it's easy to pretend",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 11,
+        "lyrics_time": 61.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "I know you're not a fool",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 12,
+        "lyrics_time": 64.0,
+        "pause_time": 65.791,
+        "prompt_lyrics": "I should have known better than to",
+        "blank_lyrics": "cheat",
+        "following_lyrics": "a friend",
+        "answer": "cheat",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 13,
+        "lyrics_time": 67.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "And waste the chance that I'd been given",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 14,
+        "lyrics_time": 71.0,
+        "pause_time": 72.128,
+        "prompt_lyrics": "So I'm never gonna",
+        "blank_lyrics": "dance again",
+        "following_lyrics": "",
+        "answer": "dance again",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 15,
+        "lyrics_time": 73.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "The way I danced with you, oh-oh",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 16,
+        "lyrics_time": 89.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Time can never mend",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 17,
+        "lyrics_time": 95.0,
+        "pause_time": 95.89,
+        "prompt_lyrics": "The",
+        "blank_lyrics": "careless whispers",
+        "following_lyrics": "of a good friend",
+        "answer": "careless whispers",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 18,
+        "lyrics_time": 102.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "To the heart and mind",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 19,
+        "lyrics_time": 105.0,
+        "pause_time": 106.591,
+        "prompt_lyrics": "Ignorance is",
+        "blank_lyrics": "kind",
+        "following_lyrics": "",
+        "answer": "kind",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 20,
+        "lyrics_time": 108.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "There's no comfort in the truth",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 21,
+        "lyrics_time": 111.0,
+        "pause_time": 113.04,
+        "prompt_lyrics": "Pain is all",
+        "blank_lyrics": "you'll find",
+        "following_lyrics": "",
+        "answer": "you'll find",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 22,
+        "lyrics_time": 115.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "I'm never gonna dance again",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 23,
+        "lyrics_time": 117.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Guilty feet have got no rhythm",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 24,
+        "lyrics_time": 121.0,
+        "pause_time": 122.718,
+        "prompt_lyrics": "Though it's easy to",
+        "blank_lyrics": "pretend",
+        "following_lyrics": "",
+        "answer": "pretend",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 25,
+        "lyrics_time": 124.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "I know you're not a fool",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 26,
+        "lyrics_time": 127.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "I should have known better than to cheat a friend / (should have known better, yeah)",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 27,
+        "lyrics_time": 130.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "And waste the chance that I'd been given",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 28,
+        "lyrics_time": 133.0,
+        "pause_time": 134.138,
+        "prompt_lyrics": "So I'm",
+        "blank_lyrics": "never",
+        "following_lyrics": "gonna dance again",
+        "answer": "never",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 29,
+        "lyrics_time": 136.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "The way I danced with you, oh-oh",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
       }
     ]
   },
@@ -327,11 +532,11 @@
       {
         "index": 3,
         "lyrics_time": 31.0,
-        "pause_time": 36.0,
-        "prompt_lyrics": "Makuha mo pa kayang / Ako'y",
-        "blank_lyrics": "hagkan at yakapin",
+        "pause_time": 37.078,
+        "prompt_lyrics": "Makuha mo pa kayang / Ako'y hagkan at",
+        "blank_lyrics": "yakapin",
         "following_lyrics": "oh",
-        "answer": "hagkan at yakapin",
+        "answer": "yakapin",
         "is_lyrics_only": false
       },
       {
@@ -416,8 +621,8 @@
       },
       {
         "index": 12,
-        "lyrics_time": 126.0,
-        "pause_time": 126.098,
+        "lyrics_time": 125.0,
+        "pause_time": 126.039,
         "prompt_lyrics": "Kahit",
         "blank_lyrics": "maputi",
         "following_lyrics": "na ang buhok ko",
@@ -455,17 +660,17 @@
       {
         "index": 2,
         "lyrics_time": 21.348,
-        "pause_time": 24.848,
-        "prompt_lyrics": "Aking nakita, / babaeng",
-        "blank_lyrics": "saksakan ng ganda,",
+        "pause_time": 25.432,
+        "prompt_lyrics": "Aking nakita, / babaeng saksakan",
+        "blank_lyrics": "ng ganda,",
         "following_lyrics": "ah",
-        "answer": "saksakan ng ganda,",
+        "answer": "ng ganda,",
         "is_lyrics_only": false
       },
       {
         "index": 3,
         "lyrics_time": 29.048,
-        "pause_time": 30.348,
+        "pause_time": 30.186,
         "prompt_lyrics": "Sinundan ko ang",
         "blank_lyrics": "kotseng",
         "following_lyrics": "sinasakyan nya",
@@ -497,15 +702,15 @@
         "lyrics_time": 43.048,
         "pause_time": 45.698,
         "prompt_lyrics": "Nung magkamalay ay nasa",
-        "blank_lyrics": "ospital na ako",
-        "following_lyrics": "",
-        "answer": "ospital na ako",
+        "blank_lyrics": "ospital",
+        "following_lyrics": "na ako",
+        "answer": "ospital",
         "is_lyrics_only": false
       },
       {
         "index": 7,
         "lyrics_time": 50.048,
-        "pause_time": 53.458,
+        "pause_time": 53.504,
         "prompt_lyrics": "inasikaso ng doktor na pili ng",
         "blank_lyrics": "nanay ko",
         "following_lyrics": "",
@@ -527,9 +732,9 @@
         "lyrics_time": 60.048,
         "pause_time": 62.707,
         "prompt_lyrics": "at para ‘kong nakita ng",
-        "blank_lyrics": "angel sa ganda",
-        "following_lyrics": "",
-        "answer": "angel sa ganda",
+        "blank_lyrics": "angel",
+        "following_lyrics": "sa ganda",
+        "answer": "angel",
         "is_lyrics_only": false
       },
       {
@@ -555,7 +760,7 @@
       {
         "index": 12,
         "lyrics_time": 78.106,
-        "pause_time": 81.155,
+        "pause_time": 80.896,
         "prompt_lyrics": "mama kayo po ba si",
         "blank_lyrics": "San Pedro",
         "following_lyrics": "",
@@ -1175,144 +1380,6 @@
         "following_lyrics": "",
         "answer": "",
         "is_lyrics_only": true
-      }
-    ]
-  },
-  {
-    "id": "song-7bb68ec8",
-    "title": "Stand By Me",
-    "artist": "Ben E. King",
-    "era": "",
-    "mode": "everybody_sing",
-    "audio_url": "/static/audio/ac5715_Stand_By_Me.mp3",
-    "prompt_lyrics": "",
-    "blank_lyrics": "",
-    "following_lyrics": "",
-    "answer": "Stand By Me",
-    "trivia": "",
-    "start_time": 0.0,
-    "blank_time": 0.0,
-    "hula_replay_time": 0.0,
-    "blanks": [
-      {
-        "index": 1,
-        "lyrics_time": 16.0,
-        "pause_time": 0.0,
-        "prompt_lyrics": "When the night has come",
-        "blank_lyrics": "Stand By Me",
-        "following_lyrics": "",
-        "answer": "Stand By Me",
-        "is_lyrics_only": true
-      },
-      {
-        "index": 2,
-        "lyrics_time": 21.0,
-        "pause_time": 0.0,
-        "prompt_lyrics": "And the land is dark",
-        "blank_lyrics": "",
-        "following_lyrics": "",
-        "answer": "",
-        "is_lyrics_only": true
-      },
-      {
-        "index": 3,
-        "lyrics_time": 24.0,
-        "pause_time": 26.837,
-        "prompt_lyrics": "And the moon is the",
-        "blank_lyrics": "only light",
-        "following_lyrics": "we'll see",
-        "answer": "only light",
-        "is_lyrics_only": false
-      },
-      {
-        "index": 4,
-        "lyrics_time": 32.0,
-        "pause_time": 0.0,
-        "prompt_lyrics": "No, I won't be afraid, / oh, I won't be afraid",
-        "blank_lyrics": "",
-        "following_lyrics": "",
-        "answer": "",
-        "is_lyrics_only": true
-      },
-      {
-        "index": 5,
-        "lyrics_time": 40.0,
-        "pause_time": 0.0,
-        "prompt_lyrics": "Just as long as you stand, stand by me",
-        "blank_lyrics": "",
-        "following_lyrics": "",
-        "answer": "",
-        "is_lyrics_only": true
-      },
-      {
-        "index": 6,
-        "lyrics_time": 47.0,
-        "pause_time": 0.0,
-        "prompt_lyrics": "So darlin', darlin', stand by me, oh, stand by me",
-        "blank_lyrics": "",
-        "following_lyrics": "",
-        "answer": "",
-        "is_lyrics_only": true
-      },
-      {
-        "index": 7,
-        "lyrics_time": 56.0,
-        "pause_time": 0.0,
-        "prompt_lyrics": "Oh, stand, stand by me, stand by me",
-        "blank_lyrics": "",
-        "following_lyrics": "",
-        "answer": "",
-        "is_lyrics_only": true
-      },
-      {
-        "index": 8,
-        "lyrics_time": 64.0,
-        "pause_time": 67.039,
-        "prompt_lyrics": "If the sky that we",
-        "blank_lyrics": "look upon",
-        "following_lyrics": "",
-        "answer": "look upon",
-        "is_lyrics_only": false
-      },
-      {
-        "index": 9,
-        "lyrics_time": 70.0,
-        "pause_time": 0.0,
-        "prompt_lyrics": "Should tumble and fall",
-        "blank_lyrics": "",
-        "following_lyrics": "",
-        "answer": "",
-        "is_lyrics_only": true
-      },
-      {
-        "index": 10,
-        "lyrics_time": 72.0,
-        "pause_time": 73.268,
-        "prompt_lyrics": "Or the",
-        "blank_lyrics": "mountains",
-        "following_lyrics": "should crumble to the sea",
-        "answer": "mountains",
-        "is_lyrics_only": false
-      },
-      {
-        "index": 11,
-        "lyrics_time": 80.0,
-        "pause_time": 0.0,
-        "prompt_lyrics": "I won't cry, I won't cry, no, I won't shed a tear",
-        "blank_lyrics": "",
-        "following_lyrics": "",
-        "answer": "",
-        "is_lyrics_only": true
-      },
-      {
-        "index": 12,
-        "lyrics_time": 88.0,
-        "pause_time": 93.251,
-        "prompt_lyrics": "Just as long as you stand, stand",
-        "blank_lyrics": "by me",
-        "following_lyrics": "",
-        "answer": "by me",
-        "is_lyrics_only": false
       }
     ]
   },
@@ -3529,7 +3596,7 @@
       {
         "index": 24,
         "lyrics_time": 148.0,
-        "pause_time": 0.0,
+        "pause_time": 158.0,
         "prompt_lyrics": "And that you'd be reminded that for me, it isn't over",
         "blank_lyrics": "",
         "following_lyrics": "",
@@ -3633,6 +3700,1208 @@
         "following_lyrics": "",
         "answer": "",
         "is_lyrics_only": true
+      },
+      {
+        "index": 9,
+        "lyrics_time": 46.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "And I'm thinking 'bout how",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 10,
+        "lyrics_time": 48.0,
+        "pause_time": 50.888,
+        "prompt_lyrics": "People fall in love in",
+        "blank_lyrics": "mysterious",
+        "following_lyrics": "ways",
+        "answer": "mysterious",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 11,
+        "lyrics_time": 54.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Maybe just the touch of a hand",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 12,
+        "lyrics_time": 60.0,
+        "pause_time": 64.11,
+        "prompt_lyrics": "Well, me, I fall in love with you every",
+        "blank_lyrics": "single day",
+        "following_lyrics": "",
+        "answer": "single day",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 13,
+        "lyrics_time": 66.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "And I just wanna tell you I am",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 14,
+        "lyrics_time": 72.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "So, honey, now",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 15,
+        "lyrics_time": 77.0,
+        "pause_time": 78.202,
+        "prompt_lyrics": "Take me into your",
+        "blank_lyrics": "loving",
+        "following_lyrics": "arms",
+        "answer": "loving",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 16,
+        "lyrics_time": 83.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Kiss me under the light of a thousand stars",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 17,
+        "lyrics_time": 89.0,
+        "pause_time": 90.339,
+        "prompt_lyrics": "Place your head on my",
+        "blank_lyrics": "beating",
+        "following_lyrics": "heart",
+        "answer": "beating",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 18,
+        "lyrics_time": 94.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "I'm thinking out loud",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 19,
+        "lyrics_time": 96.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Maybe we found love right where we are",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 20,
+        "lyrics_time": 104.0,
+        "pause_time": 106.45,
+        "prompt_lyrics": "When my hair's all but gone and my",
+        "blank_lyrics": "memory",
+        "following_lyrics": "fades",
+        "answer": "memory",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 21,
+        "lyrics_time": 110.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "And the crowds don't remember my name",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 22,
+        "lyrics_time": 116.0,
+        "pause_time": 119.07,
+        "prompt_lyrics": "When my hands don't play the",
+        "blank_lyrics": "strings",
+        "following_lyrics": "the same way, mhm",
+        "answer": "strings",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 23,
+        "lyrics_time": 123.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "I know you will still love me the same",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 24,
+        "lyrics_time": 126.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "'Cause, honey, your soul",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 25,
+        "lyrics_time": 129.0,
+        "pause_time": 132.86,
+        "prompt_lyrics": "Could never grow old, it's",
+        "blank_lyrics": "evergreen",
+        "following_lyrics": "",
+        "answer": "evergreen",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 26,
+        "lyrics_time": 139.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "And, baby, your smile's",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 27,
+        "lyrics_time": 142.0,
+        "pause_time": 144.996,
+        "prompt_lyrics": "Forever in my mind and",
+        "blank_lyrics": "memory",
+        "following_lyrics": "",
+        "answer": "memory",
+        "is_lyrics_only": false
+      }
+    ]
+  },
+  {
+    "id": "song-464a1932",
+    "title": "Count on Me",
+    "artist": "Bruno Mars",
+    "era": "",
+    "mode": "everybody_sing",
+    "audio_url": "/static/audio/25c79e_Count_on_Me.mp3",
+    "prompt_lyrics": "",
+    "blank_lyrics": "",
+    "following_lyrics": "",
+    "answer": "Count on Me",
+    "trivia": "",
+    "start_time": 0.0,
+    "blank_time": 0.0,
+    "hula_replay_time": 0.0,
+    "blanks": [
+      {
+        "index": 1,
+        "lyrics_time": 2.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Oh-oh-oh",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 2,
+        "lyrics_time": 5.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "If you ever find yourself stuck in the middle of the sea",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 3,
+        "lyrics_time": 10.0,
+        "pause_time": 13.518,
+        "prompt_lyrics": "I'll sail the world to",
+        "blank_lyrics": "find you",
+        "following_lyrics": "",
+        "answer": "find you",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 4,
+        "lyrics_time": 16.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "If you ever find yourself lost in the dark and you can't see",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 5,
+        "lyrics_time": 21.0,
+        "pause_time": 24.3,
+        "prompt_lyrics": "I'll be the light to",
+        "blank_lyrics": "guide you",
+        "following_lyrics": "",
+        "answer": "guide you",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 6,
+        "lyrics_time": 28.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "We find out what we're made of",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 7,
+        "lyrics_time": 32.0,
+        "pause_time": 34.339,
+        "prompt_lyrics": "When we are called to help our",
+        "blank_lyrics": "friends",
+        "following_lyrics": "in need",
+        "answer": "friends",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 8,
+        "lyrics_time": 37.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "You can count on me like one, two, three, I'll be there",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 9,
+        "lyrics_time": 45.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "And I know when I need it",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 10,
+        "lyrics_time": 48.0,
+        "pause_time": 54.261,
+        "prompt_lyrics": "I can count on you like four, three, two and you'll be",
+        "blank_lyrics": "there",
+        "following_lyrics": "",
+        "answer": "there",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 11,
+        "lyrics_time": 56.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "'Cause that's what friends are supposed to do, oh, yeah",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 12,
+        "lyrics_time": 60.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Ooh-ooh-ooh, ooh-ooh-ooh",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 13,
+        "lyrics_time": 67.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Yeah, yeah",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 14,
+        "lyrics_time": 69.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "If you're tossin', and you're turnin', / and you just can't fall asleep",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 15,
+        "lyrics_time": 75.0,
+        "pause_time": 78.021,
+        "prompt_lyrics": "I'll sing a song",
+        "blank_lyrics": "beside",
+        "following_lyrics": "you",
+        "answer": "beside",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 16,
+        "lyrics_time": 80.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "And if you ever forget how much you really mean to me",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 17,
+        "lyrics_time": 86.0,
+        "pause_time": 88.72,
+        "prompt_lyrics": "Every day, I will",
+        "blank_lyrics": "remind you,",
+        "following_lyrics": "oh",
+        "answer": "remind you,",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 18,
+        "lyrics_time": 93.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "We find out what we're made of",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 19,
+        "lyrics_time": 96.0,
+        "pause_time": 98.4,
+        "prompt_lyrics": "When we are called to",
+        "blank_lyrics": "help",
+        "following_lyrics": "our friends in need",
+        "answer": "help",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 20,
+        "lyrics_time": 101.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "You can count on me like one, two, three, I'll be there",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 21,
+        "lyrics_time": 110.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "And I know when I need it",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 22,
+        "lyrics_time": 112.0,
+        "pause_time": 115.91,
+        "prompt_lyrics": "I can count on you like",
+        "blank_lyrics": "four,",
+        "following_lyrics": "three, two and you'll be there",
+        "answer": "four,",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 23,
+        "lyrics_time": 121.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "'Cause that's what friends are supposed to do, oh, yeah",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 24,
+        "lyrics_time": 125.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Ooh-ooh-ooh, ooh-ooh-ooh",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 25,
+        "lyrics_time": 132.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Yeah, yeah",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 26,
+        "lyrics_time": 134.0,
+        "pause_time": 137.38,
+        "prompt_lyrics": "You'll always have my",
+        "blank_lyrics": "shoulder",
+        "following_lyrics": "when you cry",
+        "answer": "shoulder",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 27,
+        "lyrics_time": 145.0,
+        "pause_time": 150.338,
+        "prompt_lyrics": "I'll never let go, never say",
+        "blank_lyrics": "goodbye",
+        "following_lyrics": "",
+        "answer": "goodbye",
+        "is_lyrics_only": false
+      }
+    ]
+  },
+  {
+    "id": "song-c3ef77d3",
+    "title": "Die With A Smile",
+    "artist": "Lady Gaga  &  Bruno Mars",
+    "era": "",
+    "mode": "everybody_sing",
+    "audio_url": "/static/audio/10eacb_Die_With_A_Smile.mp3",
+    "prompt_lyrics": "",
+    "blank_lyrics": "",
+    "following_lyrics": "",
+    "answer": "Die With A Smile",
+    "trivia": "",
+    "start_time": 0.0,
+    "blank_time": 0.0,
+    "hula_replay_time": 0.0,
+    "blanks": [
+      {
+        "index": 1,
+        "lyrics_time": 3.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Ooh",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 2,
+        "lyrics_time": 9.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "I, I just woke up from a dream",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 3,
+        "lyrics_time": 15.0,
+        "pause_time": 18.12,
+        "prompt_lyrics": "Where you and I had to say",
+        "blank_lyrics": "goodbye",
+        "following_lyrics": "",
+        "answer": "goodbye",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 4,
+        "lyrics_time": 20.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "And I don't know what it all means",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 5,
+        "lyrics_time": 25.0,
+        "pause_time": 25.972,
+        "prompt_lyrics": "But since I",
+        "blank_lyrics": "survived,",
+        "following_lyrics": "I realized",
+        "answer": "survived,",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 6,
+        "lyrics_time": 29.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Wherever you go, that's where I'll follow",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 7,
+        "lyrics_time": 34.0,
+        "pause_time": 36.13,
+        "prompt_lyrics": "Nobody's promised",
+        "blank_lyrics": "tomorrow",
+        "following_lyrics": "",
+        "answer": "tomorrow",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 8,
+        "lyrics_time": 38.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "So I'ma love you every night like it's the last night",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 9,
+        "lyrics_time": 42.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Like it's the last night",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 10,
+        "lyrics_time": 45.0,
+        "pause_time": 46.78,
+        "prompt_lyrics": "If the world was",
+        "blank_lyrics": "ending,",
+        "following_lyrics": "I'd wanna be next to you",
+        "answer": "ending,",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 11,
+        "lyrics_time": 54.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "If the party was over / and our time on Earth was through",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 12,
+        "lyrics_time": 63.0,
+        "pause_time": 70.639,
+        "prompt_lyrics": "I'd wanna hold you just for a while and die with a",
+        "blank_lyrics": "smile",
+        "following_lyrics": "",
+        "answer": "smile",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 13,
+        "lyrics_time": 72.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "If the world was ending, I'd wanna be next to you",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 14,
+        "lyrics_time": 81.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Ooh",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 15,
+        "lyrics_time": 85.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Ooh, lost, lost in the words that we scream",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 16,
+        "lyrics_time": 93.0,
+        "pause_time": 95.241,
+        "prompt_lyrics": "I don't even wanna do this",
+        "blank_lyrics": "anymore",
+        "following_lyrics": "",
+        "answer": "anymore",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 17,
+        "lyrics_time": 98.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "'Cause you already know what you mean to me",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 18,
+        "lyrics_time": 101.0,
+        "pause_time": 104.111,
+        "prompt_lyrics": "And our love's the only war worth",
+        "blank_lyrics": "fighting",
+        "following_lyrics": "for",
+        "answer": "fighting",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 19,
+        "lyrics_time": 107.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Wherever you go, that's where I'll follow",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 20,
+        "lyrics_time": 111.0,
+        "pause_time": 113.528,
+        "prompt_lyrics": "Nobody's promised",
+        "blank_lyrics": "tomorrow",
+        "following_lyrics": "",
+        "answer": "tomorrow",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 21,
+        "lyrics_time": 116.0,
+        "pause_time": 118.578,
+        "prompt_lyrics": "So I'ma love you every night like it's the",
+        "blank_lyrics": "last night",
+        "following_lyrics": "",
+        "answer": "last night",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 22,
+        "lyrics_time": 120.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Like it's the last night",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 23,
+        "lyrics_time": 122.0,
+        "pause_time": 126.368,
+        "prompt_lyrics": "If the world was ending, I'd wanna be",
+        "blank_lyrics": "next",
+        "following_lyrics": "to you",
+        "answer": "next",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 24,
+        "lyrics_time": 131.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "If the party was over and our time on Earth was through",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      }
+    ]
+  },
+  {
+    "id": "song-049a7229",
+    "title": "Dilaw",
+    "artist": "Maki",
+    "era": "",
+    "mode": "everybody_sing",
+    "audio_url": "/static/audio/d7fb75_Dilaw.mp3",
+    "prompt_lyrics": "",
+    "blank_lyrics": "",
+    "following_lyrics": "",
+    "answer": "Dilaw",
+    "trivia": "",
+    "start_time": 0.0,
+    "blank_time": 0.0,
+    "hula_replay_time": 0.0,
+    "blanks": [
+      {
+        "index": 1,
+        "lyrics_time": 3.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Alam mo bang muntikan na sumuko ang puso ko",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 2,
+        "lyrics_time": 11.0,
+        "pause_time": 13.319,
+        "prompt_lyrics": "Sa paulit-ulit na",
+        "blank_lyrics": "pagkakataon",
+        "following_lyrics": "na nasaktan, nabigo?",
+        "answer": "pagkakataon",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 3,
+        "lyrics_time": 17.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Mukhang delikado na naman ako",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 4,
+        "lyrics_time": 21.0,
+        "pause_time": 22.019,
+        "prompt_lyrics": "Oh, bakit ba",
+        "blank_lyrics": "kinikilig",
+        "following_lyrics": "na naman ako?",
+        "answer": "kinikilig",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 5,
+        "lyrics_time": 25.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Pero ngayon ay parang kakaiba",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 6,
+        "lyrics_time": 28.0,
+        "pause_time": 31.489,
+        "prompt_lyrics": "'Pag nakatingin sa 'yong mata, ang mundo ay",
+        "blank_lyrics": "kalma",
+        "following_lyrics": "",
+        "answer": "kalma",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 7,
+        "lyrics_time": 32.0,
+        "pause_time": 34.171,
+        "prompt_lyrics": "Ngayong nandiyan ka na, 'di",
+        "blank_lyrics": "magmamadali",
+        "following_lyrics": "",
+        "answer": "magmamadali",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 8,
+        "lyrics_time": 35.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Ikaw lang ang katabi hanggang sa ang buhok ay pumuti",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 9,
+        "lyrics_time": 40.0,
+        "pause_time": 41.01,
+        "prompt_lyrics": "'Di na",
+        "blank_lyrics": "maghahanap",
+        "following_lyrics": "ng kung ano'ng sagot sa mga tanong",
+        "answer": "maghahanap",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 10,
+        "lyrics_time": 45.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Dahil ikaw ang katiyakan ko",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 11,
+        "lyrics_time": 47.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Hinding-hindi na ako bibitaw",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 12,
+        "lyrics_time": 52.0,
+        "pause_time": 53.998,
+        "prompt_lyrics": "Ngayong ikaw na ang",
+        "blank_lyrics": "kasayaw",
+        "following_lyrics": "",
+        "answer": "kasayaw",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 13,
+        "lyrics_time": 55.0,
+        "pause_time": 58.422,
+        "prompt_lyrics": "Kung mayro'n mang kulay ang aking",
+        "blank_lyrics": "nagsisilbing",
+        "following_lyrics": "tanglaw",
+        "answer": "nagsisilbing",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 14,
+        "lyrics_time": 62.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Ikaw, ikaw ay dilaw",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 15,
+        "lyrics_time": 65.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "'Di akalaing mararamdaman ko muli ang yakap ng panahon",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 16,
+        "lyrics_time": 71.0,
+        "pause_time": 74.718,
+        "prompt_lyrics": "Habang kumakalabit ang init at",
+        "blank_lyrics": "sinag",
+        "following_lyrics": "ng araw (sa lilim ng ulap)",
+        "answer": "sinag",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 17,
+        "lyrics_time": 79.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Mukhang 'di naman delikado",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 18,
+        "lyrics_time": 82.0,
+        "pause_time": 82.961,
+        "prompt_lyrics": "Kasi parang",
+        "blank_lyrics": "ngumingiti",
+        "following_lyrics": "na naman ako (ngumingiti na naman ako)",
+        "answer": "ngumingiti",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 19,
+        "lyrics_time": 86.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Kaya ngayon, 'di na 'ko mangangamba",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 20,
+        "lyrics_time": 88.0,
+        "pause_time": 89.622,
+        "prompt_lyrics": "Kahit ano'ng",
+        "blank_lyrics": "sabihin",
+        "following_lyrics": "nila (oh)",
+        "answer": "sabihin",
+        "is_lyrics_only": false
+      }
+    ]
+  },
+  {
+    "id": "song-2581e6b5",
+    "title": "Lifetime (Reimagined)",
+    "artist": "Ben&Ben",
+    "era": "",
+    "mode": "everybody_sing",
+    "audio_url": "/static/audio/7f34c2_Lifetime_Reimagined.mp3",
+    "prompt_lyrics": "",
+    "blank_lyrics": "",
+    "following_lyrics": "",
+    "answer": "Lifetime (Reimagined)",
+    "trivia": "",
+    "start_time": 0.0,
+    "blank_time": 0.0,
+    "hula_replay_time": 0.0,
+    "blanks": [
+      {
+        "index": 1,
+        "lyrics_time": 12.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Was there a lifetime waiting for us",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 2,
+        "lyrics_time": 15.0,
+        "pause_time": 18.251,
+        "prompt_lyrics": "In a world where I was",
+        "blank_lyrics": "yours?",
+        "following_lyrics": "",
+        "answer": "yours?",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 3,
+        "lyrics_time": 21.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Paper planes and porcelain",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 4,
+        "lyrics_time": 26.0,
+        "pause_time": 28.238,
+        "prompt_lyrics": "Smell of rain through the",
+        "blank_lyrics": "window pane",
+        "following_lyrics": "",
+        "answer": "window pane",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 5,
+        "lyrics_time": 31.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "And the sight of you",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 6,
+        "lyrics_time": 34.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Oh, you were a good dream",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 7,
+        "lyrics_time": 39.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "I was scared to lose you then",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 8,
+        "lyrics_time": 43.0,
+        "pause_time": 46.388,
+        "prompt_lyrics": "But secrets turn into",
+        "blank_lyrics": "regrets",
+        "following_lyrics": "",
+        "answer": "regrets",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 9,
+        "lyrics_time": 49.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Buried feelings grow",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 10,
+        "lyrics_time": 52.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Oh, you were a good dream",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 11,
+        "lyrics_time": 57.0,
+        "pause_time": 58.48,
+        "prompt_lyrics": "Was there a",
+        "blank_lyrics": "lifetime",
+        "following_lyrics": "waiting for us",
+        "answer": "lifetime",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 12,
+        "lyrics_time": 61.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "In a world where I was yours?",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 13,
+        "lyrics_time": 67.0,
+        "pause_time": 70.587,
+        "prompt_lyrics": "Was it the wrong time? What if",
+        "blank_lyrics": "we tried",
+        "following_lyrics": "",
+        "answer": "we tried",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 14,
+        "lyrics_time": 71.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Giving in a little more",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 15,
+        "lyrics_time": 75.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "To the warmth we had before?",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 16,
+        "lyrics_time": 84.0,
+        "pause_time": 85.959,
+        "prompt_lyrics": "Tangled with",
+        "blank_lyrics": "another's eyes",
+        "following_lyrics": "",
+        "answer": "another's eyes",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 17,
+        "lyrics_time": 89.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Never mind, you were never mine",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 18,
+        "lyrics_time": 94.0,
+        "pause_time": 96.188,
+        "prompt_lyrics": "Glimpse of me and",
+        "blank_lyrics": "you",
+        "following_lyrics": "",
+        "answer": "you",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 19,
+        "lyrics_time": 97.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Oh, you were a good dream",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 20,
+        "lyrics_time": 101.0,
+        "pause_time": 0.0,
+        "prompt_lyrics": "Smoke and ashes from these letters I'm burning",
+        "blank_lyrics": "",
+        "following_lyrics": "",
+        "answer": "",
+        "is_lyrics_only": true
+      },
+      {
+        "index": 21,
+        "lyrics_time": 106.0,
+        "pause_time": 109.709,
+        "prompt_lyrics": "No fairytale ending if there was no",
+        "blank_lyrics": "beginning",
+        "following_lyrics": "",
+        "answer": "beginning",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 22,
+        "lyrics_time": 112.0,
+        "pause_time": 114.421,
+        "prompt_lyrics": "Is it even worth it to",
+        "blank_lyrics": "reminisce?",
+        "following_lyrics": "",
+        "answer": "reminisce?",
+        "is_lyrics_only": false
+      },
+      {
+        "index": 23,
+        "lyrics_time": 115.0,
+        "pause_time": 119.869,
+        "prompt_lyrics": "How do you grieve for a love that did not even",
+        "blank_lyrics": "exist?",
+        "following_lyrics": "",
+        "answer": "exist?",
+        "is_lyrics_only": false
       }
     ]
   }

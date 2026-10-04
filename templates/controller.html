@@ -120,6 +120,9 @@
                             </button>
                             <button type="button" id="btn-prev-blank" class="btn btn-sm" style="font-size: 0.5rem; padding: 2px 6px;">&lt; PREV</button>
                             <button type="button" id="btn-next-blank" class="btn btn-sm" style="font-size: 0.5rem; padding: 2px 6px;">NEXT &gt;</button>
+                            <button type="button" id="btn-delete-current-song" class="btn btn-sm btn-danger" style="font-size: 0.5rem; padding: 2px 7px; font-weight: bold;" title="Delete this song from Everybody, Sing">
+                                <i class="fa-solid fa-trash"></i> DELETE SONG
+                            </button>
                         </div>
                     </div>
                     <div id="prompter-multiblank-list" class="prompter-multiblank-list">
@@ -393,9 +396,14 @@
             </div>
 
             <div style="border-top: 2px solid #000; padding-top: 10px; margin-top: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
-                <button type="button" id="btn-editor-add-blank-footer" class="btn btn-sm btn-primary" style="font-weight: bold; font-size: 0.62rem; padding: 6px 14px;">
-                    <i class="fa-solid fa-plus"></i> ADD BLANK
-                </button>
+                <div style="display: flex; gap: 6px; align-items: center;">
+                    <button type="button" id="btn-editor-add-blank-footer" class="btn btn-sm btn-primary" style="font-weight: bold; font-size: 0.62rem; padding: 6px 14px;">
+                        <i class="fa-solid fa-plus"></i> ADD BLANK
+                    </button>
+                    <button type="button" id="btn-editor-delete-song" class="btn btn-sm btn-danger" style="font-weight: bold; font-size: 0.62rem; padding: 6px 14px;" title="Delete this song completely from library">
+                        <i class="fa-solid fa-trash"></i> DELETE SONG
+                    </button>
+                </div>
                 <div style="display: flex; gap: 8px; margin-left: auto; align-items: center;">
                     <span id="editor-save-status" style="font-size: 0.65rem; font-weight: bold; color: var(--accent-green); display: none;">
                         SAVED SUCCESSFULLY!
@@ -405,6 +413,36 @@
                         <i class="fa-solid fa-floppy-disk"></i> SAVE BLANKS & TIMESTAMPS
                     </button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="delete-song-modal" class="modal-overlay hidden">
+        <div class="modal-content" style="max-width: 480px; width: 92vw; border: 3px solid #000; box-shadow: 6px 6px 0px rgba(0,0,0,0.3);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 2px solid #000; padding-bottom: 8px;">
+                <h3 style="margin: 0; font-size: 0.85rem; color: var(--accent-red); display: flex; align-items: center; gap: 6px;">
+                    <i class="fa-solid fa-triangle-exclamation"></i> CONFIRM SONG DELETION
+                </h3>
+                <button type="button" id="btn-close-delete-modal" class="btn btn-sm btn-danger">✕</button>
+            </div>
+            <div style="font-size: 0.68rem; color: #222; margin-bottom: 12px; line-height: 1.4;">
+                Are you sure you want to permanently delete this song from <strong>Everybody, Sing!</strong>?
+            </div>
+            <div style="background: var(--surface-subtle); border: 2px solid #000; padding: 12px; margin-bottom: 12px;">
+                <div id="delete-modal-song-title" style="font-size: 0.85rem; font-weight: bold; color: #000; margin-bottom: 4px;">-</div>
+                <div id="delete-modal-song-artist" style="font-size: 0.68rem; color: #555; margin-bottom: 6px;">-</div>
+                <div id="delete-modal-song-meta" style="font-size: 0.58rem; color: var(--brand-purple); font-weight: bold;">-</div>
+            </div>
+            <div style="background: #FFF0F0; border-left: 4px solid var(--accent-red); padding: 8px 10px; font-size: 0.58rem; color: #842029; margin-bottom: 16px; border-top: 1px solid #FFD0D0; border-right: 1px solid #FFD0D0; border-bottom: 1px solid #FFD0D0;">
+                <i class="fa-solid fa-circle-exclamation"></i> <strong>Warning:</strong> This action cannot be undone. All blank configurations and lyric timestamps will be permanently removed.
+            </div>
+            <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                <button type="button" id="btn-cancel-delete-song" class="btn btn-sm" style="padding: 8px 16px; font-size: 0.62rem; font-weight: bold;">
+                    KEEP SONG (CANCEL)
+                </button>
+                <button type="button" id="btn-confirm-delete-song" class="btn btn-sm btn-danger" style="padding: 8px 16px; font-size: 0.62rem; font-weight: bold;">
+                    <i class="fa-solid fa-trash"></i> YES, PERMANENTLY DELETE
+                </button>
             </div>
         </div>
     </div>

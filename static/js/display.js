@@ -546,14 +546,96 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    window.gameBus.on('STAGE_GRAND_VICTORY', () => {
-        stageRibbon.textContent = '';
+    function showWaitingScreen() {
+        currentSong = null;
+        isRevealed = false;
+        isAnswered = false;
+        hasCutForBlank = false;
+        activeBlankIndex = 0;
+
+        if (stageRibbon) {
+            stageRibbon.textContent = '★ READY FOR NEXT ROUND ★';
+            stageRibbon.style.display = 'block';
+        }
+        if (stageMultiBlankBar) {
+            stageMultiBlankBar.style.display = 'none';
+            stageMultiBlankBar.innerHTML = '';
+        }
+        if (blankBox) {
+            blankBox.classList.remove('inline-blank-wrong', 'revealed');
+            blankBox.style.display = 'none';
+        }
+        if (guessRevealBox) {
+            guessRevealBox.classList.remove('active', 'wrong-guess');
+            guessRevealBox.style.display = 'none';
+        }
+        if (visualizer) {
+            visualizer.classList.remove('playing', 'blank-paused');
+        }
+
+        hideTimer();
+        resetTimerDisplay();
+
         promptTextEl.innerHTML = `
-            <div style="font-size:2.4rem; color:var(--accent-yellow); font-weight:bold; margin-bottom:10px;">
-                EVERYBODY, SING!
+            <div style="font-size:2.2rem; color:var(--brand-blue); font-weight:bold; margin-bottom:10px;">
+                ♫ READY FOR THE NEXT SONG ♫
+            </div>
+            <div style="font-size:1.1rem; color:#666;">
+                Stand by for the next round!
             </div>
         `;
-        window.pixelConfetti.burst(400);
+    }
+
+    window.gameBus.on('STAGE_WAITING', () => {
+        showWaitingScreen();
+    });
+
+    window.gameBus.on('FADE_OUT_AUDIO', (data) => {
+        const dur = (data && data.duration) ? data.duration : 2000;
+        window.gameAudio.fadeOutAndStop(dur);
+    });
+
+    window.gameBus.on('STAGE_GRAND_VICTORY', (data) => {
+        const score = (data && typeof data.score === 'number') ? data.score : null;
+        const total = (data && typeof data.total === 'number') ? data.total : (currentSong && currentSong.blanks ? currentSong.blanks.length : 10);
+        const scoreText = (data && data.scoreText) ? data.scoreText : (score !== null ? `${score}/${total}` : '');
+
+        if (stageRibbon) {
+            stageRibbon.textContent = scoreText ? `★ FINAL SCORE: ${scoreText} ★` : '★ EVERYBODY, SING! ★';
+            stageRibbon.style.display = 'block';
+        }
+
+        if (blankBox) {
+            blankBox.classList.remove('inline-blank-wrong', 'revealed');
+            blankBox.style.display = 'none';
+        }
+        if (guessRevealBox) {
+            guessRevealBox.classList.remove('active', 'wrong-guess');
+            guessRevealBox.style.display = 'none';
+        }
+
+        const isPerfect = (score !== null && score >= total);
+        const headlineText = isPerfect ? 'PERFECT SCORE! 100% CLEAR!' : 'EVERYBODY, SING! FINISHED';
+        const subText = isPerfect 
+            ? 'JACKPOT WINNER! WHAT A PERFORMANCE!' 
+            : (score !== null ? `Great effort! Cleared ${score} out of ${total} blanks!` : 'Well done to the faculty!');
+
+        promptTextEl.innerHTML = `
+            <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px;">
+                <div style="font-size:1.6rem; color:var(--accent-yellow); font-weight:bold; letter-spacing:1px; text-transform:uppercase;">
+                    ★ ${headlineText} ★
+                </div>
+                ${scoreText ? `
+                <div style="font-size:4.8rem; font-weight:900; color:#FFF; background:var(--brand-blue); padding:6px 36px; border:4px solid #000; box-shadow:6px 6px 0px #000; margin:10px 0; border-radius:10px; letter-spacing:4px; text-shadow:3px 3px 0px #000;">
+                    SCORE: ${scoreText}
+                </div>` : ''}
+                <div style="font-size:1.3rem; color:#333; font-weight:bold;">
+                    ${subText}
+                </div>
+            </div>
+        `;
+
+        window.pixelConfetti.burst(isPerfect ? 450 : 280);
         window.gameAudio.playCorrectDing();
     });
 

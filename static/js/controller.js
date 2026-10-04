@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let isPausedAtBlank = false;
     let waitingForNextBlank = false;
     let pendingBlankResumeTime = null;
+    let finalOutroTimer = null;
 
     const blankEditorModal = document.getElementById('blank-editor-modal');
     const btnCloseBlankEditor = document.getElementById('btn-close-blank-editor');
@@ -62,6 +63,17 @@ document.addEventListener('DOMContentLoaded', () => {
     let editingSong = null;
     let editingBlanks = [];
     let editorCaptureIndex = 0;
+
+    const btnDeleteCurrentSong = document.getElementById('btn-delete-current-song');
+    const btnEditorDeleteSong = document.getElementById('btn-editor-delete-song');
+    const deleteSongModal = document.getElementById('delete-song-modal');
+    const deleteModalTitle = document.getElementById('delete-modal-song-title');
+    const deleteModalArtist = document.getElementById('delete-modal-song-artist');
+    const deleteModalMeta = document.getElementById('delete-modal-song-meta');
+    const btnCloseDeleteModal = document.getElementById('btn-close-delete-modal');
+    const btnCancelDeleteSong = document.getElementById('btn-cancel-delete-song');
+    const btnConfirmDeleteSong = document.getElementById('btn-confirm-delete-song');
+    let pendingSongToDelete = null;
 
     const activeTitle = document.getElementById('prompter-song-title');
     const activeArtist = document.getElementById('prompter-song-artist');
@@ -302,6 +314,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     <button type="button" class="btn btn-card-action btn-card-load" data-id="${song.id}" title="Load to active prompter">
                         LOAD
                     </button>
+                    ${isEverybodySing ? `
+                    <button type="button" class="btn btn-card-action btn-danger btn-delete-song" data-id="${song.id}" title="Delete this song from Everybody, Sing">
+                        <i class="fa-solid fa-trash"></i> DELETE
+                    </button>
+                    ` : ''}
                 </div>
 
                 <div class="inline-timing-editor ${openTimingEditorSongId === song.id ? '' : 'hidden'}" id="timing-editor-${song.id}">
@@ -362,6 +379,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 editBlanksBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
                     openBlankEditor(song);
+                });
+            }
+
+            const deleteSongBtn = item.querySelector('.btn-delete-song');
+            if (deleteSongBtn) {
+                deleteSongBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    requestDeleteSong(song);
                 });
             }
 
@@ -636,6 +661,10 @@ document.addEventListener('DOMContentLoaded', () => {
         isPlaying = false;
         waitingForNextBlank = false;
         pendingBlankResumeTime = null;
+        if (finalOutroTimer) {
+            clearTimeout(finalOutroTimer);
+            finalOutroTimer = null;
+        }
 
         document.querySelectorAll('.song-card-item').forEach(el => el.classList.remove('selected'));
         renderSongList();
@@ -1478,6 +1507,153 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    function closeDeleteModal() {
+        pendingSongToDelete = null;
+        if (deleteSongModal) deleteSongModal.classList.add('hidden');
+        if (btnConfirmDeleteSong) {
+            btnConfirmDeleteSong.disabled = false;
+            btnConfirmDeleteSong.innerHTML = '<i class="fa-solid fa-trash"></i> YES, PERMANENTLY DELETE';
+        }
+    }
+
+    function requestDeleteSong(song) {
+        if (!song || !song.id) return;
+        pendingSongToDelete = song;
+
+        if (deleteModalTitle) deleteModalTitle.textContent = song.title || 'Untitled Song';
+        if (deleteModalArtist) deleteModalArtist.textContent = song.artist ? `Artist: ${song.artist}` : 'Unknown Artist';
+        if (deleteModalMeta) {
+            const count = (song.blanks || []).length;
+            const modeText = song.mode === 'everybody_sing' ? 'EVERYBODY, SING!' : (song.mode === 'complete' ? 'SING IN THE BLANK' : 'HULA-SING');
+            deleteModalMeta.textContent = `${modeText} • ${count} BLANK${count === 1 ? '' : 'S'} CONFIGURED`;
+        }
+
+        if (btnConfirmDeleteSong) {
+            btnConfirmDeleteSong.disabled = false;
+            btnConfirmDeleteSong.innerHTML = '<i class="fa-solid fa-trash"></i> YES, PERMANENTLY DELETE';
+        }
+
+        if (deleteSongModal) {
+            deleteSongModal.classList.remove('hidden');
+        } else {
+            if (confirm(`Are you sure you want to permanently delete "${song.title}"? This cannot be undone.`)) {
+                executeDeleteSong(song);
+            }
+        }
+    }
+
+    async function executeDeleteSong(song) {
+        if (!song || !song.id) return;
+        const targetId = song.id;
+
+        if (btnConfirmDeleteSong) {
+            btnConfirmDeleteSong.disabled = true;
+            btnConfirmDeleteSong.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> DELETING...';
+        }
+
+        try {
+            const res = await fetch(`/api/songs/${encodeURIComponent(targetId)}`, {
+                method: 'DELETE'
+            });
+            const data = await res.json();
+            if (!res.ok || !data.success) {
+                alert(`Failed to delete song: ${data.error || 'Server error'}`);
+                if (btnConfirmDeleteSong) {
+                    btnConfirmDeleteSong.disabled = false;
+                    btnConfirmDeleteSong.innerHTML = '<i class="fa-solid fa-trash"></i> YES, PERMANENTLY DELETE';
+                }
+                return;
+            }
+
+            closeDeleteModal();
+
+            // If timing editor modal was open for this song, close it
+            if (editingSong && editingSong.id === targetId) {
+                pauseAudioPlayback();
+                editingSong = null;
+                if (blankEditorModal) blankEditorModal.classList.add('hidden');
+            }
+
+            // If the deleted song was currently loaded
+            const wasCurrent = (currentSong && currentSong.id === targetId);
+            if (wasCurrent) {
+                pauseAudioPlayback();
+                currentSong = null;
+            }
+
+            await fetchSongs();
+
+            if (wasCurrent) {
+                const nextSong = songs.find(s => s.mode === 'everybody_sing') || songs[0] || null;
+                if (nextSong) {
+                    selectSong(nextSong);
+                } else {
+                    activeTitle.textContent = 'NO SONG LOADED';
+                    activeArtist.textContent = '-';
+                    activeBadgeMode.textContent = 'STANDBY';
+                    activeBadgeMode.className = 'badge';
+                    if (prompterMultiBlankDeck) prompterMultiBlankDeck.style.display = 'none';
+                    lyricsPrecedingEl.innerHTML = '';
+                    maskedSegmentEl.style.display = 'none';
+                    answerKeyEl.textContent = '';
+                    window.gameBus.send('SET_SONG', null);
+                }
+            }
+
+            if (uploadStatus) {
+                uploadStatus.textContent = 'SONG DELETED';
+                uploadStatus.className = 'status-badge';
+                uploadStatus.style.background = 'var(--accent-red)';
+                setTimeout(() => {
+                    uploadStatus.textContent = 'OFFLINE READY';
+                    uploadStatus.style.background = 'var(--brand-black)';
+                }, 2500);
+            }
+        } catch (err) {
+            console.error('Delete song failed:', err);
+            alert('Network error while attempting to delete song.');
+            if (btnConfirmDeleteSong) {
+                btnConfirmDeleteSong.disabled = false;
+                btnConfirmDeleteSong.innerHTML = '<i class="fa-solid fa-trash"></i> YES, PERMANENTLY DELETE';
+            }
+        }
+    }
+
+    if (btnCloseDeleteModal) btnCloseDeleteModal.addEventListener('click', closeDeleteModal);
+    if (btnCancelDeleteSong) btnCancelDeleteSong.addEventListener('click', closeDeleteModal);
+    if (btnConfirmDeleteSong) {
+        btnConfirmDeleteSong.addEventListener('click', () => {
+            if (pendingSongToDelete) {
+                executeDeleteSong(pendingSongToDelete);
+            }
+        });
+    }
+    if (deleteSongModal) {
+        deleteSongModal.addEventListener('click', (e) => {
+            if (e.target === deleteSongModal) {
+                closeDeleteModal();
+            }
+        });
+    }
+
+    if (btnDeleteCurrentSong) {
+        btnDeleteCurrentSong.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (currentSong) {
+                requestDeleteSong(currentSong);
+            }
+        });
+    }
+
+    if (btnEditorDeleteSong) {
+        btnEditorDeleteSong.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (editingSong) {
+                requestDeleteSong(editingSong);
+            }
+        });
+    }
+
     function startSmartAutoPlay() {
         if (!currentSong || currentSong.mode !== 'everybody_sing') return;
         if (!currentSong.audio_url) {
@@ -1598,6 +1774,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function triggerEmergencyCut() {
+        if (finalOutroTimer) {
+            clearTimeout(finalOutroTimer);
+            finalOutroTimer = null;
+        }
         isPlaying = false;
         isPausedAtBlank = true;
         hasCutForBlank = true;
@@ -1786,6 +1966,40 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function finishRoundAndGoToWaiting(scoreText = '') {
+        if (finalOutroTimer) {
+            clearTimeout(finalOutroTimer);
+            finalOutroTimer = null;
+        }
+        isPlaying = false;
+        isPausedAtBlank = false;
+        hasCutForBlank = false;
+        waitingForNextBlank = false;
+        isRevealed = false;
+        isAnswered = false;
+
+        btnPlayAudio.innerHTML = '<i class="fa-solid fa-play"></i> PLAY AUDIO';
+        btnPlayAudio.style.background = 'var(--brand-blue)';
+        btnPlayAudio.style.color = '#FFF';
+
+        if (btnSmartAutoplay) {
+            btnSmartAutoplay.classList.remove('running');
+            btnSmartAutoplay.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> START SMART FULL-SONG AUTO-PLAY';
+        }
+
+        const precedingEl = document.getElementById('prompter-lyrics-preceding');
+        if (precedingEl) {
+            precedingEl.innerHTML = `<strong>★ ROUND COMPLETE! FINAL SCORE: ${scoreText || ''} ★</strong><br><span style="font-size:0.75rem; color:#555;">Waiting for next song. Select from library or launch /roulette.</span>`;
+        }
+
+        const answerKeyText = document.getElementById('prompter-answer-key-text');
+        if (answerKeyText) {
+            answerKeyText.textContent = `FINAL SCORE: ${scoreText || '-'}`;
+        }
+
+        window.gameBus.send('STAGE_WAITING');
+    }
+
     function triggerCorrect() {
         if (!currentSong) return; if (isAnswered) return;
 
@@ -1827,19 +2041,58 @@ document.addEventListener('DOMContentLoaded', () => {
                 hasCutForBlank = true;
                 isSmartAutoPlayRunning = false;
                 waitingForNextBlank = false;
+
+                const score = blanks.filter(b => b.answered && !b.wrong).length;
+                const total = blanks.length || 10;
+                const scoreText = `${score}/${total}`;
+
                 if (btnSmartAutoplay) {
                     btnSmartAutoplay.classList.remove('running');
-                    btnSmartAutoplay.innerHTML = '<i class="fa-solid fa-trophy"></i> ALL BLANKS CLEARED!';
+                    btnSmartAutoplay.innerHTML = `<i class="fa-solid fa-trophy"></i> CLEARED! SCORE: ${scoreText}`;
                 }
+
                 setTimeout(() => {
-                    window.gameBus.send('STAGE_GRAND_VICTORY');
+                    window.gameBus.send('STAGE_GRAND_VICTORY', {
+                        score,
+                        total,
+                        scoreText
+                    });
                     window.gameAudio.playCorrectDing();
                 }, 1200);
 
-                if (btnPlayAudio) {
-                    btnPlayAudio.innerHTML = '<i class="fa-solid fa-play"></i> PLAY TO END [SPACE]';
-                    btnPlayAudio.style.background = 'var(--accent-green)';
-                    btnPlayAudio.style.color = '#FFF';
+                if (finalOutroTimer) {
+                    clearTimeout(finalOutroTimer);
+                    finalOutroTimer = null;
+                }
+
+                if (currentSong.audio_url) {
+                    isPlaying = true;
+                    isPausedAtBlank = false;
+                    btnPlayAudio.innerHTML = `<i class="fa-solid fa-volume-high"></i> CELEBRATING [${scoreText}] (10S)...`;
+                    btnPlayAudio.style.background = 'var(--accent-yellow)';
+                    btnPlayAudio.style.color = '#000';
+
+                    setTimeout(() => {
+                        window.gameAudio.playTrack(resumeFrom, false);
+                        window.gameBus.send('PLAY_AUDIO', { fromTime: resumeFrom, isResume: true });
+                    }, 350);
+
+                    // Play audio for 10s total: 8s at full volume, then 2s fade out, then go back to waiting
+                    finalOutroTimer = setTimeout(() => {
+                        btnPlayAudio.innerHTML = '<i class="fa-solid fa-volume-low"></i> FADING OUT...';
+                        window.gameAudio.fadeOutAndStop(2000, () => {
+                            finishRoundAndGoToWaiting(scoreText);
+                        });
+                        window.gameBus.send('FADE_OUT_AUDIO', { duration: 2000 });
+
+                        setTimeout(() => {
+                            finishRoundAndGoToWaiting(scoreText);
+                        }, 2100);
+                    }, 8000);
+                } else {
+                    finalOutroTimer = setTimeout(() => {
+                        finishRoundAndGoToWaiting(scoreText);
+                    }, 10000);
                 }
             } else {
                 waitingForNextBlank = true;
@@ -1941,19 +2194,58 @@ document.addEventListener('DOMContentLoaded', () => {
                 hasCutForBlank = true;
                 isSmartAutoPlayRunning = false;
                 waitingForNextBlank = false;
+
+                const score = blanks.filter(b => b.answered && !b.wrong).length;
+                const total = blanks.length || 10;
+                const scoreText = `${score}/${total}`;
+
                 if (btnSmartAutoplay) {
                     btnSmartAutoplay.classList.remove('running');
-                    btnSmartAutoplay.innerHTML = '<i class="fa-solid fa-trophy"></i> ALL BLANKS CLEARED!';
+                    btnSmartAutoplay.innerHTML = `<i class="fa-solid fa-flag-checkered"></i> FINISHED! SCORE: ${scoreText}`;
                 }
+
                 setTimeout(() => {
-                    window.gameBus.send('STAGE_GRAND_VICTORY');
+                    window.gameBus.send('STAGE_GRAND_VICTORY', {
+                        score,
+                        total,
+                        scoreText
+                    });
                     window.gameAudio.playWrongBuzzer();
                 }, 1200);
 
-                if (btnPlayAudio) {
-                    btnPlayAudio.innerHTML = '<i class="fa-solid fa-play"></i> PLAY TO END [SPACE]';
-                    btnPlayAudio.style.background = 'var(--accent-green)';
-                    btnPlayAudio.style.color = '#FFF';
+                if (finalOutroTimer) {
+                    clearTimeout(finalOutroTimer);
+                    finalOutroTimer = null;
+                }
+
+                if (currentSong.audio_url) {
+                    isPlaying = true;
+                    isPausedAtBlank = false;
+                    btnPlayAudio.innerHTML = `<i class="fa-solid fa-volume-high"></i> CELEBRATING [${scoreText}] (10S)...`;
+                    btnPlayAudio.style.background = 'var(--accent-yellow)';
+                    btnPlayAudio.style.color = '#000';
+
+                    setTimeout(() => {
+                        window.gameAudio.playTrack(resumeFrom, false);
+                        window.gameBus.send('PLAY_AUDIO', { fromTime: resumeFrom, isResume: true });
+                    }, 350);
+
+                    // Play audio for 10s total: 8s at full volume, then 2s fade out, then go back to waiting
+                    finalOutroTimer = setTimeout(() => {
+                        btnPlayAudio.innerHTML = '<i class="fa-solid fa-volume-low"></i> FADING OUT...';
+                        window.gameAudio.fadeOutAndStop(2000, () => {
+                            finishRoundAndGoToWaiting(scoreText);
+                        });
+                        window.gameBus.send('FADE_OUT_AUDIO', { duration: 2000 });
+
+                        setTimeout(() => {
+                            finishRoundAndGoToWaiting(scoreText);
+                        }, 2100);
+                    }, 8000);
+                } else {
+                    finalOutroTimer = setTimeout(() => {
+                        finishRoundAndGoToWaiting(scoreText);
+                    }, 10000);
                 }
             } else {
                 waitingForNextBlank = true;
@@ -2088,7 +2380,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     window.addEventListener('keydown', (e) => {
-        if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) {
+        if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName)) {
+            return;
+        }
+        if (deleteSongModal && !deleteSongModal.classList.contains('hidden')) {
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                closeDeleteModal();
+            }
             return;
         }
         if (e.repeat) return;

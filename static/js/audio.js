@@ -412,6 +412,55 @@ class GameAudioEngine {
             window.clearTimeout(this.stopTimeout);
             this.stopTimeout = null;
         }
+        if (this.fadeInterval) {
+            clearInterval(this.fadeInterval);
+            this.fadeInterval = null;
+        }
+    }
+
+    fadeOutAndStop(durationMs = 2000, onComplete = null) {
+        this.cancelPendingStop();
+        if (!this.player || this.player.paused) {
+            if (onComplete) onComplete();
+            return;
+        }
+
+        const durSec = Math.max(0.5, durationMs / 1000);
+        if (this.masterGain && this.ctx) {
+            try {
+                const now = this.ctx.currentTime;
+                const currentGain = this.masterGain.gain.value || this.masterVolume || 1.0;
+                this.masterGain.gain.cancelScheduledValues(now);
+                this.masterGain.gain.setValueAtTime(currentGain, now);
+                this.masterGain.gain.linearRampToValueAtTime(0.0001, now + durSec);
+            } catch (e) {
+                console.warn('[GameAudio] Master gain ramp error', e);
+            }
+        }
+
+        const initialVol = this.player.volume;
+        const steps = 20;
+        const intervalTime = durationMs / steps;
+        let step = 0;
+        this.fadeInterval = setInterval(() => {
+            step++;
+            const factor = Math.max(0, 1 - (step / steps));
+            this.player.volume = initialVol * factor;
+            if (step >= steps) {
+                clearInterval(this.fadeInterval);
+                this.fadeInterval = null;
+                this.player.pause();
+                this.player.volume = 1;
+                if (this.masterGain && this.ctx) {
+                    try {
+                        this.masterGain.gain.cancelScheduledValues(this.ctx.currentTime);
+                        this.masterGain.gain.setValueAtTime(this.masterVolume || 1.0, this.ctx.currentTime);
+                    } catch (e) {}
+                }
+                if (this.onPlayStateChange) this.onPlayStateChange(false);
+                if (onComplete) onComplete();
+            }
+        }, intervalTime);
     }
 
     smoothStop(fadeDuration = 300, onComplete = null) {
@@ -419,11 +468,6 @@ class GameAudioEngine {
         if (this.player.paused) {
             if (onComplete) onComplete();
             return;
-        }
-
-        if (this.fadeInterval) {
-            clearInterval(this.fadeInterval);
-            this.fadeInterval = null;
         }
 
         if (this.isMuted) {
