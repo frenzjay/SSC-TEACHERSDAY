@@ -1,6 +1,6 @@
 ### SSC Teachers' Day
 
-### This app was used for SSC's Teachers' Day celebration.
+### This app was used for SSC's Teachers' Day celebration, inspired by Vice Ganda's "Everybody, Sing!" game.
 
 ## Use a phone or another device as the stage display
 
