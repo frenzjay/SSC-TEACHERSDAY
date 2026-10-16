@@ -222,9 +222,7 @@
 }
 
 .controller-body .section,
-.controller-body .audio-deck-card,
-.controller-body .timer-control-card,
-.controller-body .scoreboard-control-card {
+.controller-body .audio-deck-card {
     border-radius: 14px !important;
 }
 
@@ -354,86 +352,6 @@
 
 .btn-reveal-stage:hover {
     background: #FFFF66;
-}
-
-.timer-control-card {
-    background: var(--brand-white);
-    border: var(--border-frame);
-    box-shadow: var(--shadow-heavy);
-    padding: 20px;
-}
-
-.timer-digits-display {
-    background: #000000;
-    color: var(--accent-yellow);
-    font-size: 2.2rem;
-    text-align: center;
-    padding: 12px;
-    border: 3px solid var(--brand-black);
-    margin-bottom: 14px;
-    letter-spacing: 2px;
-}
-
-.timer-preset-row {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 10px;
-}
-
-.timer-actions-row {
-    display: flex;
-    gap: 8px;
-}
-
-.scoreboard-control-card {
-    background: var(--brand-white);
-    border: var(--border-frame);
-    box-shadow: var(--shadow-heavy);
-    padding: 20px;
-}
-
-.controller-team-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: var(--surface-subtle);
-    border: 2px solid var(--brand-black);
-    padding: 8px 10px;
-    margin-bottom: 8px;
-}
-
-.controller-team-name {
-    font-size: 0.6rem;
-    font-weight: bold;
-    flex: 1;
-}
-
-.controller-team-score {
-    font-size: 0.85rem;
-    background: #000;
-    color: var(--accent-yellow);
-    padding: 4px 10px;
-    margin: 0 8px;
-    min-width: 32px;
-    text-align: center;
-}
-
-.score-btn-group {
-    display: flex;
-    gap: 4px;
-}
-
-.score-btn {
-    font-family: var(--font-pixel);
-    font-size: 0.65rem;
-    padding: 4px 8px;
-    border: 2px solid #000;
-    background: #EEE;
-    cursor: pointer;
-}
-
-.score-btn:hover {
-    background: var(--accent-yellow);
 }
 
 .hotkey-bar {

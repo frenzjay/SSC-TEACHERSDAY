@@ -1,8 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const { escapeHtml, formatLyrics, formatWordBlanksHtml } = window.gameUtils;
+    let roundComplete = false;
     function getRibbonText(currentBlank, blanks, activeIndex, isRevealed, isTama, isMali) {
         if (currentBlank && currentBlank.is_lyrics_only) return '★ EVERYBODY, SING! ★';
-        let realIdx = blanks.slice(0, activeIndex + 1).filter(x => !x.is_lyrics_only).length;
-        let totalReal = blanks.filter(x => !x.is_lyrics_only).length;
+        const { number: realIdx, total: totalReal } = window.singRound.progress(blanks, activeIndex);
         if (isTama) return `★ BLANK ${realIdx} TAMA! ★`;
         if (isMali) return `★ BLANK ${realIdx} MALI! ★`;
         if (isRevealed) return `★ BLANK ${realIdx} REVEALED ★`;
@@ -27,24 +28,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let hasCutForBlank = false;
     let activeBlankIndex = 0;
     let hulaReplayStopAt = null;
-
-    function showTimer() {}
-    function hideTimer() {}
-    function resetTimerDisplay() {}
-
-    function formatWordBlanksHtml(text) {
-        if (!text) return '<span class="blank-word">_____</span>';
-        const words = String(text).trim().split(/\s+/);
-        if (words.length === 0 || (words.length === 1 && words[0] === '')) {
-            return '<span class="blank-word">_____</span>';
-        }
-        return words.map(word => {
-            const letters = word.replace(/[^a-zA-Z0-9\u00C0-\u024F]/g, '');
-            const count = letters.length > 0 ? letters.length : word.length;
-            const underscores = '_'.repeat(Math.max(1, count));
-            return `<span class="blank-word">${underscores}</span>`;
-        }).join('<span class="blank-space">&nbsp;</span>');
-    }
 
     function renderInlineBlank(currentBlank, revealed = false) {
         if (currentBlank.is_lyrics_only) {
@@ -85,6 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         stageMultiBlankBar.style.display = 'flex';
         stageMultiBlankBar.innerHTML = '';
+        let realIdx = 0;
         currentSong.blanks.forEach((b, idx) => {
             const pill = document.createElement('div');
             if (b.is_lyrics_only) return;
@@ -96,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (b.wrong) className += ' wrong-pill';
             pill.className = className;
             
-            let realIdx = currentSong.blanks.slice(0, idx + 1).filter(x => !x.is_lyrics_only).length;
+            realIdx++;
             let label = `BLANK ${realIdx}`;
             
             if (b.answered) {
@@ -109,10 +93,8 @@ document.addEventListener('DOMContentLoaded', () => {
             stageMultiBlankBar.appendChild(pill);
         });
     }
-
-    hideTimer();
-    resetTimerDisplay();
     function showQuestionPrompter() {
+        if (roundComplete) return;
         if (!currentSong) return;
         visualizer.classList.remove('playing');
         visualizer.classList.add('blank-paused');
@@ -126,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentSong.mode === 'everybody_sing') {
             const blanks = currentSong.blanks || [];
             const currentBlank = blanks[activeBlankIndex] || blanks[0] || {};
-            if (stageRibbon) stageRibbon.textContent = `★ BLANK ${activeBlankIndex + 1} OF ${blanks.length} ★`;
+            if (stageRibbon) stageRibbon.textContent = getRibbonText(currentBlank, blanks, activeBlankIndex);
             renderInlineBlank(currentBlank, Boolean(currentBlank.answered));
             renderStageMultiBlankPills();
         } else if (currentSong.mode === 'complete') {
@@ -151,6 +133,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     window.gameBus.on('SET_SONG', (song) => {
         if (!song) return;
+        roundComplete = false;
+        window.gameAudio.pauseTrack();
         currentSong = song;
         isRevealed = false;
         isAnswered = false;
@@ -165,9 +149,6 @@ document.addEventListener('DOMContentLoaded', () => {
         guessRevealBox.style.display = 'none';
         visualizer.classList.remove('playing', 'blank-paused');
 
-        hideTimer();
-        resetTimerDisplay();
-
         if (stageRibbon) {
             stageRibbon.textContent = '';
         }
@@ -181,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const modeDesc = song.mode === 'everybody_sing' ? 
-            `[ READY TO SING ${(song.blanks || []).length} BLANKS ACROSS THE FULL SONG ]` :
+            `[ READY TO SING ${window.singRound.progress(song.blanks).total} BLANKS ACROSS THE FULL SONG ]` :
             (song.mode === 'complete' ? '[ LISTEN TO THE SONG UNTIL THE MUSIC CUTS ]' : '[ LISTEN CAREFULLY TO THE TUNE ]');
 
         promptTextEl.innerHTML = `
@@ -203,7 +184,6 @@ document.addEventListener('DOMContentLoaded', () => {
         visualizer.classList.add('playing');
         visualizer.classList.remove('blank-paused');
         
-        hideTimer();
 
         if (data && data.replayUntil) {
             hulaReplayStopAt = Number(data.replayUntil);
@@ -256,22 +236,19 @@ document.addEventListener('DOMContentLoaded', () => {
         showQuestionPrompter();
     });
 
-    window.gameBus.on('REVEAL_ANSWER', () => {
+    window.gameBus.on('REVEAL_ANSWER', (data) => {
         if (!currentSong) return;
         isRevealed = true;
         isAnswered = true;
         hasCutForBlank = true;
 
-        hideTimer();
-
         if (currentSong.mode === 'everybody_sing') {
             const blanks = currentSong.blanks || [];
             const currentBlank = blanks[activeBlankIndex] || {};
-            stageRibbon.textContent = `★ BLANK ${activeBlankIndex + 1} REVEALED ★`;
+            stageRibbon.textContent = getRibbonText(currentBlank, blanks, activeBlankIndex, true);
             renderInlineBlank(currentBlank, true);
-            activeBlankIndex = Math.min(blanks.length, activeBlankIndex + 1);
             renderStageMultiBlankPills();
-            window.gameAudio.playTick(false);
+            if (!data?.snapshot) window.gameAudio.playTick(false);
             return;
         }
 
@@ -291,7 +268,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 guessRevealBox.classList.add('active');
         }
 
-        if (currentSong.mode === 'guess' && currentSong.audio_url) {
+        if (currentSong.mode === 'guess' && currentSong.audio_url && !data?.snapshot) {
             const replayFrom = Number(data && data.replayFrom);
             hulaReplayStopAt = Number(data && data.replayUntil) || ((replayFrom || Number(currentSong.start_time) || 0) + 4);
             setTimeout(() => {
@@ -303,16 +280,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 );
             }, 350);
         }
-        window.gameAudio.playTick(false);
+        if (!data?.snapshot) window.gameAudio.playTick(false);
     });
 
     window.gameBus.on('TRIGGER_CORRECT', (data) => {
         isAnswered = true;
         isRevealed = true;
         hasCutForBlank = true;
-
-        hideTimer();
-        resetTimerDisplay();
 
         showVerdict('correct', 'fa-solid fa-check', 'TAMA!');
         window.pixelConfetti.burst(180);
@@ -321,8 +295,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentSong) {
             if (currentSong.mode === 'everybody_sing') {
                 const blanks = currentSong.blanks || [];
+                if (Number.isInteger(data?.activeBlankIndex)) activeBlankIndex = data.activeBlankIndex;
                 const currentBlank = blanks[activeBlankIndex] || {};
                 currentBlank.answered = true;
+                currentBlank.wrong = false;
                 renderStageMultiBlankPills();
 
                 renderInlineBlank(currentBlank, true);
@@ -331,7 +307,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (data && data.isLastBlank) {
                         stageRibbon.textContent = '★ EVERYBODY, SING! ★';
                     } else {
-                        stageRibbon.textContent = `★ BLANK ${activeBlankIndex + 1} TAMA! ★`;
+                        stageRibbon.textContent = getRibbonText(currentBlank, blanks, activeBlankIndex, false, true);
                     }
                 }
 
@@ -408,46 +384,12 @@ document.addEventListener('DOMContentLoaded', () => {
         isRevealed = false;
         hasCutForBlank = false;
 
-        hideTimer();
-        resetTimerDisplay();
-
         renderStageMultiBlankPills();
 
         const blanks = currentSong.blanks || [];
         const currentBlank = blanks[activeBlankIndex] || {};
 
-        if (stageRibbon) stageRibbon.textContent = `★ BLANK ${activeBlankIndex + 1} OF ${blanks.length} ★`;
-        renderInlineBlank(currentBlank);
-        guessRevealBox.classList.remove('wrong-guess');
-        guessRevealBox.style.display = 'none';
-
-        visualizer.classList.add('playing');
-        visualizer.classList.remove('blank-paused');
-    });
-
-    window.gameBus.on('TRIGGER_CORRECT_AND_ADVANCE', (data) => {
-        if (!currentSong || currentSong.mode !== 'everybody_sing') return;
-        isAnswered = false;
-        isRevealed = false;
-        hasCutForBlank = false;
-
-        hideTimer();
-        resetTimerDisplay();
-
-        showVerdict('correct', 'fa-solid fa-check', 'TAMA!');
-        window.pixelConfetti.burst(150);
-        window.gameAudio.playCorrectDing();
-
-        if (data && typeof data.activeBlankIndex === 'number') {
-            activeBlankIndex = data.activeBlankIndex;
-        }
-
-        renderStageMultiBlankPills();
-
-        const blanks = currentSong.blanks || [];
-        const currentBlank = blanks[activeBlankIndex] || {};
-
-        stageRibbon.textContent = `★ EVERYBODY, SING! ★ (BLANK ${activeBlankIndex + 1} OF ${blanks.length})`;
+        if (stageRibbon) stageRibbon.textContent = getRibbonText(currentBlank, blanks, activeBlankIndex);
         renderInlineBlank(currentBlank);
         guessRevealBox.classList.remove('wrong-guess');
         guessRevealBox.style.display = 'none';
@@ -461,9 +403,6 @@ document.addEventListener('DOMContentLoaded', () => {
         isRevealed = true;
         hasCutForBlank = true;
 
-        hideTimer();
-        resetTimerDisplay();
-
         showVerdict('wrong', 'fa-solid fa-xmark', 'MALI!');
         window.pixelConfetti.burst(0);
         window.gameAudio.playWrongBuzzer();
@@ -471,6 +410,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentSong) {
             if (currentSong.mode === 'everybody_sing') {
                 const blanks = currentSong.blanks || [];
+                if (Number.isInteger(data?.activeBlankIndex)) activeBlankIndex = data.activeBlankIndex;
                 const currentBlank = blanks[activeBlankIndex] || {};
                 currentBlank.answered = true;
                 currentBlank.wrong = true;
@@ -521,14 +461,6 @@ document.addEventListener('DOMContentLoaded', () => {
             hulaReplayStopAt = Number(data && data.replayUntil) || ((replayFrom || 0) + 4);
         }
     });
-    window.gameBus.on('TRIGGER_TIMEOUT', () => {
-        showVerdict('timeout', 'fa-solid fa-hourglass-end', "TIME'S UP!");
-        if (stageRibbon) {
-            stageRibbon.textContent = "★ TIME'S UP! ★";
-        }
-        window.gameAudio.playTimeoutBuzzer();
-    });
-
     window.gameBus.on('TENSION_ROLL', (data) => {
         const dur = (data && data.duration) ? data.duration : 2.5;
         window.gameAudio.playTensionRoll(dur);
@@ -545,58 +477,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    function showWaitingScreen() {
-        currentSong = null;
-        isRevealed = false;
-        isAnswered = false;
-        hasCutForBlank = false;
-        activeBlankIndex = 0;
-
-        if (stageRibbon) {
-            stageRibbon.textContent = '★ READY FOR NEXT ROUND ★';
-            stageRibbon.style.display = 'block';
-        }
-        if (stageMultiBlankBar) {
-            stageMultiBlankBar.style.display = 'none';
-            stageMultiBlankBar.innerHTML = '';
-        }
-        if (blankBox) {
-            blankBox.classList.remove('inline-blank-wrong', 'revealed');
-            blankBox.style.display = 'none';
-        }
-        if (guessRevealBox) {
-            guessRevealBox.classList.remove('active', 'wrong-guess');
-            guessRevealBox.style.display = 'none';
-        }
-        if (visualizer) {
-            visualizer.classList.remove('playing', 'blank-paused');
-        }
-
-        hideTimer();
-        resetTimerDisplay();
-
-        promptTextEl.innerHTML = `
-            <div style="font-size:2.2rem; color:var(--brand-blue); font-weight:bold; margin-bottom:10px;">
-                ♫ READY FOR THE NEXT SONG ♫
-            </div>
-            <div style="font-size:1.1rem; color:#666;">
-                Stand by for the next round!
-            </div>
-        `;
-    }
-
-    window.gameBus.on('STAGE_WAITING', () => {
-        showWaitingScreen();
-    });
-
     window.gameBus.on('FADE_OUT_AUDIO', (data) => {
         const dur = (data && data.duration) ? data.duration : 2000;
         window.gameAudio.fadeOutAndStop(dur);
     });
 
     window.gameBus.on('STAGE_GRAND_VICTORY', (data) => {
+        roundComplete = true;
         const score = (data && typeof data.score === 'number') ? data.score : null;
-        const total = (data && typeof data.total === 'number') ? data.total : (currentSong && currentSong.blanks ? currentSong.blanks.length : 10);
+        const total = (data && typeof data.total === 'number') ? data.total : window.singRound.progress(currentSong?.blanks).total;
         const scoreText = (data && data.scoreText) ? data.scoreText : (score !== null ? `${score}/${total}` : '');
 
         if (stageRibbon) {
@@ -613,7 +502,7 @@ document.addEventListener('DOMContentLoaded', () => {
             guessRevealBox.style.display = 'none';
         }
 
-        const isPerfect = (score !== null && score >= total);
+        const isPerfect = (score !== null && total > 0 && score === total);
         const headlineText = isPerfect ? 'PERFECT SCORE! 100% CLEAR!' : 'EVERYBODY, SING! FINISHED';
         const subText = isPerfect 
             ? 'JACKPOT WINNER! WHAT A PERFORMANCE!' 
@@ -639,21 +528,29 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     window.gameBus.on('SYNC_STATE', (state) => {
-        if (!state) return;
-        if (state.currentSong) {
-            window.gameBus.handleMessage({ type: 'SET_SONG', payload: state.currentSong });
-            if (typeof state.activeBlankIndex === 'number') {
-                activeBlankIndex = state.activeBlankIndex;
-                renderStageMultiBlankPills();
-            }
-            if (state.isRevealed) {
-                window.gameBus.handleMessage({ type: 'REVEAL_ANSWER' });
-            }
+        if (!state || !state.currentSong) return;
+        window.gameBus.handleMessage({ type: 'SET_SONG', payload: state.currentSong });
+        activeBlankIndex = Number.isInteger(state.activeBlankIndex) ? state.activeBlankIndex : 0;
+        isAnswered = Boolean(state.isAnswered);
+        isRevealed = Boolean(state.isRevealed);
+        hasCutForBlank = Boolean(state.hasCutForBlank);
+        if (state.roundResult) {
+            window.gameBus.handleMessage({ type: 'STAGE_GRAND_VICTORY', payload: state.roundResult });
+            return;
+        }
+        showQuestionPrompter();
+        if (isRevealed) {
+            window.gameBus.handleMessage({ type: 'REVEAL_ANSWER', payload: { snapshot: true } });
+        }
+        if (state.isPlaying) {
+            window.gameBus.handleMessage({
+                type: 'PLAY_AUDIO', payload: { fromTime: state.audioTime || 0, isResume: true }
+            });
         }
     });
 
     window.gameAudio.onTimeUpdate = (curr, dur) => {
-        if (!currentSong) return;
+        if (!currentSong || roundComplete) return;
 
         if (currentSong.mode === 'guess' && hulaReplayStopAt !== null && curr >= hulaReplayStopAt) {
             hulaReplayStopAt = null;
@@ -678,7 +575,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     renderInlineBlank(currentBlank);
                     renderStageMultiBlankPills();
                 }
-                if (currentBlank && currentBlank.pause_time > 0 && curr >= currentBlank.pause_time) {
+                if (currentBlank && !currentBlank.is_lyrics_only && !currentBlank.answered && !hasCutForBlank && currentBlank.pause_time > 0 && curr >= currentBlank.pause_time) {
                     if (visualizer.classList.contains('playing') && !visualizer.classList.contains('blank-paused')) {
                         visualizer.classList.add('blank-paused');
                         visualizer.classList.remove('playing');
@@ -697,17 +594,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     };
-
-    function formatLyrics(lyrics) {
-        if (!lyrics) return '';
-        return lyrics.split(' / ').map(line => `<div>${escapeHtml(line)}</div>`).join('');
-    }
-
-    function escapeHtml(str) {
-        return str.replace(/[&<>"']/g, m => ({
-            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-        }[m]));
-    }
 
     function showVerdict(type, iconClass, label) {
         if (flashTimeout) clearTimeout(flashTimeout);
@@ -740,9 +626,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // =========================================================================
-    // STAGE ROULETTE / SPINNER WHEEL
-    // =========================================================================
     const stageCard = document.querySelector('.stage-card');
     const stageRouletteContainer = document.getElementById('stage-roulette-container');
     const stageRouletteCanvas = document.getElementById('stage-roulette-canvas');
@@ -815,7 +698,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const sliceAngle = (2 * Math.PI) / numSlices;
 
-        // Outer Rim
         stageRouletteCtx.save();
         stageRouletteCtx.beginPath();
         stageRouletteCtx.arc(STAGE_CENTER_X, STAGE_CENTER_Y, STAGE_RADIUS + 14, 0, 2 * Math.PI);
@@ -833,7 +715,6 @@ document.addEventListener('DOMContentLoaded', () => {
         stageRouletteCtx.fill();
         stageRouletteCtx.restore();
 
-        // Slices
         for (let i = 0; i < numSlices; i++) {
             const startAngle = stageCurrentRotation + (i * sliceAngle);
             const endAngle = startAngle + sliceAngle;
@@ -852,7 +733,6 @@ document.addEventListener('DOMContentLoaded', () => {
             stageRouletteCtx.stroke();
             stageRouletteCtx.restore();
 
-            // Label
             stageRouletteCtx.save();
             stageRouletteCtx.translate(STAGE_CENTER_X, STAGE_CENTER_Y);
             const midAngle = startAngle + (sliceAngle / 2);
@@ -884,7 +764,6 @@ document.addEventListener('DOMContentLoaded', () => {
             stageRouletteCtx.restore();
         }
 
-        // Pegs
         for (let i = 0; i < numSlices; i++) {
             const pegAngle = stageCurrentRotation + (i * sliceAngle);
             const pegX = STAGE_CENTER_X + Math.cos(pegAngle) * (STAGE_RADIUS + 7);
@@ -901,7 +780,6 @@ document.addEventListener('DOMContentLoaded', () => {
             stageRouletteCtx.restore();
         }
 
-        // Center Hole
         stageRouletteCtx.save();
         stageRouletteCtx.beginPath();
         stageRouletteCtx.arc(STAGE_CENTER_X, STAGE_CENTER_Y, STAGE_HUB_RADIUS + 4, 0, 2 * Math.PI);
@@ -974,7 +852,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function animateStageSpin(timestamp, winner) {
         const elapsed = timestamp - stageSpinStartTime;
         const progress = Math.min(1.0, elapsed / stageSpinDuration);
-        const ease = 1 - Math.pow(1 - progress, 5); // easeOutQuint
+        const ease = 1 - Math.pow(1 - progress, 5);
 
         stageCurrentRotation = stageStartRotation + (stageEndRotation - stageStartRotation) * ease;
 
@@ -1017,18 +895,15 @@ document.addEventListener('DOMContentLoaded', () => {
             stageRouletteWinnerBanner.style.display = 'block';
         }
 
-        // Confetti explosion
         if (window.pixelConfetti) {
             window.pixelConfetti.burst(320);
         }
 
-        // Victory Chime
         if (window.gameAudio) {
             window.gameAudio.playWheelWin();
         }
     }
 
-    // Bus Listeners for Roulette
     window.gameBus.on('ROULETTE_SHOW', (data) => {
         showStageRoulette(data ? data.songs : null);
     });
@@ -1048,7 +923,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Keyboard shortcut 'R' to toggle stage roulette
     document.addEventListener('keydown', (e) => {
         if (e.key === 'r' || e.key === 'R') {
             const activeTag = document.activeElement ? document.activeElement.tagName : '';
@@ -1065,18 +939,42 @@ document.addEventListener('DOMContentLoaded', () => {
     if (stageCenterHub) {
         stageCenterHub.addEventListener('click', () => {
             if (stageIsSpinning) return;
-            // Send trigger to roulette bus
             window.gameBus.send('ROULETTE_TRIGGER_SPIN');
         });
     }
 
+    const enableAudioButton = document.getElementById('stage-enable-audio');
+    let localAudioChoice = null;
+    function updateAudioButton() {
+        if (!enableAudioButton) return;
+        const audible = !window.gameAudio.isMuted;
+        enableAudioButton.setAttribute('aria-pressed', String(audible));
+        enableAudioButton.textContent = window.gameAudio.playbackBlocked
+            ? 'Tap to start sound'
+            : audible && localAudioChoice === true
+                ? 'Sound enabled here — mute'
+                : 'Enable sound on this device';
+    }
+    window.gameAudio.onPlaybackBlocked = updateAudioButton;
+    if (enableAudioButton) enableAudioButton.addEventListener('click', async () => {
+        if (localAudioChoice === true && !window.gameAudio.playbackBlocked) {
+            localAudioChoice = false;
+            window.gameAudio.setMuted(true);
+            updateAudioButton();
+            return;
+        }
+        localAudioChoice = true;
+        window.gameAudio.setMuted(false);
+        const enabled = await window.gameAudio.unlockAudio();
+        if (!enabled) localAudioChoice = null;
+        updateAudioButton();
+        if (enabled) window.gameBus.send('SYNC_REQUEST');
+    });
+
     window.gameBus.on('SET_AUDIO_OUTPUT_MODE', (data) => {
         if (!data) return;
-        if (data.mode === 'controller') {
-            window.gameAudio.setMuted(true);
-        } else {
-            window.gameAudio.setMuted(false);
-        }
+        window.gameAudio.setMuted(localAudioChoice === null ? data.mode === 'controller' : !localAudioChoice);
+        updateAudioButton();
     });
 
     window.gameBus.on('PING_STAGE', () => {
@@ -1084,6 +982,4 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     window.gameAudio.setMuted(true);
-    window.gameBus.send('STAGE_READY', { active: true });
-    window.gameBus.send('SYNC_REQUEST');
 });

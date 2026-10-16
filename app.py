@@ -5,8 +5,9 @@ import uuid
 import urllib.error
 import urllib.request
 from pathlib import Path
-from flask import Flask, render_template, request, jsonify, send_from_directory
+from flask import Flask, render_template, request, jsonify
 from werkzeug.utils import secure_filename
+from event_bus import EventRelay
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 DATA_DIR = os.path.join(BASE_DIR, "data")
@@ -16,6 +17,7 @@ UPLOAD_FOLDER = os.path.join(BASE_DIR, "static", "audio")
 ALLOWED_EXTENSIONS = {"mp3", "wav", "m4a", "ogg", "aac", "flac"}
 
 app = Flask(__name__)
+event_relay = EventRelay()
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 app.config["MAX_CONTENT_LENGTH"] = 50 * 1024 * 1024
 
@@ -63,6 +65,27 @@ def parse_time_value(val):
         return round(float(val), 3)
     except ValueError:
         return 0.0
+
+
+@app.route("/api/events", methods=["GET", "POST"])
+def game_events():
+    if request.method == "POST":
+        if request.content_length and request.content_length > 2 * 1024 * 1024:
+            return jsonify({"error": "Event too large"}), 413
+        message = request.get_json(silent=True)
+        if not isinstance(message, dict) or any(
+            not isinstance(message.get(key), str) or not 1 <= len(message[key]) <= 128
+            for key in ("id", "clientId", "type")
+        ):
+            return jsonify({"error": "Invalid event"}), 400
+        cursor = event_relay.publish({
+            key: message.get(key) for key in ("id", "clientId", "type", "payload", "timestamp")
+        })
+        response = jsonify({"cursor": cursor})
+    else:
+        response = jsonify(event_relay.poll(request.args.get("cursor")))
+    response.headers["Cache-Control"] = "no-store"
+    return response
 
 
 @app.route("/")
@@ -169,15 +192,15 @@ def transcribe_song(song_id):
             return jsonify({
                 "error": "Hugging Face rejected HF_TOKEN. Check that it is valid, has Inference permissions, and restart the app."
             }), 502
-        return jsonify({"error": "Free transcription service rejected the audio or is loading the model. Try again shortly."}), 502
+        return jsonify({"error": "Free transcription service rejected the audio or is loading the model."}), 502
     except urllib.error.URLError as error:
         print(f"Hugging Face connection failed for {song_id}: {error}")
         return jsonify({
-            "error": "The server cannot reach Hugging Face. Check internet/DNS access, then try again."
+            "error": "The server cannot reach Hugging Face."
         }), 502
     except Exception as error:
         print(f"Transcription failed for {song_id}: {error}")
-        return jsonify({"error": "Free external transcription failed. Check your network and try again."}), 502
+        return jsonify({"error": "Free external transcription failed."}), 502
 
 @app.route("/api/songs", methods=["POST"])
 def add_or_update_song():
@@ -246,7 +269,6 @@ def add_or_update_song():
 
 @app.route("/api/songs/<song_id>", methods=["DELETE"])
 def delete_song(song_id):
-    """Deletes a song from the library."""
     songs = load_songs()
     filtered = [s for s in songs if s.get("id") != song_id]
     if len(filtered) == len(songs):
@@ -299,8 +321,7 @@ def upload_audio():
         return jsonify({"error": f"Failed to save audio file: {str(e)}"}), 500
 
 if __name__ == "__main__":
-    print("SSC TEACHERS' DAY")
     print("Controller: /controller")
     print("Display:    /display")
     print("Roulette:   /roulette")
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5000, threaded=True, debug=False)

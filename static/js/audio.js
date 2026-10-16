@@ -12,10 +12,13 @@ class GameAudioEngine {
         this.trackUrl = '';
         this.playRequestId = 0;
         this.pendingPlayTime = null;
+        this.wantsPlayback = false;
+        this.playbackBlocked = false;
         this.player = new Audio();
         this.player.preload = 'auto';
         this.onPlayStateChange = null;
         this.onTimeUpdate = null;
+        this.onPlaybackBlocked = null;
 
         this.setupAudioListeners();
     }
@@ -45,6 +48,7 @@ class GameAudioEngine {
         });
 
         this.player.addEventListener('ended', () => {
+            this.wantsPlayback = false;
             if (this.onPlayStateChange) this.onPlayStateChange(false);
         });
 
@@ -115,39 +119,6 @@ class GameAudioEngine {
 
             osc.start(now);
             osc.stop(now + 0.55);
-        });
-    }
-    playTimeoutBuzzer() {
-        this.initContext();
-        if (this.isMuted) return;
-
-        const now = this.ctx.currentTime;
-        [0, 0.28].forEach(offset => {
-            const t = now + offset;
-            const freqs = [130, 138];
-            freqs.forEach(freq => {
-                const osc = this.ctx.createOscillator();
-                const gain = this.ctx.createGain();
-                const filter = this.ctx.createBiquadFilter();
-
-                osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(freq, t);
-
-                filter.type = 'lowpass';
-                filter.frequency.setValueAtTime(650, t);
-                filter.frequency.exponentialRampToValueAtTime(140, t + 0.24);
-
-                gain.gain.setValueAtTime(0.001, t);
-                gain.gain.linearRampToValueAtTime(0.42 * this.sfxVolume, t + 0.02);
-                gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.25);
-
-                osc.connect(filter);
-                filter.connect(gain);
-                gain.connect(this.ctx.destination);
-
-                osc.start(t);
-                osc.stop(t + 0.26);
-            });
         });
     }
     playTick(isCritical = false) {
@@ -291,6 +262,8 @@ class GameAudioEngine {
     }
     loadTrack(url, startTime = 0) {
         if (!url) return;
+        this.wantsPlayback = false;
+        this.playbackBlocked = false;
         this.cancelPendingStop();
         this.playRequestId++;
         this.pendingPlayTime = null;
@@ -319,7 +292,6 @@ class GameAudioEngine {
 
     setCurrentTimeSafely(seconds) {
         const target = Math.max(0, Number(seconds) || 0);
-        if (target <= 0) return true;
         try {
             if (this.player.seekable.length > 0) {
                 const max = this.player.seekable.end(this.player.seekable.length - 1);
@@ -335,6 +307,7 @@ class GameAudioEngine {
     }
 
     playTrack(fromTime = null, fadeIn = true) {
+        this.wantsPlayback = true;
         if (!this.player.src || this.player.error) {
             console.warn('[GameAudio] Cannot play: no usable audio source', this.trackUrl);
             return Promise.resolve(false);
@@ -376,17 +349,26 @@ class GameAudioEngine {
         this.pendingPlayTime = fromTime;
         const playPromise = this.player.play();
         if (playPromise !== undefined) {
-            return playPromise.then(() => true).catch(error => {
-                if (error.name === 'AbortError') return false;
+            return playPromise.then(() => {
+                if (requestId === this.playRequestId) this.playbackBlocked = false;
+                return true;
+            }).catch(error => {
+                if (requestId !== this.playRequestId || error.name === 'AbortError') return false;
+                if (error.name === 'NotAllowedError') {
+                    this.reportPlaybackBlocked();
+                    return false;
+                }
                 console.warn('[GameAudio] Initial play attempt failed; retrying when audio is ready', error);
                 if (error.name === 'NotSupportedError' || this.player.readyState < HTMLMediaElement.HAVE_FUTURE_DATA) {
                     const retry = () => {
-                        if (requestId !== this.playRequestId) return;
                         this.player.removeEventListener('canplay', retry);
                         this.player.removeEventListener('loadeddata', retry);
+                        if (requestId !== this.playRequestId || !this.wantsPlayback) return;
                         this.setCurrentTimeSafely(this.pendingPlayTime);
                         this.player.play().catch(retryError => {
-                            console.error('[GameAudio] Audio retry failed', retryError);
+                            if (requestId !== this.playRequestId) return;
+                            if (retryError.name === 'NotAllowedError') this.reportPlaybackBlocked();
+                            else console.error('[GameAudio] Audio retry failed', retryError);
                         });
                     };
                     this.player.addEventListener('canplay', retry, { once: true });
@@ -398,7 +380,37 @@ class GameAudioEngine {
         return Promise.resolve(true);
     }
 
+    reportPlaybackBlocked() {
+        this.playbackBlocked = true;
+        if (this.onPlaybackBlocked) this.onPlaybackBlocked();
+    }
+
+    unlockAudio() {
+        this.initContext();
+        if (this.wantsPlayback && this.trackUrl) return this.playTrack(null, false);
+        const requestId = ++this.playRequestId;
+        if (!this.player.src) this.player.src = 'data:audio/wav;base64,UklGRkQDAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YSADAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgA==';
+        this.player.muted = true;
+        return Promise.resolve(this.player.play()).then(() => {
+            if (requestId === this.playRequestId) {
+                this.player.pause();
+                this.player.muted = this.isMuted;
+                this.playbackBlocked = false;
+            }
+            return true;
+        }).catch(error => {
+            if (requestId === this.playRequestId) {
+                this.player.muted = this.isMuted;
+                if (error.name === 'NotAllowedError') this.reportPlaybackBlocked();
+            }
+            return false;
+        });
+    }
+
     pauseTrack() {
+        this.wantsPlayback = false;
+        this.playbackBlocked = false;
+        this.playRequestId++;
         this.cancelPendingStop();
         if (this.fadeInterval) {
             clearInterval(this.fadeInterval);
@@ -419,6 +431,9 @@ class GameAudioEngine {
     }
 
     fadeOutAndStop(durationMs = 2000, onComplete = null) {
+        this.wantsPlayback = false;
+        this.playbackBlocked = false;
+        this.playRequestId++;
         this.cancelPendingStop();
         if (!this.player || this.player.paused) {
             if (onComplete) onComplete();
@@ -464,6 +479,9 @@ class GameAudioEngine {
     }
 
     smoothStop(fadeDuration = 300, onComplete = null) {
+        this.wantsPlayback = false;
+        this.playbackBlocked = false;
+        this.playRequestId++;
         this.cancelPendingStop();
         if (this.player.paused) {
             if (onComplete) onComplete();

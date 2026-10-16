@@ -1,7 +1,3 @@
-/* ==========================================================================
-   ROULETTE STYLES - SSC TEACHERS' DAY (EVERYBODY, SING!)
-   ========================================================================== */
-
 .roulette-body {
     background-color: var(--surface-page);
     min-height: 100vh;
@@ -10,7 +6,6 @@
     overflow-x: hidden;
 }
 
-/* TOP NAVIGATION */
 .roulette-nav {
     display: flex;
     align-items: center;
@@ -71,7 +66,6 @@
     flex-wrap: wrap;
 }
 
-/* MAIN LAYOUT */
 .roulette-layout {
     display: grid;
     grid-template-columns: minmax(400px, 1.15fr) minmax(360px, 0.85fr);
@@ -90,7 +84,6 @@
     }
 }
 
-/* WHEEL SECTION */
 .wheel-section {
     display: flex;
     flex-direction: column;
@@ -134,7 +127,6 @@
     justify-content: center;
 }
 
-/* Top Pointer Arrow */
 .wheel-pointer {
     position: absolute;
     top: -16px;
@@ -172,7 +164,6 @@
     border-radius: 50% !important;
 }
 
-/* Canvas Wrapper */
 .wheel-canvas-wrap {
     position: relative;
     width: 100%;
@@ -190,7 +181,6 @@
     filter: drop-shadow(0 12px 24px rgba(18, 56, 36, 0.22));
 }
 
-/* Center Hub Button */
 .center-spin-hub {
     position: absolute;
     top: 50%;
@@ -251,7 +241,6 @@
     letter-spacing: 1px;
 }
 
-/* Actions below wheel */
 .wheel-actions {
     display: flex;
     flex-direction: column;
@@ -291,14 +280,12 @@
     text-align: center;
 }
 
-/* DASHBOARD / RIGHT SIDE */
 .dashboard-section {
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
-/* POINTED SONG CARD */
 .pointed-song-card {
     background: var(--brand-white);
     border: var(--border-frame);
@@ -348,7 +335,6 @@
     line-height: 1.5;
 }
 
-/* Audio Player */
 .pointed-audio-controls {
     display: flex;
     flex-direction: column;
@@ -401,7 +387,6 @@
     flex-wrap: wrap;
 }
 
-/* SONG POOL CARD */
 .pool-settings-card {
     background: var(--brand-white);
     border: var(--border-frame);
@@ -515,7 +500,6 @@
     flex-shrink: 0;
 }
 
-/* WINNER CELEBRATION MODAL */
 .winner-modal-content {
     max-width: 580px;
     text-align: center;
@@ -618,7 +602,6 @@
     margin-top: 6px;
 }
 
-/* UTILITY / BADGE FIXES */
 .badge-purple {
     background: #6b2d5c;
     color: #ffffff;

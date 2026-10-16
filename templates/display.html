@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/display.css') }}">
 </head>
 <body class="stage-body">
+    <button id="stage-enable-audio" class="stage-audio-button" type="button" aria-pressed="false">Enable sound on this device</button>
     <canvas id="bg-canvas"></canvas>
     <canvas id="confetti-canvas"></canvas>
 
@@ -62,23 +63,20 @@
             </div>
         </div>
 
-        <!-- STAGE ROULETTE CARD -->
         <div id="stage-roulette-container" class="stage-roulette-card" style="display: none;">
             <div class="stage-roulette-ribbon">
                 <i class="fa-solid fa-dharmachakra"></i>
-                <span>EVERYBODY, SING! 🎪 SONG ROULETTE</span>
+                <span>SONG ROULETTE</span>
                 <span id="stage-roulette-status-badge" class="badge badge-yellow">READY</span>
             </div>
 
             <div class="stage-roulette-wheel-wrap">
-                <!-- Pointer Indicator at 12 o'clock -->
                 <div id="stage-wheel-pointer" class="stage-wheel-pointer" aria-hidden="true">
                     <div class="stage-pointer-arrow"></div>
                 </div>
 
                 <canvas id="stage-roulette-canvas" width="560" height="560"></canvas>
 
-                <!-- Center Hub -->
                 <div class="stage-center-hub" id="stage-center-hub">
                     <i class="fa-solid fa-arrows-rotate stage-spin-icon"></i>
                     <span>SPIN</span>
@@ -86,7 +84,7 @@
             </div>
 
             <div id="stage-roulette-winner-banner" class="stage-roulette-winner-banner" style="display: none;">
-                <div class="stage-winner-tag">★ UP NEXT SONG ★</div>
+                <div class="stage-winner-tag">UP NEXT SONG ★</div>
                 <div id="stage-winner-title" class="stage-winner-title">Song Title</div>
                 <div id="stage-winner-artist" class="stage-winner-artist">Artist Name</div>
             </div>
@@ -97,6 +95,8 @@
     <script src="{{ url_for('static', filename='js/confetti.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bus.js') }}"></script>
     <script src="{{ url_for('static', filename='js/audio.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/game-utils.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sing-round.js') }}"></script>
     <script src="{{ url_for('static', filename='js/display.js') }}"></script>
 </body>
 </html>

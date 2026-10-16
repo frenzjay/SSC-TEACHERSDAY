@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const { escapeHtml, formatLyrics, formatWordBlanksHtml } = window.gameUtils;
     let songs = [];
     let currentSong = null;
     let isRevealed = false;
@@ -8,19 +9,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let openTimingEditorSongId = null;
     let activeBlankIndex = 0;
     let audioOutputMode = 'controller';
-    let isStageConnected = false;
     let isSmartAutoPlayRunning = false;
     let isAnswered = false;
     let hasCutForBlank = false;
-
-    let facultyTeams = [
-        { id: 'sci', name: 'Science Dept', score: 0 },
-        { id: 'math', name: 'Math Dept', score: 0 },
-        { id: 'eng', name: 'English Dept', score: 0 },
-        { id: 'fil', name: 'Filipino Dept', score: 0 },
-        { id: 'mapeh', name: 'MAPEH Dept', score: 0 },
-        { id: 'admin', name: 'Admin / Staff', score: 0 }
-    ];
 
     const songListScroll = document.getElementById('song-list-scroll');
     const searchInput = document.getElementById('search-song-input');
@@ -37,7 +28,21 @@ document.addEventListener('DOMContentLoaded', () => {
     let waitingForNextBlank = false;
     let pendingBlankResumeTime = null;
     let pendingHulaReplayUntil = null;
-    let finalOutroTimer = null;
+    let roundResult = null;
+    const roundTimers = new Set();
+
+    function clearRoundTimers() {
+        roundTimers.forEach(clearTimeout);
+        roundTimers.clear();
+    }
+
+    function scheduleRoundAction(action, delay) {
+        const timer = setTimeout(() => {
+            roundTimers.delete(timer);
+            action();
+        }, delay);
+        roundTimers.add(timer);
+    }
 
     const blankEditorModal = document.getElementById('blank-editor-modal');
     const btnCloseBlankEditor = document.getElementById('btn-close-blank-editor');
@@ -118,11 +123,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnCorrect = document.getElementById('btn-trigger-correct');
     const btnWrong = document.getElementById('btn-trigger-wrong');
     const btnTension = document.getElementById('btn-trigger-tension');
-    const teamsListContainer = document.getElementById('controller-teams-list');
-    const newTeamNameInput = document.getElementById('new-team-name-input');
-    const btnAddTeam = document.getElementById('btn-add-team');
-    const btnResetScores = document.getElementById('btn-reset-scores');
-
     function updateAudioOutputMode(mode) {
         audioOutputMode = mode;
         localStorage.setItem('ssc_audio_output_mode', mode);
@@ -177,18 +177,16 @@ document.addEventListener('DOMContentLoaded', () => {
     updateAudioOutputMode(savedAudioMode);
 
     fetchSongs();
-    renderTeams();
 
-    window.gameBus.on('SYNC_REQUEST', () => {
-        broadcastSyncState();
-        window.gameBus.send('SET_AUDIO_OUTPUT_MODE', { mode: audioOutputMode });
-    });
+    function syncStage(data) {
+        const targetClientId = data?.clientId;
+        broadcastSyncState(targetClientId);
+        window.gameBus.send('SET_AUDIO_OUTPUT_MODE', { mode: audioOutputMode, targetClientId });
+    }
 
-    window.gameBus.on('STAGE_READY', () => {
-        isStageConnected = true;
-        broadcastSyncState();
-        window.gameBus.send('SET_AUDIO_OUTPUT_MODE', { mode: audioOutputMode });
-    });
+    window.gameBus.on('SYNC_REQUEST', syncStage);
+    window.gameBus.on('STAGE_READY', syncStage);
+    window.gameBus.on('NETWORK_CONNECTED', () => window.gameBus.send('PING_STAGE'));
 
     window.gameBus.on('SELECT_SONG', (payload) => {
         if (!payload) return;
@@ -216,12 +214,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.gameBus.send('PING_STAGE');
 
-    function broadcastSyncState() {
+    function broadcastSyncState(targetClientId) {
         window.gameBus.send('SYNC_STATE', {
+            targetClientId,
             currentSong,
             isRevealed,
+            isAnswered,
+            hasCutForBlank,
+            isPlaying: isPlaying && !window.gameAudio.player.paused,
+            audioTime: window.gameAudio.player.currentTime || 0,
             activeBlankIndex,
-            teams: facultyTeams
+            roundResult
         });
     }
 
@@ -654,7 +657,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function selectSong(song) {
-        currentSong = song;
+        clearRoundTimers();
+        roundResult = null;
+        currentSong = song = { ...song, blanks: (song.blanks || []).map(blank => ({ ...blank })) };
+        window.singRound.reset(song.blanks);
+        window.gameAudio.pauseTrack();
         isRevealed = false;
         isAnswered = false;
         isPausedAtBlank = false;
@@ -663,10 +670,6 @@ document.addEventListener('DOMContentLoaded', () => {
         waitingForNextBlank = false;
         pendingBlankResumeTime = null;
         pendingHulaReplayUntil = null;
-        if (finalOutroTimer) {
-            clearTimeout(finalOutroTimer);
-            finalOutroTimer = null;
-        }
 
         document.querySelectorAll('.song-card-item').forEach(el => el.classList.remove('selected'));
         renderSongList();
@@ -712,7 +715,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (inputStartTime) inputStartTime.value = formatTime(song.start_time || 0, true);
         if (inputHulaReplayTime) inputHulaReplayTime.value = formatTime(song.hula_replay_time ?? song.start_time ?? 0, true);
-        if (inputBlankTime) inputBlankTime.value = formatTime(song.blank_time || 0, true);
+        if (inputBlankTime && song.mode !== 'everybody_sing') inputBlankTime.value = formatTime(song.blank_time || 0, true);
         if (playSectionBadge) playSectionBadge.textContent = formatTime(song.start_time || 0, true);
 
         btnPlayAudio.innerHTML = '<i class="fa-solid fa-play"></i> PLAY AUDIO';
@@ -733,17 +736,18 @@ document.addEventListener('DOMContentLoaded', () => {
     function updatePrompterForMultiBlank() {
         if (!currentSong || currentSong.mode !== 'everybody_sing') return;
         const blanks = currentSong.blanks || [];
-        const currentBlank = blanks[activeBlankIndex] || blanks[0] || {};
+        const currentBlank = blanks[activeBlankIndex] || {};
+        const { number, total } = window.singRound.progress(blanks, activeBlankIndex);
 
         if (multiblankCurrentCount) {
-            multiblankCurrentCount.textContent = `${activeBlankIndex + 1} / ${blanks.length}`;
+            multiblankCurrentCount.textContent = currentBlank.is_lyrics_only ? `LYRICS • ${number} / ${total}` : `${number} / ${total}`;
         }
 
         lyricsPrecedingEl.innerHTML = formatLyrics(currentBlank.prompt_lyrics || 'No prompt lyrics');
         
         if (currentBlank.is_lyrics_only) {
             maskedSegmentEl.style.display = 'none';
-            answerKeyEl.innerHTML = `<i class="fa-solid fa-info-circle"></i> LYRICS ONLY (No answer required) (Blank ${activeBlankIndex + 1}/${blanks.length})`;
+            answerKeyEl.innerHTML = `<i class="fa-solid fa-info-circle"></i> LYRICS ONLY (No answer required)`;
         } else {
             maskedSegmentEl.style.display = 'inline-block';
             if (currentBlank.answered) {
@@ -753,7 +757,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 maskedSegmentEl.className = 'prompter-masked-segment';
                 maskedSegmentEl.innerHTML = `[ ${formatWordBlanksHtml(currentBlank.blank_lyrics || '_____')} ]`;
             }
-            answerKeyEl.innerHTML = `<i class="fa-solid fa-key"></i> ANSWER: <strong>${escapeHtml(currentBlank.blank_lyrics || currentBlank.answer || '')}</strong> (Blank ${activeBlankIndex + 1}/${blanks.length})`;
+            answerKeyEl.innerHTML = `<i class="fa-solid fa-key"></i> ANSWER: <strong>${escapeHtml(currentBlank.blank_lyrics || currentBlank.answer || '')}</strong> (Blank ${number}/${total})`;
         }
         triviaEl.textContent = currentBlank.following_lyrics ? `NEXT LINE: ${currentBlank.following_lyrics}` : (currentSong.trivia ? `NOTE: ${currentSong.trivia}` : '');
 
@@ -763,14 +767,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (prompterMultiBlankList) {
             prompterMultiBlankList.innerHTML = '';
+            let blankNumber = 0;
             blanks.forEach((b, idx) => {
                 const row = document.createElement('div');
                 const isCur = (idx === activeBlankIndex);
-                const isDone = b.answered || (idx < activeBlankIndex && b.answered);
+                const isDone = Boolean(b.answered);
+                if (!b.is_lyrics_only) blankNumber++;
                 row.className = `prompter-blank-row ${isCur ? 'active' : ''} ${isDone ? 'completed' : ''}`;
                 row.innerHTML = `
                     <div style="display: flex; align-items: center; gap: 6px; flex: 1; overflow: hidden;">
-                        <span style="font-family: var(--font-pixel); font-size: 0.55rem; color: var(--brand-blue);">${isDone ? '✓' : '#' + (idx + 1)}</span>
+                        <span style="font-family: var(--font-pixel); font-size: 0.55rem; color: var(--brand-blue);">${b.is_lyrics_only ? '♫' : (isDone ? '✓' : '#' + blankNumber)}</span>
                         <span style="font-family: var(--font-mono); font-size: 0.48rem; color: #555;">[♫ ${formatTime(b.lyrics_time || 0, true)} ➔ ✂ ${formatTime(b.pause_time, true)}]</span>
                         <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: bold;">${escapeHtml(b.blank_lyrics || b.answer)}</span>
                     </div>
@@ -904,7 +910,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (dur <= 0) return;
 
         const blanks = currentSong.blanks || [];
+        let blankNumber = 0;
         blanks.forEach((b, idx) => {
+            if (b.is_lyrics_only) return;
+            blankNumber++;
             const pauseSec = Number(b.pause_time) || 0;
             if (pauseSec > 0 && pauseSec <= dur) {
                 const pct = (pauseSec / dur) * 100;
@@ -913,8 +922,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const isDone = b.answered || (idx < activeBlankIndex);
                 pin.className = `timeline-marker-pin ${isCur ? 'active' : ''} ${isDone ? 'completed' : ''}`;
                 pin.style.left = `${pct}%`;
-                pin.setAttribute('data-label', `#${idx + 1}`);
-                pin.title = `Blank #${idx + 1} (${formatTime(pauseSec, true)}): "${b.blank_lyrics || b.answer}" - Click to test lead-up`;
+                pin.setAttribute('data-label', `#${blankNumber}`);
+                pin.title = `Blank #${blankNumber} (${formatTime(pauseSec, true)}): "${b.blank_lyrics || b.answer}" - Click to test lead-up`;
                 pin.addEventListener('click', (e) => {
                     e.stopPropagation();
                     activeBlankIndex = idx;
@@ -948,7 +957,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const curr = window.gameAudio.player.currentTime || 0;
         const stamp = Math.round(curr * 1000) / 1000;
         
-        // Only edit this specific blank - do not touch or influence any other blanks
         blanks[activeBlankIndex].pause_time = stamp;
         
         window.gameBus.send('UPDATE_BLANKS', currentSong.blanks);
@@ -984,7 +992,6 @@ document.addEventListener('DOMContentLoaded', () => {
             markCurrentBlankCut();
         });
     }
-
 
     function openBlankEditor(song) {
         if (!song) return;
@@ -1569,17 +1576,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
             closeDeleteModal();
 
-            // If timing editor modal was open for this song, close it
             if (editingSong && editingSong.id === targetId) {
                 pauseAudioPlayback();
                 editingSong = null;
                 if (blankEditorModal) blankEditorModal.classList.add('hidden');
             }
 
-            // If the deleted song was currently loaded
             const wasCurrent = (currentSong && currentSong.id === targetId);
             if (wasCurrent) {
                 pauseAudioPlayback();
+                clearRoundTimers();
+                roundResult = null;
                 currentSong = null;
             }
 
@@ -1663,6 +1670,12 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        clearRoundTimers();
+        roundResult = null;
+        waitingForNextBlank = false;
+        pendingBlankResumeTime = null;
+        window.singRound.reset(currentSong.blanks);
+        window.gameBus.send('SET_SONG', currentSong);
         isSmartAutoPlayRunning = true;
         activeBlankIndex = 0;
         isPausedAtBlank = false;
@@ -1691,7 +1704,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (btnSmartAutoplay) {
         btnSmartAutoplay.addEventListener('click', () => {
-            if (isSmartAutoPlayRunning && isPlaying) {
+            if (isSmartAutoPlayRunning) {
                 togglePlay();
             } else {
                 startSmartAutoPlay();
@@ -1725,6 +1738,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function togglePlay() {
+        if (roundResult) return;
         if (!currentSong) return;
         if (!currentSong.audio_url) {
             alert('No audio file attached to this song yet!\nClick "ATTACH MP3" on this song in the list to upload audio.');
@@ -1794,10 +1808,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function triggerEmergencyCut() {
-        if (finalOutroTimer) {
-            clearTimeout(finalOutroTimer);
-            finalOutroTimer = null;
-        }
+        clearRoundTimers();
         pendingHulaReplayUntil = null;
         isPlaying = false;
         isPausedAtBlank = true;
@@ -1808,6 +1819,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         window.gameAudio.emergencyCut();
         window.gameBus.send('STOP_AUDIO');
+        if (roundResult) {
+            window.gameBus.send('STAGE_GRAND_VICTORY', roundResult);
+            btnPlayAudio.innerHTML = '<i class="fa-solid fa-check"></i> ROUND COMPLETE';
+        }
     }
 
     if (btnPlayAudio) btnPlayAudio.addEventListener('click', togglePlay);
@@ -1843,7 +1858,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 let pauseSec = (inputBlankTime ? parseTime(inputBlankTime.value) : 0) || (curBlank ? Number(curBlank.pause_time) : 0);
-                if (checkAutoPauseBlank && checkAutoPauseBlank.checked && pauseSec > 0 && isPlaying && !hasCutForBlank && !curBlank?.answered) {
+                if (curBlank && !curBlank.is_lyrics_only && checkAutoPauseBlank && checkAutoPauseBlank.checked && pauseSec > 0 && isPlaying && !hasCutForBlank && !curBlank?.answered) {
                     if (curr >= pauseSec && !isPausedAtBlank) {
                         hasCutForBlank = true;
                         isPausedAtBlank = true;
@@ -1931,24 +1946,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!currentSong) return;
 
         if (currentSong.mode === 'everybody_sing') {
-            const blanks = currentSong.blanks || [];
+            const blank = (currentSong.blanks || [])[activeBlankIndex];
+            if (!blank || blank.is_lyrics_only || roundResult) return;
+            isRevealed = true;
             window.gameBus.send('REVEAL_ANSWER');
-            if (activeBlankIndex < blanks.length - 1) {
-                activeBlankIndex++;
-                isAnswered = false;
-                isRevealed = false;
-                hasCutForBlank = false;
-                isPausedAtBlank = false;
-                updatePrompterForMultiBlank();
-                renderTimelineBlankMarkers();
-            } else {
-                activeBlankIndex = blanks.length;
-                isAnswered = true;
-                isRevealed = true;
-                hasCutForBlank = true;
-                updatePrompterForMultiBlank();
-                renderTimelineBlankMarkers();
-            }
+            maskedSegmentEl.textContent = blank.blank_lyrics || blank.answer || '';
             return;
         }
 
@@ -1987,146 +1989,102 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function finishRoundAndGoToWaiting(scoreText = '') {
-        if (finalOutroTimer) {
-            clearTimeout(finalOutroTimer);
-            finalOutroTimer = null;
-        }
-        isPlaying = false;
-        isPausedAtBlank = false;
-        hasCutForBlank = false;
+    function completeSingRound(resumeFrom) {
+        if (roundResult) return;
+        const { score, total } = window.singRound.progress(currentSong.blanks);
+        roundResult = { score, total, scoreText: `${score}/${total}` };
+        hasCutForBlank = true;
+        isSmartAutoPlayRunning = false;
         waitingForNextBlank = false;
-        isRevealed = false;
-        isAnswered = false;
-
-        btnPlayAudio.innerHTML = '<i class="fa-solid fa-play"></i> PLAY AUDIO';
-        btnPlayAudio.style.background = 'var(--brand-blue)';
-        btnPlayAudio.style.color = '#FFF';
-
+        pendingBlankResumeTime = null;
+        isAnswered = true;
+        clearRoundTimers();
         if (btnSmartAutoplay) {
             btnSmartAutoplay.classList.remove('running');
-            btnSmartAutoplay.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> START SMART FULL-SONG AUTO-PLAY';
+            btnSmartAutoplay.innerHTML = `<i class="fa-solid fa-trophy"></i> FINISHED! SCORE: ${roundResult.scoreText} — PLAY AGAIN`;
+        }
+        answerKeyEl.textContent = `FINAL SCORE: ${roundResult.scoreText}`;
+        scheduleRoundAction(() => {
+            window.gameBus.send('STAGE_GRAND_VICTORY', roundResult);
+        }, 1200);
+
+        if (currentSong.audio_url) {
+            isPlaying = true;
+            isPausedAtBlank = false;
+            scheduleRoundAction(() => {
+                window.gameAudio.playTrack(resumeFrom, false);
+                window.gameBus.send('PLAY_AUDIO', { fromTime: resumeFrom, isResume: true });
+            }, 350);
+            scheduleRoundAction(() => {
+                window.gameAudio.fadeOutAndStop(2000);
+                window.gameBus.send('FADE_OUT_AUDIO', { duration: 2000 });
+            }, 8000);
+        }
+        scheduleRoundAction(() => {
+            isPlaying = false;
+            isPausedAtBlank = false;
+            btnPlayAudio.innerHTML = '<i class="fa-solid fa-check"></i> ROUND COMPLETE';
+            lyricsPrecedingEl.textContent = `ROUND COMPLETE! FINAL SCORE: ${roundResult.scoreText}`;
+        }, 10000);
+    }
+
+    function gradeSingBlank(correct) {
+        const blanks = currentSong.blanks || [];
+        const curBlank = blanks[activeBlankIndex];
+        if (!curBlank || curBlank.is_lyrics_only || roundResult) return;
+        curBlank.answered = true;
+        curBlank.wrong = !correct;
+        const configuredBlankCut = (inputBlankTime ? parseTime(inputBlankTime.value) : 0)
+            || Number(curBlank.pause_time)
+            || 0;
+        const resumeFrom = configuredBlankCut > 0
+            ? Math.max(0, configuredBlankCut - 0.5)
+            : null;
+
+        isAnswered = true;
+        isRevealed = true;
+        updatePrompterForMultiBlank();
+        renderTimelineBlankMarkers();
+
+        const isLastBlank = window.singRound.progress(blanks).complete;
+
+        window.gameBus.send(correct ? 'TRIGGER_CORRECT' : 'TRIGGER_WRONG', {
+            mode: 'everybody_sing',
+            activeBlankIndex,
+            blank: curBlank,
+            isLastBlank
+        });
+        if (correct) window.gameAudio.playCorrectDing();
+        else window.gameAudio.playWrongBuzzer();
+
+        isPlaying = false;
+        isPausedAtBlank = true;
+        if (resumeFrom !== null) {
+            window.gameAudio.seek(resumeFrom);
+            pendingBlankResumeTime = resumeFrom;
         }
 
-        const precedingEl = document.getElementById('prompter-lyrics-preceding');
-        if (precedingEl) {
-            precedingEl.innerHTML = `<strong>★ ROUND COMPLETE! FINAL SCORE: ${scoreText || ''} ★</strong><br><span style="font-size:0.75rem; color:#555;">Waiting for next song. Select from library or launch /roulette.</span>`;
+        if (isLastBlank) {
+            completeSingRound(resumeFrom);
+        } else {
+            waitingForNextBlank = true;
+            if (btnSmartAutoplay && isSmartAutoPlayRunning) {
+                btnSmartAutoplay.classList.remove('running');
+                btnSmartAutoplay.innerHTML = '<i class="fa-solid fa-play"></i> RESUME SMART AUTO-PLAY [SPACE]';
+            }
+            if (btnPlayAudio) {
+                btnPlayAudio.innerHTML = '<i class="fa-solid fa-play"></i> CONTINUE TO NEXT BLANK [SPACE]';
+                btnPlayAudio.style.background = 'var(--accent-green)';
+                btnPlayAudio.style.color = '#FFF';
+            }
         }
-
-        const answerKeyText = document.getElementById('prompter-answer-key-text');
-        if (answerKeyText) {
-            answerKeyText.textContent = `FINAL SCORE: ${scoreText || '-'}`;
-        }
-
-        window.gameBus.send('STAGE_WAITING');
     }
 
     function triggerCorrect() {
         if (!currentSong) return; if (isAnswered) return;
 
         if (currentSong.mode === 'everybody_sing') {
-            const blanks = currentSong.blanks || [];
-            const curBlank = blanks[activeBlankIndex] || {};
-            curBlank.answered = true;
-            const configuredBlankCut = (inputBlankTime ? parseTime(inputBlankTime.value) : 0)
-                || Number(curBlank.pause_time)
-                || 0;
-            const resumeFrom = configuredBlankCut > 0
-                ? Math.max(0, configuredBlankCut - 0.5)
-                : null;
-
-            isAnswered = true;
-            isRevealed = true;
-            updatePrompterForMultiBlank();
-            renderTimelineBlankMarkers();
-
-            const isLastBlank = (activeBlankIndex >= blanks.length - 1);
-
-            window.gameBus.send('TRIGGER_CORRECT', {
-                mode: 'everybody_sing',
-                activeBlankIndex,
-                blank: curBlank,
-                isLastBlank
-            });
-            window.gameAudio.playCorrectDing();
-
-            // Prepare pause state and cue position so the operator can resume when ready
-            isPlaying = false;
-            isPausedAtBlank = true;
-            if (resumeFrom !== null) {
-                window.gameAudio.seek(resumeFrom);
-                pendingBlankResumeTime = resumeFrom;
-            }
-
-            if (isLastBlank) {
-                hasCutForBlank = true;
-                isSmartAutoPlayRunning = false;
-                waitingForNextBlank = false;
-
-                const score = blanks.filter(b => b.answered && !b.wrong).length;
-                const total = blanks.length || 10;
-                const scoreText = `${score}/${total}`;
-
-                if (btnSmartAutoplay) {
-                    btnSmartAutoplay.classList.remove('running');
-                    btnSmartAutoplay.innerHTML = `<i class="fa-solid fa-trophy"></i> CLEARED! SCORE: ${scoreText}`;
-                }
-
-                setTimeout(() => {
-                    window.gameBus.send('STAGE_GRAND_VICTORY', {
-                        score,
-                        total,
-                        scoreText
-                    });
-                    window.gameAudio.playCorrectDing();
-                }, 1200);
-
-                if (finalOutroTimer) {
-                    clearTimeout(finalOutroTimer);
-                    finalOutroTimer = null;
-                }
-
-                if (currentSong.audio_url) {
-                    isPlaying = true;
-                    isPausedAtBlank = false;
-                    btnPlayAudio.innerHTML = `<i class="fa-solid fa-volume-high"></i> CELEBRATING [${scoreText}] (10S)...`;
-                    btnPlayAudio.style.background = 'var(--accent-yellow)';
-                    btnPlayAudio.style.color = '#000';
-
-                    setTimeout(() => {
-                        window.gameAudio.playTrack(resumeFrom, false);
-                        window.gameBus.send('PLAY_AUDIO', { fromTime: resumeFrom, isResume: true });
-                    }, 350);
-
-                    // Play audio for 10s total: 8s at full volume, then 2s fade out, then go back to waiting
-                    finalOutroTimer = setTimeout(() => {
-                        btnPlayAudio.innerHTML = '<i class="fa-solid fa-volume-low"></i> FADING OUT...';
-                        window.gameAudio.fadeOutAndStop(2000, () => {
-                            finishRoundAndGoToWaiting(scoreText);
-                        });
-                        window.gameBus.send('FADE_OUT_AUDIO', { duration: 2000 });
-
-                        setTimeout(() => {
-                            finishRoundAndGoToWaiting(scoreText);
-                        }, 2100);
-                    }, 8000);
-                } else {
-                    finalOutroTimer = setTimeout(() => {
-                        finishRoundAndGoToWaiting(scoreText);
-                    }, 10000);
-                }
-            } else {
-                waitingForNextBlank = true;
-                if (btnSmartAutoplay && isSmartAutoPlayRunning) {
-                    btnSmartAutoplay.classList.remove('running');
-                    btnSmartAutoplay.innerHTML = '<i class="fa-solid fa-play"></i> RESUME SMART AUTO-PLAY [SPACE]';
-                }
-                if (btnPlayAudio) {
-                    btnPlayAudio.innerHTML = '<i class="fa-solid fa-play"></i> CONTINUE TO NEXT BLANK [SPACE]';
-                    btnPlayAudio.style.background = 'var(--accent-green)';
-                    btnPlayAudio.style.color = '#FFF';
-                }
-            }
+            gradeSingBlank(true);
             return;
         }
 
@@ -2177,109 +2135,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!currentSong) return; if (isAnswered) return;
 
         if (currentSong.mode === 'everybody_sing') {
-            const blanks = currentSong.blanks || [];
-            const curBlank = blanks[activeBlankIndex] || {};
-            curBlank.answered = true;
-            curBlank.wrong = true;
-            const configuredBlankCut = (inputBlankTime ? parseTime(inputBlankTime.value) : 0)
-                || Number(curBlank.pause_time)
-                || 0;
-            const resumeFrom = configuredBlankCut > 0
-                ? Math.max(0, configuredBlankCut - 0.5)
-                : null;
-
-            isAnswered = true;
-            isRevealed = true;
-            updatePrompterForMultiBlank();
-            renderTimelineBlankMarkers();
-
-            const isLastBlank = (activeBlankIndex >= blanks.length - 1);
-
-            window.gameBus.send('TRIGGER_WRONG', {
-                mode: 'everybody_sing',
-                activeBlankIndex,
-                blank: curBlank,
-                isLastBlank
-            });
-            window.gameAudio.playWrongBuzzer();
-
-            // Prepare pause state and cue position so the operator can resume when ready
-            isPlaying = false;
-            isPausedAtBlank = true;
-            if (resumeFrom !== null) {
-                window.gameAudio.seek(resumeFrom);
-                pendingBlankResumeTime = resumeFrom;
-            }
-
-            if (isLastBlank) {
-                hasCutForBlank = true;
-                isSmartAutoPlayRunning = false;
-                waitingForNextBlank = false;
-
-                const score = blanks.filter(b => b.answered && !b.wrong).length;
-                const total = blanks.length || 10;
-                const scoreText = `${score}/${total}`;
-
-                if (btnSmartAutoplay) {
-                    btnSmartAutoplay.classList.remove('running');
-                    btnSmartAutoplay.innerHTML = `<i class="fa-solid fa-flag-checkered"></i> FINISHED! SCORE: ${scoreText}`;
-                }
-
-                setTimeout(() => {
-                    window.gameBus.send('STAGE_GRAND_VICTORY', {
-                        score,
-                        total,
-                        scoreText
-                    });
-                    window.gameAudio.playWrongBuzzer();
-                }, 1200);
-
-                if (finalOutroTimer) {
-                    clearTimeout(finalOutroTimer);
-                    finalOutroTimer = null;
-                }
-
-                if (currentSong.audio_url) {
-                    isPlaying = true;
-                    isPausedAtBlank = false;
-                    btnPlayAudio.innerHTML = `<i class="fa-solid fa-volume-high"></i> CELEBRATING [${scoreText}] (10S)...`;
-                    btnPlayAudio.style.background = 'var(--accent-yellow)';
-                    btnPlayAudio.style.color = '#000';
-
-                    setTimeout(() => {
-                        window.gameAudio.playTrack(resumeFrom, false);
-                        window.gameBus.send('PLAY_AUDIO', { fromTime: resumeFrom, isResume: true });
-                    }, 350);
-
-                    // Play audio for 10s total: 8s at full volume, then 2s fade out, then go back to waiting
-                    finalOutroTimer = setTimeout(() => {
-                        btnPlayAudio.innerHTML = '<i class="fa-solid fa-volume-low"></i> FADING OUT...';
-                        window.gameAudio.fadeOutAndStop(2000, () => {
-                            finishRoundAndGoToWaiting(scoreText);
-                        });
-                        window.gameBus.send('FADE_OUT_AUDIO', { duration: 2000 });
-
-                        setTimeout(() => {
-                            finishRoundAndGoToWaiting(scoreText);
-                        }, 2100);
-                    }, 8000);
-                } else {
-                    finalOutroTimer = setTimeout(() => {
-                        finishRoundAndGoToWaiting(scoreText);
-                    }, 10000);
-                }
-            } else {
-                waitingForNextBlank = true;
-                if (btnSmartAutoplay && isSmartAutoPlayRunning) {
-                    btnSmartAutoplay.classList.remove('running');
-                    btnSmartAutoplay.innerHTML = '<i class="fa-solid fa-play"></i> RESUME SMART AUTO-PLAY [SPACE]';
-                }
-                if (btnPlayAudio) {
-                    btnPlayAudio.innerHTML = '<i class="fa-solid fa-play"></i> CONTINUE TO NEXT BLANK [SPACE]';
-                    btnPlayAudio.style.background = 'var(--accent-green)';
-                    btnPlayAudio.style.color = '#FFF';
-                }
-            }
+            gradeSingBlank(false);
             return;
         }
 
@@ -2325,70 +2181,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnCorrect) btnCorrect.addEventListener('click', triggerCorrect);
     if (btnWrong) btnWrong.addEventListener('click', triggerWrong);
     if (btnTension) btnTension.addEventListener('click', triggerTension);
-
-    function renderTeams() {
-        if (!teamsListContainer) return;
-        teamsListContainer.innerHTML = '';
-        facultyTeams.forEach(team => {
-            const row = document.createElement('div');
-            row.className = 'controller-team-row';
-            row.innerHTML = `
-                <span class="controller-team-name">${escapeHtml(team.name)}</span>
-                <span class="controller-team-score">${team.score}</span>
-                <div class="score-btn-group">
-                    <button class="score-btn score-plus" data-id="${team.id}">+1</button>
-                    <button class="score-btn score-minus" data-id="${team.id}">-1</button>
-                </div>
-            `;
-            teamsListContainer.appendChild(row);
-        });
-
-        teamsListContainer.querySelectorAll('.score-plus').forEach(b => {
-            b.addEventListener('click', (e) => {
-                e.stopPropagation();
-                updateScore(b.dataset.id, 1);
-            });
-        });
-        teamsListContainer.querySelectorAll('.score-minus').forEach(b => {
-            b.addEventListener('click', (e) => {
-                e.stopPropagation();
-                updateScore(b.dataset.id, -1);
-            });
-        });
-
-        window.gameBus.send('UPDATE_SCORE', { teams: facultyTeams });
-    }
-
-    function updateScore(teamId, delta) {
-        const team = facultyTeams.find(t => t.id === teamId);
-        if (team) {
-            team.score = Math.max(0, team.score + delta);
-            renderTeams();
-        }
-    }
-
-    if (btnAddTeam) {
-        btnAddTeam.addEventListener('click', () => {
-            const name = newTeamNameInput.value.trim();
-            if (!name) return;
-            facultyTeams.push({
-                id: `team-${Date.now()}`,
-                name: name,
-                score: 0
-            });
-            newTeamNameInput.value = '';
-            renderTeams();
-        });
-    }
-
-    if (btnResetScores) {
-        btnResetScores.addEventListener('click', () => {
-            if (confirm('Reset all faculty scores to 0?')) {
-                facultyTeams.forEach(t => t.score = 0);
-                renderTeams();
-            }
-        });
-    }
 
     window.addEventListener('keydown', (e) => {
         if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName)) {
@@ -2501,20 +2293,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function formatWordBlanksHtml(text) {
-        if (!text) return '<span class="blank-word">_____</span>';
-        const words = String(text).trim().split(/\s+/);
-        if (words.length === 0 || (words.length === 1 && words[0] === '')) {
-            return '<span class="blank-word">_____</span>';
-        }
-        return words.map(word => {
-            const letters = word.replace(/[^a-zA-Z0-9\u00C0-\u024F]/g, '');
-            const count = letters.length > 0 ? letters.length : word.length;
-            const underscores = '_'.repeat(Math.max(1, count));
-            return `<span class="blank-word">${underscores}</span>`;
-        }).join('<span class="blank-space">&nbsp;</span>');
-    }
-
     function parseTime(val) {
         if (!val && val !== 0) return 0;
         if (typeof val === 'number') return Math.round(val * 1000) / 1000;
@@ -2529,11 +2307,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return isNaN(num) ? 0 : Math.round(num * 1000) / 1000;
     }
 
-    function formatLyrics(lyrics) {
-        if (!lyrics) return '';
-        return lyrics.split(' / ').map(line => `<div>${escapeHtml(line)}</div>`).join('');
-    }
-
     function formatTime(secs, includeMs = false) {
         if (isNaN(secs) || secs < 0) return includeMs ? '00:00.000' : '00:00';
         const totalMs = Math.round(secs * 1000);
@@ -2545,9 +2318,4 @@ document.addEventListener('DOMContentLoaded', () => {
         return includeMs ? `${base}.${ms.toString().padStart(3, '0')}` : base;
     }
 
-    function escapeHtml(str) {
-        return str.replace(/[&<>"']/g, m => ({
-            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-        }[m]));
-    }
 });
